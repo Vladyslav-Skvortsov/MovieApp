@@ -1,2 +1,19 @@
+<main class="wrapper">
+  <div class="catalog">
+    <div class="catalog__all">
+      <h2>All Movies</h2>
+      <app-movie-list [movies]="movies" (addFavorite)="addFavorite($event)" (addWatch)="addWatch($event)"></app-movie-list>
+    </div>
 
-<router-outlet />
+    <div class="catalog__favorite">
+      <h2>Favorites</h2>
+      <app-movie-list [movies]="favoriteMovies"></app-movie-list>
+    </div>
+
+    <div class="catalog__watch">
+      <h2>Watch List</h2>
+      <app-movie-list [movies]="watchMovies"></app-movie-list>
+    </div>
+  </div>
+</main>
+<router-outlet></router-outlet>

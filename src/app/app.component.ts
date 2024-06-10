@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MovieListComponent } from './components/movie-list/movie-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MovieListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -44,8 +45,22 @@ export class AppComponent {
     },
   ];
 
-  // favoriteMovies: any[] = [];
-  // watcMovies: any[] = [];
+  favoriteMovies: any[] = [];
+  watchMovies: any[] = [];
 
+  addFavorite(movie: any) {
+    if (
+      !this.favoriteMovies.some(
+        (favoriteMovie) => favoriteMovie.id === movie.id
+      )
+    ) {
+      this.favoriteMovies.push(movie);
+    }
+  }
 
+  addWatch(movie: any) {
+    if (!this.watchMovies.some((watchMovie) => watchMovie.id === movie.id)) {
+      this.watchMovies.push(movie);
+    }
+  }
 }
