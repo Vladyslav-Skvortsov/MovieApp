@@ -5,8 +5,8 @@ import {
   Output,
   PipeTransform,
 } from '@angular/core';
-import { NgIf } from '@angular/common';
 
+// оголосив Pipe тут тому що не зрозумів як це зробити не додаючи модуль (я не хотів додавати модуль так як не розібрався ще з ними)
 export class TransformRatingPipe implements PipeTransform {
   transform(value: number): string {
     return Number.isInteger(value) ? value.toString() : value.toFixed(1);
@@ -16,7 +16,6 @@ export class TransformRatingPipe implements PipeTransform {
 @Component({
   selector: 'app-movie-item',
   standalone: true,
-  imports: [NgIf],
   templateUrl: './movie-item.component.html',
   styleUrls: ['./movie-item.component.scss'],
   providers: [TransformRatingPipe],
