@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MovieListComponent } from './components/movie-list/movie-list.component';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, MovieListComponent],
+  imports: [RouterOutlet, MovieListComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -17,7 +18,7 @@ export class AppComponent {
       overview:
         'In the near future, a group of war journalists attempt to survive while reporting the truth as the United States stands on the brink of civil war.',
       title: 'Movie 1',
-      rating: 8.5,
+      rating: 8.0,
     },
     {
       image: '../assets/img/mock-img.jpg',
@@ -33,14 +34,14 @@ export class AppComponent {
       overview:
         'In the near future, a group of war journalists attempt to survive while reporting the truth as the United States stands on the brink of civil war.',
       title: 'Movie 3',
-      rating: 7.5,
+      rating: 7.0,
     },
     {
       image: '../assets/img/mock-img.jpg',
       id: 959999,
       overview:
         'In the near future, a group of war journalists attempt to survive while reporting the truth as the United States stands on the brink of civil war.',
-      title: 'Movie 3',
+      title: 'Movie 4',
       rating: 5.5,
     },
   ];
