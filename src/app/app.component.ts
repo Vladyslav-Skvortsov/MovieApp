@@ -50,17 +50,19 @@ export class AppComponent {
   watchMovies: any[] = [];
 
   addFavorite(movie: any) {
-    if (
-      !this.favoriteMovies.some(
-        (favoriteMovie) => favoriteMovie.id === movie.id
-      )
-    ) {
+    const isMovieInFavorite = this.favoriteMovies.some(
+      (favoriteMovie) => favoriteMovie.id === movie.id
+    );
+    if (!isMovieInFavorite) {
       this.favoriteMovies.push(movie);
     }
   }
 
   addWatch(movie: any) {
-    if (!this.watchMovies.some((watchMovie) => watchMovie.id === movie.id)) {
+    const isMovieInWatch = this.watchMovies.some(
+      (watchMovie) => watchMovie.id === movie.id
+    );
+    if (!isMovieInWatch) {
       this.watchMovies.push(movie);
     }
   }
