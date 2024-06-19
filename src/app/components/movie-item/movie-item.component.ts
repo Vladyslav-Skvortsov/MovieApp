@@ -28,7 +28,7 @@ export class MovieItemComponent {
   constructor(private transformRatingPipe: TransformRatingPipe) {}
 
   get transformedRating(): string {
-    return this.transformRatingPipe.transform(this.movie.rating); // Используйте ваш Pipe
+    return this.transformRatingPipe.transform(this.movie.rating);
   }
 
   addToFavorites() {
