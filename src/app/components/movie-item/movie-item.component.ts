@@ -6,10 +6,14 @@ import {
 	PipeTransform,
 } from '@angular/core';
 
-// оголосив Pipe тут тому що не зрозумів як це зробити не додаючи модуль (я не хотів додавати модуль так як не розібрався ще з ними)
+// оголосив Pipe тут тому що не зрозумів як це зробити не додаючи модуль (я не хотів додавати модуль)
 export class TransformRatingPipe implements PipeTransform {
 	transform(value: number): string {
-		return Number.isInteger(value) ? value.toString() : value.toFixed(1);
+		if (value % 1 === 0) {
+			return value.toFixed(0); // Повертаємо без десяткових знаків, якщо число ціле
+		} else {
+			return value.toFixed(1); // Округлити до одного десяткового знака, якщо число не ціле
+		}
 	}
 }
 
@@ -28,7 +32,7 @@ export class MovieItemComponent {
 	constructor(private transformRatingPipe: TransformRatingPipe) {}
 
 	get transformedRating(): string {
-		return this.transformRatingPipe.transform(this.movie.rating);
+		return this.transformRatingPipe.transform(this.movie.vote_average);
 	}
 
 	addToFavorites() {
