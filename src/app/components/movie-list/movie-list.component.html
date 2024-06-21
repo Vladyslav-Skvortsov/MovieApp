@@ -1,8 +1,9 @@
 <div class="movie-list">
-  <app-movie-item
-    *ngFor="let movie of movies"
-    [movie]="movie"
-    (addFavorite)="addToFavorites($event)"
-    (addWatch)="addToWatch($event)">
-  </app-movie-item>
+	<app-movie-item
+		*ngFor="let movie of movies"
+		[movie]="movie"
+		(addFavorite)="addToFavorites($event)"
+		(addWatch)="addToWatch($event)"
+	>
+	</app-movie-item>
 </div>
