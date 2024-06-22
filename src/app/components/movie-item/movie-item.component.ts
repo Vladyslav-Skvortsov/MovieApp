@@ -43,3 +43,5 @@ export class MovieItemComponent {
 		this.addWatch.emit(this.movie);
 	}
 }
+
+// test
