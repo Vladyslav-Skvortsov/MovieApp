@@ -12,10 +12,9 @@ import { nowPlayingMovies } from '../assets/mock-data/mock-data';
 	styleUrl: './app.component.scss',
 })
 export class AppComponent {
-	movies = nowPlayingMovies;
-
-	favoriteMovies: any[] = [];
-	watchMovies: any[] = [];
+	public movies = nowPlayingMovies;
+	public favoriteMovies: any[] = [];
+	public watchMovies: any[] = [];
 
 	addFavorite(movie: any) {
 		const isMovieInFavorite = this.favoriteMovies.some(

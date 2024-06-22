@@ -14,6 +14,10 @@ export class MovieListComponent {
 	@Output() addFavorite = new EventEmitter<any>();
 	@Output() addWatch = new EventEmitter<any>();
 
+	trackById(index: number, item: any) {
+		return item.id;
+	}
+
 	addToFavorites(movie: any) {
 		this.addFavorite.emit(movie);
 	}
