@@ -10,9 +10,9 @@ import {
 export class TransformRatingPipe implements PipeTransform {
 	transform(value: number): string {
 		if (value % 1 === 0) {
-			return value.toFixed(0); // Повертаємо без десяткових знаків, якщо число ціле
+			return value.toFixed(0);
 		} else {
-			return value.toFixed(1); // Округлити до одного десяткового знака, якщо число не ціле
+			return value.toFixed(1);
 		}
 	}
 }
