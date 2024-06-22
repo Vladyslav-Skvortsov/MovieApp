@@ -3,7 +3,8 @@
 	"compileOnSave": false,
 	"compilerOptions": {
 		"paths": {
-			"@assets/*": ["./src/assets/*"]
+			"@assets/*": ["./src/assets/*"],
+			"@pipes/*": ["./src/app/pipes/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,
