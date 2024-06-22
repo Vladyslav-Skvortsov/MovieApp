@@ -9,14 +9,18 @@
 			></app-movie-list>
 		</div>
 
-		<div class="catalog__favorite" *ngIf="favoriteMovies.length > 0">
+		<div class="catalog__favorite">
+			@if (favoriteMovies.length > 0) {
 			<h2>Favorites</h2>
 			<app-movie-list [movies]="favoriteMovies"></app-movie-list>
+			}
 		</div>
 
-		<div class="catalog__watch" *ngIf="watchMovies.length > 0">
+		<div class="catalog__watch">
+			@if (watchMovies.length > 0) {
 			<h2>Watch List</h2>
 			<app-movie-list [movies]="watchMovies"></app-movie-list>
+			}
 		</div>
 	</div>
 </main>
