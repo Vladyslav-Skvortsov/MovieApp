@@ -4,7 +4,8 @@
 	"compilerOptions": {
 		"paths": {
 			"@assets/*": ["./src/assets/*"],
-			"@pipes/*": ["./src/app/pipes/*"]
+			"@pipes/*": ["./src/app/pipes/*"],
+			"@components/*": ["./src/app/components/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,

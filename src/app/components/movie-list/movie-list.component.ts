@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MovieItemComponent } from '../movie-item/movie-item.component';
-import { NgFor } from '@angular/common';
+import { MovieItemComponent } from '@components/movie-item/movie-item.component';
 
 @Component({
 	selector: 'app-movie-list',
 	standalone: true,
-	imports: [MovieItemComponent, NgFor],
+	imports: [MovieItemComponent],
 	templateUrl: './movie-list.component.html',
 	styleUrls: ['./movie-list.component.scss'],
 })

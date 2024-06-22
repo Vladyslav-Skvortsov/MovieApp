@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MovieListComponent } from './components/movie-list/movie-list.component';
-import { NgIf } from '@angular/common';
-import { nowPlayingMovies } from '../assets/mock-data/mock-data';
+import { nowPlayingMovies } from '@assets/mock-data/mock-data';
+import { MovieListComponent } from '@components/movie-list/movie-list.component';
+import { MovieCardComponent } from '@components/movie-card/movie-card.component';
 
 @Component({
 	selector: 'app-root',
 	standalone: true,
-	imports: [RouterOutlet, MovieListComponent, NgIf],
+	imports: [RouterOutlet, MovieListComponent, MovieCardComponent],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
 })
