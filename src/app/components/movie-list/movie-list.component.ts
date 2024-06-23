@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MovieItemComponent } from '@components/movie-item/movie-item.component';
+import { MovieCardComponent } from '@components/movie-card/movie-card.component';
 
 @Component({
 	selector: 'app-movie-list',
 	standalone: true,
-	imports: [MovieItemComponent],
+	imports: [MovieCardComponent],
 	templateUrl: './movie-list.component.html',
 	styleUrls: ['./movie-list.component.scss'],
 })

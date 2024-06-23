@@ -1,10 +1,10 @@
 <div class="movie-list">
 	@for (movie of movies; track trackById) {
-	<app-movie-item
+	<app-movie-card
 		[movie]="movie"
 		(addFavorite)="addToFavorites($event)"
 		(addWatch)="addToWatch($event)"
 	>
-	</app-movie-item>
+	</app-movie-card>
 	}
 </div>

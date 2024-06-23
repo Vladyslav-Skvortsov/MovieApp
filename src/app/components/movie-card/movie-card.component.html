@@ -1,28 +1,31 @@
 <p-card
-	header="Advanced Card"
-	subheader="Card Subheader"
-	[style]="{ width: '360px' }"
+	header="{{ movie.title }}"
+	subheader="{{ movie.release_date }}"
+	styleClass="movie-card"
 >
-	<ng-template pTemplate="header">
+	<ng-template pTemplate="content">
+		<div class="movie-card__flex">
+			<p-button
+				label="Watch"
+				severity="contrast"
+				class="movie-card__button-card watch"
+				(click)="addToFavorites()"
+			></p-button>
+			<p-button
+				label="Favorite"
+				class="movie-card__button-card favorite"
+				(click)="addToWatch()"
+			></p-button>
+		</div>
 		<img
-			alt="Card"
-			src="https://primefaces.org/cdn/primeng/images/card-ng.jpg"
+			[src]="movie.poster_path"
+			[alt]="movie.title"
+			class="movie-card__poster"
 		/>
 	</ng-template>
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore sed
-		consequuntur error repudiandae numquam deserunt quisquam repellat libero
-		asperiores earum nam nobis, culpa ratione quam perferendis esse,
-		cupiditate neque quas!
-	</p>
 	<ng-template pTemplate="footer">
-		<div class="flex mt-1">
-			<p-button
-				label="Cancel"
-				severity="secondary"
-				class="w-full"
-			></p-button>
-			<p-button label="Save" class="w-full"></p-button>
+		<div class="movie-card__rating">
+			<p>Rating: {{ movie.vote_average | transformRating }}</p>
 		</div>
 	</ng-template>
 </p-card>
