@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TransformRatingPipe } from '@pipes/transform-rating.pipe';
+import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 
 @Component({
 	selector: 'app-movie-item',

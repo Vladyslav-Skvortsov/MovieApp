@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
-import { TransformRatingPipe } from '@pipes/transform-rating.pipe';
+import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 
 @Component({
 	selector: 'app-movie-card',

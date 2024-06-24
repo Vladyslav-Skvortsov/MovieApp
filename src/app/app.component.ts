@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { nowPlayingMovies } from '@assets/mock-data/mock-data';
+import { nowPlayingMovies } from '@assets/database/mock-data';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MovieCardComponent } from '@components/movie-card/movie-card.component';
 
