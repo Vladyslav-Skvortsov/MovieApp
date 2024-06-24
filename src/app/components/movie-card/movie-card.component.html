@@ -6,12 +6,14 @@
 	<ng-template pTemplate="content">
 		<div class="movie-card__flex">
 			<p-button
+				icon="pi pi-bookmark"
 				label="Watch"
 				severity="contrast"
 				class="movie-card__button-card watch"
 				(click)="addToFavorites()"
 			></p-button>
 			<p-button
+				icon="pi pi-heart"
 				label="Favorite"
 				class="movie-card__button-card favorite"
 				(click)="addToWatch()"
