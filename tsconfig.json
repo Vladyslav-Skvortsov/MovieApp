@@ -5,7 +5,8 @@
 		"paths": {
 			"@assets/*": ["./src/assets/*"],
 			"@pipes/*": ["./src/app/pipes/*"],
-			"@components/*": ["./src/app/components/*"]
+			"@components/*": ["./src/app/components/*"],
+			"@interfaces/*": ["./src/app/interfaces/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,

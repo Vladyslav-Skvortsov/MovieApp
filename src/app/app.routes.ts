@@ -8,7 +8,7 @@ import { FavoriteMoviesPageComponent } from './pages/favorite-movies-page/favori
 import { WatchLaterPageComponent } from './pages/watch-later-page/watch-later-page.component';
 
 export const routes: Routes = [
-	{ path: '', redirectTo: 'PopularMoviesPageComponent', pathMatch: 'full' },
+	{ path: '', redirectTo: 'popular', pathMatch: 'full' },
 	{
 		path: 'popular',
 		component: PopularMoviesPageComponent,
@@ -33,11 +33,17 @@ export const routes: Routes = [
 		path: 'favorite-movies',
 		component: FavoriteMoviesPageComponent,
 		pathMatch: 'full',
+		outlet: 'header',
 	},
 	{
 		path: 'watch-later',
 		component: WatchLaterPageComponent,
 		pathMatch: 'full',
+		outlet: 'header',
 	},
-	{ path: 'movie/:id', component: MovieDetailComponent, pathMatch: 'full' },
+	{
+		path: 'movie/:id',
+		component: MovieDetailComponent,
+		pathMatch: 'full',
+	},
 ];

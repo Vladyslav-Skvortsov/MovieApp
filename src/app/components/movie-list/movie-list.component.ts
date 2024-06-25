@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MovieCardComponent } from '@components/movie-card/movie-card.component';
+import { Movie } from '@interfaces/movie';
 
 @Component({
 	selector: 'app-movie-list',
@@ -17,11 +18,11 @@ export class MovieListComponent {
 		return item.id;
 	}
 
-	addToFavorites(movie: any) {
+	addToFavorites(movie: Movie) {
 		this.addFavorite.emit(movie);
 	}
 
-	addToWatch(movie: any) {
+	addToWatch(movie: Movie) {
 		this.addWatch.emit(movie);
 	}
 }

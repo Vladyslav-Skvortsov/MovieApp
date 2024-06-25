@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MovieCardComponent } from '@components/movie-card/movie-card.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
@@ -11,6 +11,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 	styleUrl: './app.component.scss',
 	imports: [
 		RouterOutlet,
+		RouterModule,
 		MovieListComponent,
 		MovieCardComponent,
 		SidebarComponent,

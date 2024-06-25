@@ -13,6 +13,8 @@ export class NowPlayingMoviesPageComponent {
 	@Output() addFavorite = new EventEmitter<any>();
 	@Output() addWatch = new EventEmitter<any>();
 
+	public titlePage: string = 'Now Playing Movies';
+
 	movies = nowPlayingMovies;
 
 	addToFavorites(movie: any) {
