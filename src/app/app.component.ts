@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { nowPlayingMovies } from '@assets/database/mock-data';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MovieCardComponent } from '@components/movie-card/movie-card.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @Component({
 	selector: 'app-root',
 	standalone: true,
-	imports: [RouterOutlet, MovieListComponent, MovieCardComponent],
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
+	imports: [
+		RouterOutlet,
+		MovieListComponent,
+		MovieCardComponent,
+		SidebarComponent,
+	],
 })
 export class AppComponent {
-	public movies = nowPlayingMovies;
+	constructor(private route: ActivatedRoute) {}
+
 	public favoriteMovies: any[] = [];
 	public watchMovies: any[] = [];
 

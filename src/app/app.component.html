@@ -1,12 +1,14 @@
-<main class="wrapper">
-	<div class="sidebar">
-		<!-- sidebar -->
-	</div>
+<header>
 	<div class="nav">
 		<!-- nav -->
 	</div>
+</header>
+<main class="wrapper">
+	<app-sidebar class="sidebar"></app-sidebar>
 	<div class="catalog">
-		<div class="catalog__all">
+		<router-outlet></router-outlet>
+
+		<!-- <div class="catalog__all">
 			<h2>All Movies</h2>
 			<app-movie-list
 				[movies]="movies"
@@ -27,6 +29,6 @@
 			<h2>Watch List</h2>
 			<app-movie-list [movies]="watchMovies"></app-movie-list>
 			}
-		</div>
+		</div> -->
 	</div>
 </main>

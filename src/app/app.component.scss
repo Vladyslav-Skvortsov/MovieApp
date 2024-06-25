@@ -1,6 +1,11 @@
+.wrapper {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+}
+.sidebar {
+	width: 20%;
+}
 .catalog {
-	&__all,
-	&__favorite,
-	&__watch {
-	}
+	width: 80%;
 }

@@ -1,1 +1,14 @@
-<p>sidebar works!</p>
+<nav class="sidebar">
+	<a [routerLink]="['/popular']" routerLinkActive="active-link"
+		><i class="pi pi-trophy"></i> Popular Movies</a
+	>
+	<a [routerLink]="['/top-rate']" routerLinkActive="active-link"
+		><i class="pi pi-star"></i> Top Rate Movies</a
+	>
+	<a [routerLink]="['/now-playing']" routerLinkActive="active-link"
+		><i class="pi pi-forward"></i> Now Playing</a
+	>
+	<a [routerLink]="['/upcoming']" routerLinkActive="active-link"
+		><i class="pi pi-hourglass"></i> Upcoming</a
+	>
+</nav>
