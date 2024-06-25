@@ -22,27 +22,4 @@ import { MovieDetailComponent } from './pages/movie-detail/movie-detail.componen
 		MovieDetailComponent,
 	],
 })
-export class AppComponent {
-	constructor(private route: ActivatedRoute) {}
-
-	public favoriteMovies: any[] = [];
-	public watchMovies: any[] = [];
-
-	addFavorite(movie: Movie) {
-		const isMovieInFavorite = this.favoriteMovies.some(
-			(favoriteMovie) => favoriteMovie.id === movie.id
-		);
-		if (!isMovieInFavorite) {
-			this.favoriteMovies.push(movie);
-		}
-	}
-
-	addWatch(movie: Movie) {
-		const isMovieInWatch = this.watchMovies.some(
-			(watchMovie) => watchMovie.id === movie.id
-		);
-		if (!isMovieInWatch) {
-			this.watchMovies.push(movie);
-		}
-	}
-}
+export class AppComponent {}
