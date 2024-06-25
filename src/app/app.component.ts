@@ -18,25 +18,4 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 })
 export class AppComponent {
 	constructor(private route: ActivatedRoute) {}
-
-	public favoriteMovies: any[] = [];
-	public watchMovies: any[] = [];
-
-	addFavorite(movie: any) {
-		const isMovieInFavorite = this.favoriteMovies.some(
-			(favoriteMovie) => favoriteMovie.id === movie.id
-		);
-		if (!isMovieInFavorite) {
-			this.favoriteMovies.push(movie);
-		}
-	}
-
-	addWatch(movie: any) {
-		const isMovieInWatch = this.watchMovies.some(
-			(watchMovie) => watchMovie.id === movie.id
-		);
-		if (!isMovieInWatch) {
-			this.watchMovies.push(movie);
-		}
-	}
 }
