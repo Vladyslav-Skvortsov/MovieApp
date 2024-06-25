@@ -1,0 +1,31 @@
+<header>
+	<p-menubar [model]="items" class="menu">
+		<ng-template pTemplate="item" let-item>
+			<ng-container *ngIf="item.route">
+				<a
+					[routerLink]="[{ outlets: { header: [item.route] } }]"
+					routerLinkActive="active-link"
+					class="p-menuitem-link"
+				>
+					<span [class]="item.icon"></span>
+					<span class="ml-2">{{ item.label }}</span>
+				</a>
+			</ng-container>
+		</ng-template>
+	</p-menubar>
+</header>
+<!-- <nav class="tab-movie-save">
+	<a
+		[routerLink]="[{ outlets: { header: ['favorite-movies'] } }]"
+		routerLinkActive="active-link"
+	>
+		Favorite Movies
+	</a>
+	<br />
+	<a
+		[routerLink]="[{ outlets: { header: ['watch-later'] } }]"
+		routerLinkActive="active-link"
+	>
+		Watch Later
+	</a>
+</nav> -->

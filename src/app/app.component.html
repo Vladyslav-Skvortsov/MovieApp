@@ -1,24 +1,10 @@
-<header>
-	<nav class="tab-movie-save">
-		<a
-			[routerLink]="[{ outlets: { header: ['favorite-movies'] } }]"
-			routerLinkActive="active-link"
-		>
-			Favorite Movies
-		</a>
-		<br />
-		<a
-			[routerLink]="[{ outlets: { header: ['watch-later'] } }]"
-			routerLinkActive="active-link"
-		>
-			Watch Later
-		</a>
-	</nav>
-</header>
+<app-header></app-header>
 <main class="wrapper">
-	<router-outlet name="header"></router-outlet>
 	<app-sidebar class="sidebar"></app-sidebar>
-	<div class="catalog">
-		<router-outlet></router-outlet>
+	<div class="content">
+		<router-outlet name="header"></router-outlet>
+		<div class="catalog">
+			<router-outlet></router-outlet>
+		</div>
 	</div>
 </main>

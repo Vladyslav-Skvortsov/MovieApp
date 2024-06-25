@@ -1,1 +1,10 @@
 <p>favorite-movies-page works!</p>
+<div class="favorite-movies">
+	@if (favoriteMovies.length > 0) {
+
+	<h2>{{ titlePage }}</h2>
+	<app-movie-list [movies]="favoriteMovies"></app-movie-list>
+	} @else {
+	<h2>{{ titleEmptyPage }}</h2>
+	}
+</div>
