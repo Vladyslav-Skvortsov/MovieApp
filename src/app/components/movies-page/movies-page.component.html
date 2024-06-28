@@ -1,0 +1,8 @@
+<div class="movies-page">
+	<h2>{{ titlePage }}</h2>
+	<app-movie-list
+		[movies]="movies"
+		(addFavorite)="addToFavorites($event)"
+		(addWatch)="addToWatch($event)"
+	></app-movie-list>
+</div>

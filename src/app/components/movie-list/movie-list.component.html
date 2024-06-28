@@ -1,9 +1,10 @@
 <div class="movie-list">
-	<app-movie-item
-		*ngFor="let movie of movies"
+	@for (movie of movies; track trackById) {
+	<app-movie-card
 		[movie]="movie"
 		(addFavorite)="addToFavorites($event)"
 		(addWatch)="addToWatch($event)"
 	>
-	</app-movie-item>
+	</app-movie-card>
+	}
 </div>

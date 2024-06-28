@@ -1,0 +1,40 @@
+<p-card
+	[header]="movie.title"
+	[subheader]="movie.release_date | transformDateFormat"
+	[style]="{
+		width: '360px',
+		margin: '2rem 0.5rem 0rem',
+		border: '1px solid #ddd',
+		borderRadius: '10px',
+		boxShadow: '0.8rem 0.8rem 0.5rem rgba(0, 0, 0, 0.1)'
+	}"
+	styleClass="movie-card"
+>
+	<ng-template pTemplate="content">
+		<div class="movie-card__flex">
+			<p-button
+				icon="pi pi-bookmark"
+				label="Watch"
+				severity="contrast"
+				class="movie-card__button-card watch"
+				(click)="addToFavorites()"
+			></p-button>
+			<p-button
+				icon="pi pi-heart"
+				label="Favorite"
+				class="movie-card__button-card favorite"
+				(click)="addToWatch()"
+			></p-button>
+		</div>
+		<img
+			[src]="movie.poster_path"
+			[alt]="movie.title"
+			class="movie-card__poster"
+		/>
+	</ng-template>
+	<ng-template pTemplate="footer">
+		<div class="movie-card__rating">
+			<p>Rating: {{ movie.vote_average | transformRating }}</p>
+		</div>
+	</ng-template>
+</p-card>
