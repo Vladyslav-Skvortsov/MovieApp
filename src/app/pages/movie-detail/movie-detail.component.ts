@@ -1,25 +1,44 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Movie } from '@interfaces/movie';
+import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
+import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
+import {
+	nowPlayingMovies,
+	popularMovies,
+	topRatedMovies,
+	upcomingMovies,
+} from '@assets/database/mock-data';
 
 @Component({
 	selector: 'app-movie-detail',
 	standalone: true,
-	imports: [],
 	templateUrl: './movie-detail.component.html',
 	styleUrl: './movie-detail.component.scss',
+	imports: [TransformRatingPipe, TransformDateFormatPipe],
 })
-export class MovieDetailComponent {
-	// @Input() movie: any;
+export class MovieDetailComponent implements OnInit {
+	// movie: Movie | undefined;
 
-	movie = {
-		id: 1022789,
-		original_language: 'en',
-		original_title: 'Inside Out 2',
-		overview:
-			"Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected: new Emotions! Joy, Sadness, Anger, Fear and Disgust, who’ve long been running a successful operation by all accounts, aren’t sure how to feel when Anxiety shows up. And it looks like she’s not alone.",
-		popularity: 9750.804,
-		poster_path: 'assets/img/mock-img.jpg',
-		release_date: '2024-06-11',
-		title: 'Inside Out 2',
-		vote_average: 7.763,
-	};
+	allMovies: any | undefined = [
+		...nowPlayingMovies,
+		...popularMovies,
+		...topRatedMovies,
+		...upcomingMovies,
+	];
+
+	constructor(private route: ActivatedRoute) {}
+
+	ngOnInit() {
+		let allMovies = [
+			...nowPlayingMovies,
+			...popularMovies,
+			...topRatedMovies,
+			...upcomingMovies,
+		];
+		const movieId = this.route.snapshot.paramMap.get('id');
+		if (movieId) {
+			this.allMovies = allMovies.find((m) => m.id === +movieId);
+		}
+	}
 }

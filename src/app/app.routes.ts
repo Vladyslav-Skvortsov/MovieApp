@@ -12,38 +12,35 @@ export const routes: Routes = [
 	{
 		path: 'popular',
 		component: PopularMoviesPageComponent,
-		pathMatch: 'full',
+		children: [
+			{
+				path: 'favorite-movies',
+				component: FavoriteMoviesPageComponent,
+				outlet: 'header',
+			},
+			{
+				path: 'watch-later',
+				component: WatchLaterPageComponent,
+				outlet: 'header',
+			},
+		],
 	},
 	{
 		path: 'top-rate',
 		component: TopRateMoviesPageComponent,
-		pathMatch: 'full',
 	},
 	{
 		path: 'now-playing',
 		component: NowPlayingMoviesPageComponent,
-		pathMatch: 'full',
 	},
 	{
 		path: 'upcoming',
 		component: UpcomingMoviesPageComponent,
-		pathMatch: 'full',
-	},
-	{
-		path: 'favorite-movies',
-		component: FavoriteMoviesPageComponent,
-		pathMatch: 'full',
-		outlet: 'header',
-	},
-	{
-		path: 'watch-later',
-		component: WatchLaterPageComponent,
-		pathMatch: 'full',
-		outlet: 'header',
 	},
 	{
 		path: 'movie/:id',
 		component: MovieDetailComponent,
-		pathMatch: 'full',
 	},
 ];
+
+export class AppRoutingModule {}

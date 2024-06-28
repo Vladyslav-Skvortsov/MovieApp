@@ -1,6 +1,13 @@
 <p-card
-	header="{{ movie.title }}"
-	subheader="{{ movie.release_date }}"
+	[header]="movie.title"
+	[subheader]="movie.release_date | transformDateFormat"
+	[style]="{
+		width: '360px',
+		margin: '2rem 0.5rem 0rem',
+		border: '1px solid #ddd',
+		borderRadius: '10px',
+		boxShadow: '0.8rem 0.8rem 0.5rem rgba(0, 0, 0, 0.1)'
+	}"
 	styleClass="movie-card"
 >
 	<ng-template pTemplate="content">
