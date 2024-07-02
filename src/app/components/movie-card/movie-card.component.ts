@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
+import { RouterModule } from '@angular/router';
 
 @Component({
 	selector: 'app-movie-card',
@@ -14,18 +15,17 @@ import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-fo
 		ButtonModule,
 		TransformRatingPipe,
 		TransformDateFormatPipe,
+		RouterModule,
 	],
 })
 export class MovieCardComponent {
 	@Input() movie: any;
-	@Output() addFavorite = new EventEmitter<any>();
-	@Output() addWatch = new EventEmitter<any>();
 
 	addToFavorites() {
-		this.addFavorite.emit(this.movie);
+		console.log('addToFavorites');
 	}
 
 	addToWatch() {
-		this.addWatch.emit(this.movie);
+		console.log('addToWatch');
 	}
 }

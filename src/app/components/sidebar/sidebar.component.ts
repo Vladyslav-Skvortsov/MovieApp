@@ -8,4 +8,12 @@ import { RouterModule } from '@angular/router';
 	templateUrl: './sidebar.component.html',
 	styleUrl: './sidebar.component.scss',
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+	public titledSudebar = {
+		titledPopular: 'Popular',
+		titledTopRate: 'Top Rate',
+		titledNowPlaying: 'Now Playing',
+		titledUpcoming: 'Upcoming',
+		test: 'pi-star',
+	};
+}

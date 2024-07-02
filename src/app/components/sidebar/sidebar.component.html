@@ -1,14 +1,20 @@
 <nav class="sidebar">
 	<a [routerLink]="['popular']" routerLinkActive="active-link"
-		><i class="pi pi-trophy"></i> Popular Movies</a
+		><i class="pi pi-trophy"></i> {{ titledSudebar.titledPopular }}</a
 	>
 	<a [routerLink]="['top-rate']" routerLinkActive="active-link"
-		><i class="pi pi-star"></i> Top Rate Movies</a
+		><i class="pi pi-star"></i> {{ titledSudebar.titledTopRate }}</a
 	>
 	<a [routerLink]="['now-playing']" routerLinkActive="active-link"
-		><i class="pi pi-forward"></i> Now Playing</a
+		><i class="pi pi-forward"></i> {{ titledSudebar.titledNowPlaying }}</a
 	>
 	<a [routerLink]="['upcoming']" routerLinkActive="active-link"
-		><i class="pi pi-hourglass"></i> Upcoming</a
+		><i class="pi pi-hourglass"></i> {{ titledSudebar.titledUpcoming }}</a
 	>
+	<!-- <a [routerLink]="['favorite-movies']" routerLinkActive="active-link"
+		><i class="pi pi-hourglass"></i> favorite-movies</a
+	>
+	<a [routerLink]="['watch-later']" routerLinkActive="active-link"
+		><i class="pi pi-hourglass"></i> watch-later</a
+	> -->
 </nav>

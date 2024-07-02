@@ -36,5 +36,8 @@
 		<div class="movie-card__rating">
 			<p>Rating: {{ movie.vote_average | transformRating }}</p>
 		</div>
+		<a [routerLink]="['movie/:id']" routerLinkActive="active-link"
+			><i class="pi pi-hourglass"></i>Show more...</a
+		>
 	</ng-template>
 </p-card>

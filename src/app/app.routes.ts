@@ -12,18 +12,6 @@ export const routes: Routes = [
 	{
 		path: 'popular',
 		component: PopularMoviesPageComponent,
-		children: [
-			{
-				path: 'favorite-movies',
-				component: FavoriteMoviesPageComponent,
-				outlet: 'header',
-			},
-			{
-				path: 'watch-later',
-				component: WatchLaterPageComponent,
-				outlet: 'header',
-			},
-		],
 	},
 	{
 		path: 'top-rate',
@@ -36,6 +24,14 @@ export const routes: Routes = [
 	{
 		path: 'upcoming',
 		component: UpcomingMoviesPageComponent,
+	},
+	{
+		path: 'favorite-movies',
+		component: FavoriteMoviesPageComponent,
+	},
+	{
+		path: 'watch-later',
+		component: WatchLaterPageComponent,
 	},
 	{
 		path: 'movie/:id',
