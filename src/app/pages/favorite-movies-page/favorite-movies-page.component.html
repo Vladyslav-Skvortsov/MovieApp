@@ -1,8 +1,11 @@
 <div class="favorite-movies">
-	@if (favoriteMovies.length > 0) {
+	@if (isFavoriteMovies) {
 
-	<h2>{{ titlePage }}</h2>
-	<app-movie-list [movies]="favoriteMovies"></app-movie-list>
+	<app-movies-page
+		[titlePage]="titlePage"
+		[movies]="favoriteMovies"
+	></app-movies-page>
+
 	} @else {
 	<h2>{{ titleEmptyPage }}</h2>
 	}

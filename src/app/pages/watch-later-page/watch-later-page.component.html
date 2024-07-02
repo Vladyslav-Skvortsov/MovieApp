@@ -1,8 +1,10 @@
 <div class="watch-later">
-	@if (watchMovies.length > 0) {
+	@if (isWatchMovies) {
+	<app-movies-page
+		[titlePage]="titlePage"
+		[movies]="watchMovies"
+	></app-movies-page>
 
-	<h2>{{ titlePage }}</h2>
-	<app-movie-list [movies]="watchMovies"></app-movie-list>
 	} @else {
 	<h2>{{ titleEmptyPage }}</h2>
 	}

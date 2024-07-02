@@ -9,11 +9,18 @@ import { RouterModule } from '@angular/router';
 	styleUrl: './sidebar.component.scss',
 })
 export class SidebarComponent {
-	public titledSudebar = {
+	public titledSidebar = {
 		titledPopular: 'Popular',
 		titledTopRate: 'Top Rate',
 		titledNowPlaying: 'Now Playing',
 		titledUpcoming: 'Upcoming',
 		test: 'pi-star',
+	};
+
+	public iconClasses = {
+		popular: 'pi pi-trophy',
+		topRate: 'pi pi-star',
+		nowPlaying: 'pi pi-forward',
+		upcoming: 'pi pi-hourglass',
 	};
 }

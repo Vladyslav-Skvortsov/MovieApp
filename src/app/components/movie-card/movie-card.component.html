@@ -33,11 +33,18 @@
 		/>
 	</ng-template>
 	<ng-template pTemplate="footer">
-		<div class="movie-card__rating">
-			<p>Rating: {{ movie.vote_average | transformRating }}</p>
+		<div class="movie-card__footer">
+			<div class="movie-card__rating">
+				<p>Rating: {{ movie.vote_average | transformRating }}</p>
+			</div>
+			<p-button
+				icon="pi pi-eye"
+				label="Show more..."
+				severity="contrast"
+				class="movie-card__button-card show-more"
+				[routerLink]="['movie/:id']"
+				routerLinkActive="active-link"
+			></p-button>
 		</div>
-		<a [routerLink]="['movie/:id']" routerLinkActive="active-link"
-			><i class="pi pi-hourglass"></i>Show more...</a
-		>
 	</ng-template>
 </p-card>
