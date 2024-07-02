@@ -12,50 +12,50 @@
 >
 	<ng-template pTemplate="content">
 		<div class="movie-card__flex">
-			@switch (pageType) { @case ('favorite') {
+			@if (pageType === 'favorite') {
 			<p-button
-				icon="pi pi-bookmark"
-				label="Watch"
-				severity="contrast"
-				class="movie-card__button-card watch"
+				[icon]="buttonWatchLater.icon"
+				[label]="buttonWatchLater.label"
+				[severity]="buttonWatchLater.severity"
+				[class]="buttonWatchLater.class"
 				(click)="addToWatchLater()"
 			></p-button>
 			<p-button
-				icon="pi pi-trash"
-				label="Delete"
-				severity="danger"
-				class="movie-card__button-card watch"
+				[icon]="buttonRemove.icon"
+				[label]="buttonRemove.label"
+				[severity]="buttonRemove.severity"
+				[class]="buttonRemove.class"
 				(click)="removeFromFavorites()"
 			></p-button>
-			} @case ('watchLater') {
+			} @else if (pageType === 'watchLater') {
 			<p-button
-				icon="pi pi-heart"
-				label="Favorite"
-				class="movie-card__button-card favorite"
+				[icon]="buttonFavorites.icon"
+				[label]="buttonFavorites.label"
+				[class]="buttonFavorites.class"
 				(click)="addToFavorites()"
 			></p-button>
 			<p-button
-				icon="pi pi-trash"
-				label="Delete"
-				severity="danger"
-				class="movie-card__button-card watch"
+				[icon]="buttonRemove.icon"
+				[label]="buttonRemove.label"
+				[severity]="buttonRemove.severity"
+				[class]="buttonRemove.class"
 				(click)="removeFromWatchLater()"
 			></p-button>
-			} @default {
+			} @else {
 			<p-button
-				icon="pi pi-bookmark"
-				label="Watch"
-				severity="contrast"
-				class="movie-card__button-card watch"
+				[icon]="buttonWatchLater.icon"
+				[label]="buttonWatchLater.label"
+				[severity]="buttonWatchLater.severity"
+				[class]="buttonWatchLater.class"
 				(click)="addToWatchLater()"
 			></p-button>
 			<p-button
-				icon="pi pi-heart"
-				label="Favorite"
-				class="movie-card__button-card favorite"
+				[icon]="buttonFavorites.icon"
+				[label]="buttonFavorites.label"
+				[class]="buttonFavorites.class"
 				(click)="addToFavorites()"
 			></p-button>
-			}}
+			}
 		</div>
 		<img
 			[src]="movie.poster_path"
@@ -69,10 +69,10 @@
 				<p>Rating: {{ movie.vote_average | transformRating }}</p>
 			</div>
 			<p-button
-				icon="pi pi-eye"
-				label="Show more..."
-				severity="contrast"
-				class="movie-card__button-card show-more"
+				[icon]="buttonShowMore.icon"
+				[label]="buttonShowMore.label"
+				[severity]="buttonShowMore.severity"
+				[class]="buttonShowMore.class"
 				[routerLink]="['/movie', movie.id]"
 				routerLinkActive="active-link"
 			></p-button>
