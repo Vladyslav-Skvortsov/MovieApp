@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
+import { of } from 'rxjs';
 import {
 	nowPlayingMovies,
 	popularMovies,
 	topRatedMovies,
 	upcomingMovies,
 } from '@assets/database/mock-data';
+import { Movie } from '@interfaces/movie';
 
 @Injectable({
 	providedIn: 'root',
@@ -12,13 +14,13 @@ import {
 export class MovieService {
 	constructor() {}
 
-	public playingMoviesList: any[] = nowPlayingMovies;
-	public popularMoviesList: any[] = popularMovies;
-	public topRatedMoviesList: any[] = topRatedMovies;
-	public upcomingMoviesList: any[] = upcomingMovies;
+	private playingMoviesList: Movie[] = nowPlayingMovies;
+	private popularMoviesList: Movie[] = popularMovies;
+	private topRatedMoviesList: Movie[] = topRatedMovies;
+	private upcomingMoviesList: Movie[] = upcomingMovies;
 
-	public favoriteMoviesList: any[] = [];
-	public watchMoviesList: any[] = [];
+	private favoriteMoviesList: Movie[] = [];
+	private watchMoviesList: Movie[] = [];
 
 	getPlayingMoviesList() {
 		return this.playingMoviesList;
@@ -40,17 +42,16 @@ export class MovieService {
 		return this.watchMoviesList;
 	}
 
-	// addToFavorites(movie: any) {
-	// 	if (!this.favoriteMoviesList.includes(movie)) {
-	// 		this.favoriteMoviesList.push(movie);
-	// 	}
-	// }
-
-	// addToWatchList(movie: any) {
-	// 	if (!this.watchMoviesList.includes(movie)) {
-	// 		this.watchMoviesList.push(movie);
-	// 	}
-	// }
+	getMovieById(id: number) {
+		const allMovies = [
+			...this.playingMoviesList,
+			...this.popularMoviesList,
+			...this.topRatedMoviesList,
+			...this.upcomingMoviesList,
+		];
+		const movie = allMovies.find((movie) => movie.id === id);
+		return of(movie); // не знав як це зробити тому знайшов таке рiшення --- Observable
+	}
 
 	// removeFromFavorites(movie: any) {
 	// 	this.favoriteMoviesList = this.favoriteMoviesList.filter(

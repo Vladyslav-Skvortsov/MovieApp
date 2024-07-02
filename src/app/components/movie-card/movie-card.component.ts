@@ -3,6 +3,7 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
+import { Movie } from '@interfaces/movie';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -19,7 +20,7 @@ import { RouterModule } from '@angular/router';
 	],
 })
 export class MovieCardComponent {
-	@Input() movie: any;
+	@Input() movie!: Movie;
 
 	addToFavorites() {
 		console.log('addToFavorites');
