@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
-import { MoviesPageComponent } from '../../components/movies-page/movies-page.component';
+import { MoviesPageComponent } from '@components/movies-page/movies-page.component';
+import { MovieService } from '@services/movie.service';
 
 @Component({
 	selector: 'app-favorite-movies-page',
@@ -9,11 +10,19 @@ import { MoviesPageComponent } from '../../components/movies-page/movies-page.co
 	styleUrl: './favorite-movies-page.component.scss',
 	imports: [MovieListComponent, MoviesPageComponent],
 })
-export class FavoriteMoviesPageComponent {
+export class FavoriteMoviesPageComponent implements OnInit {
+	constructor(private movieService: MovieService) {}
+
 	public titlePage: string = 'Favorite Movies';
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
 
-	public isFavoriteMovies: boolean = false;
+	public movies: any[] = [];
 
-	public favoriteMovies: any[] = [];
+	ngOnInit(): void {
+		this.movies = this.movieService.getFavoriteMoviesList();
+	}
+
+	public get isMovies(): boolean {
+		return this.movies.length > 0;
+	}
 }
