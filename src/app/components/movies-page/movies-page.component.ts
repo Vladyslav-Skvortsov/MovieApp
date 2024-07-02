@@ -12,4 +12,5 @@ import { Movie } from '@interfaces/movie';
 export class MoviesPageComponent {
 	@Input() titlePage: string = '';
 	@Input() movies: Movie[] = [];
+	@Input() pageType: string | undefined;
 }

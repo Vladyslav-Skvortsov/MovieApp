@@ -15,6 +15,7 @@ export class FavoriteMoviesPageComponent implements OnInit {
 
 	public titlePage: string = 'Favorite Movies';
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
+	public pageType: string = 'favorite';
 
 	public movies: any[] = [];
 

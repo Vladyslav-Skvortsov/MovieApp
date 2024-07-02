@@ -3,8 +3,9 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
-import { Movie } from '@interfaces/movie';
 import { RouterModule } from '@angular/router';
+import { MovieService } from '@services/movie.service';
+import { Movie } from '@interfaces/movie';
 
 @Component({
 	selector: 'app-movie-card',
@@ -20,13 +21,22 @@ import { RouterModule } from '@angular/router';
 	],
 })
 export class MovieCardComponent {
-	@Input() movie!: Movie;
+	constructor(private movieService: MovieService) {}
 
-	addToFavorites() {
-		console.log('addToFavorites');
+	@Input() movie!: Movie;
+	@Input() pageType: string | undefined;
+
+	addToFavorites(): void {
+		this.movieService.addToFavorites(this.movie);
+	}
+	addToWatchLater(): void {
+		this.movieService.addToWatchLater(this.movie);
 	}
 
-	addToWatch() {
-		console.log('addToWatch');
+	removeFromFavorites(): void {
+		this.movieService.removeFromFavorites(this.movie.id);
+	}
+	removeFromWatchLater(): void {
+		this.movieService.removeFromWatchLater(this.movie.id);
 	}
 }

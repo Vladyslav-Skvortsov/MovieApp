@@ -12,19 +12,50 @@
 >
 	<ng-template pTemplate="content">
 		<div class="movie-card__flex">
+			@switch (pageType) { @case ('favorite') {
 			<p-button
 				icon="pi pi-bookmark"
 				label="Watch"
 				severity="contrast"
 				class="movie-card__button-card watch"
+				(click)="addToWatchLater()"
+			></p-button>
+			<p-button
+				icon="pi pi-trash"
+				label="Delete"
+				severity="danger"
+				class="movie-card__button-card watch"
+				(click)="removeFromFavorites()"
+			></p-button>
+			} @case ('watchLater') {
+			<p-button
+				icon="pi pi-heart"
+				label="Favorite"
+				class="movie-card__button-card favorite"
 				(click)="addToFavorites()"
+			></p-button>
+			<p-button
+				icon="pi pi-trash"
+				label="Delete"
+				severity="danger"
+				class="movie-card__button-card watch"
+				(click)="removeFromWatchLater()"
+			></p-button>
+			} @default {
+			<p-button
+				icon="pi pi-bookmark"
+				label="Watch"
+				severity="contrast"
+				class="movie-card__button-card watch"
+				(click)="addToWatchLater()"
 			></p-button>
 			<p-button
 				icon="pi pi-heart"
 				label="Favorite"
 				class="movie-card__button-card favorite"
-				(click)="addToWatch()"
+				(click)="addToFavorites()"
 			></p-button>
+			}}
 		</div>
 		<img
 			[src]="movie.poster_path"

@@ -10,9 +10,10 @@ import { Movie } from '@interfaces/movie';
 	styleUrls: ['./movie-list.component.scss'],
 })
 export class MovieListComponent {
-	@Input() movies: any[] = [];
+	@Input() movies: Movie[] = [];
+	@Input() pageType: string | undefined;
 
-	trackById(index: number, item: any) {
+	trackById(index: number, item: Movie) {
 		return item.id;
 	}
 }

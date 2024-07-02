@@ -20,7 +20,11 @@ export class MovieService {
 	private upcomingMoviesList: Movie[] = upcomingMovies;
 
 	private favoriteMoviesList: Movie[] = [];
-	private watchMoviesList: Movie[] = [];
+	private watchLaterMoviesList: Movie[] = [];
+
+	private isMovieInList(movie: Movie, list: Movie[]): boolean {
+		return list.some((m) => m.id === movie.id);
+	}
 
 	getPlayingMoviesList() {
 		return this.playingMoviesList;
@@ -39,7 +43,20 @@ export class MovieService {
 		return this.favoriteMoviesList;
 	}
 	getWatchMoviesList() {
-		return this.watchMoviesList;
+		return this.watchLaterMoviesList;
+	}
+
+	addToFavorites(movie: Movie): void {
+		let isMovie = this.isMovieInList(movie, this.favoriteMoviesList);
+		if (!isMovie) {
+			this.favoriteMoviesList.push(movie);
+		}
+	}
+	addToWatchLater(movie: Movie): void {
+		let isMovie = this.isMovieInList(movie, this.watchLaterMoviesList);
+		if (!isMovie) {
+			this.watchLaterMoviesList.push(movie);
+		}
 	}
 
 	getMovieById(id: number) {
@@ -50,18 +67,18 @@ export class MovieService {
 			...this.upcomingMoviesList,
 		];
 		const movie = allMovies.find((movie) => movie.id === id);
-		return of(movie); // не знав як це зробити тому знайшов таке рiшення --- Observable
+		return of(movie); // не знав як це зробити красиво тому знайшов таке рiшення :D --- Observable
+		// хоча не до кінця розумію як це взагалі працює
 	}
 
-	// removeFromFavorites(movie: any) {
-	// 	this.favoriteMoviesList = this.favoriteMoviesList.filter(
-	// 		(m) => m.id !== movie.id
-	// 	);
-	// }
-
-	// removeFromWatchList(movie: any) {
-	// 	this.watchMoviesList = this.watchMoviesList.filter(
-	// 		(m) => m.id !== movie.id
-	// 	);
-	// }
+	removeFromFavorites(movieId: number) {
+		this.favoriteMoviesList = this.favoriteMoviesList.filter(
+			(movie) => movie.id !== movieId
+		);
+	}
+	removeFromWatchLater(movieId: number) {
+		this.watchLaterMoviesList = this.watchLaterMoviesList.filter(
+			(movie) => movie.id !== movieId
+		);
+	}
 }

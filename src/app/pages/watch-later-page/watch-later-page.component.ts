@@ -15,6 +15,7 @@ export class WatchLaterPageComponent implements OnInit {
 
 	public titlePage: string = 'Watch Later';
 	public titleEmptyPage: string = 'Watch Later Is Empty';
+	public pageType: string = 'watchLater';
 
 	public movies: any[] = [];
 
