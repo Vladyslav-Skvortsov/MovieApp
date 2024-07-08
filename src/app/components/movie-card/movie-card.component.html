@@ -12,19 +12,50 @@
 >
 	<ng-template pTemplate="content">
 		<div class="movie-card__flex">
+			@if (pageType === 'favorite') {
 			<p-button
-				icon="pi pi-bookmark"
-				label="Watch"
-				severity="contrast"
-				class="movie-card__button-card watch"
+				[icon]="buttonWatchLaterConfig.icon"
+				[label]="buttonWatchLaterConfig.label"
+				[severity]="buttonWatchLaterConfig.severity"
+				[class]="buttonWatchLaterConfig.class"
+				(click)="addToWatchLater()"
+			></p-button>
+			<p-button
+				[icon]="buttonRemoveConfig.icon"
+				[label]="buttonRemoveConfig.label"
+				[severity]="buttonRemoveConfig.severity"
+				[class]="buttonRemoveConfig.class"
+				(click)="removeFromFavorites()"
+			></p-button>
+			} @else if (pageType === 'watchLater') {
+			<p-button
+				[icon]="buttonFavoritesConfig.icon"
+				[label]="buttonFavoritesConfig.label"
+				[class]="buttonFavoritesConfig.class"
 				(click)="addToFavorites()"
 			></p-button>
 			<p-button
-				icon="pi pi-heart"
-				label="Favorite"
-				class="movie-card__button-card favorite"
-				(click)="addToWatch()"
+				[icon]="buttonRemoveConfig.icon"
+				[label]="buttonRemoveConfig.label"
+				[severity]="buttonRemoveConfig.severity"
+				[class]="buttonRemoveConfig.class"
+				(click)="removeFromWatchLater()"
 			></p-button>
+			} @else {
+			<p-button
+				[icon]="buttonWatchLaterConfig.icon"
+				[label]="buttonWatchLaterConfig.label"
+				[severity]="buttonWatchLaterConfig.severity"
+				[class]="buttonWatchLaterConfig.class"
+				(click)="addToWatchLater()"
+			></p-button>
+			<p-button
+				[icon]="buttonFavoritesConfig.icon"
+				[label]="buttonFavoritesConfig.label"
+				[class]="buttonFavoritesConfig.class"
+				(click)="addToFavorites()"
+			></p-button>
+			}
 		</div>
 		<img
 			[src]="movie.poster_path"
@@ -33,8 +64,18 @@
 		/>
 	</ng-template>
 	<ng-template pTemplate="footer">
-		<div class="movie-card__rating">
-			<p>Rating: {{ movie.vote_average | transformRating }}</p>
+		<div class="movie-card__footer">
+			<div class="movie-card__rating">
+				<p>Rating: {{ movie.vote_average | transformRating }}</p>
+			</div>
+			<p-button
+				[icon]="buttonShowMoreConfig.icon"
+				[label]="buttonShowMoreConfig.label"
+				[severity]="buttonShowMoreConfig.severity"
+				[class]="buttonShowMoreConfig.class"
+				[routerLink]="['/movie', movie.id]"
+				routerLinkActive="active-link"
+			></p-button>
 		</div>
 	</ng-template>
 </p-card>

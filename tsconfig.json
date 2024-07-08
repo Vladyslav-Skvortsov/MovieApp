@@ -6,7 +6,9 @@
 			"@assets/*": ["./src/assets/*"],
 			"@pipes/*": ["./src/app/pipes/*"],
 			"@components/*": ["./src/app/components/*"],
-			"@interfaces/*": ["./src/app/interfaces/*"]
+			"@interfaces/*": ["./src/app/interfaces/*"],
+			"@services/*": ["./src/app/services/*"],
+			"@constant/*": ["./src/app/constant/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,

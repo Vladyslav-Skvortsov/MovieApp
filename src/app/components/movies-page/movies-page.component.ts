@@ -1,4 +1,4 @@
-import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { Movie } from '@interfaces/movie';
 
@@ -12,14 +12,5 @@ import { Movie } from '@interfaces/movie';
 export class MoviesPageComponent {
 	@Input() titlePage: string = '';
 	@Input() movies: Movie[] = [];
-	@Output() addFavorite = new EventEmitter<Movie>();
-	@Output() addWatch = new EventEmitter<Movie>();
-
-	addToFavorites(movie: Movie) {
-		this.addFavorite.emit(movie);
-	}
-
-	addToWatch(movie: Movie) {
-		this.addWatch.emit(movie);
-	}
+	@Input() pageType: string | undefined;
 }

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { upcomingMovies } from '@assets/database/mock-data';
+import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@components/movies-page/movies-page.component';
+import { MovieService } from '@services/movie.service';
 
 @Component({
 	selector: 'app-upcoming-movies-page',
@@ -9,7 +9,13 @@ import { MoviesPageComponent } from '@components/movies-page/movies-page.compone
 	styleUrl: './upcoming-movies-page.component.scss',
 	imports: [MoviesPageComponent],
 })
-export class UpcomingMoviesPageComponent {
+export class UpcomingMoviesPageComponent implements OnInit {
+	constructor(private movieService: MovieService) {}
+
 	public titlePage: string = 'Upcoming Movies';
-	movies = upcomingMovies;
+	public movies: any[] = [];
+
+	ngOnInit(): void {
+		this.movies = this.movieService.getUpcomingMoviesList();
+	}
 }
