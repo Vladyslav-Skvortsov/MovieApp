@@ -1,5 +1,5 @@
 <div class="movie-list">
-	@for (movie of movies; track trackById) {
+	@for (movie of movies; track movie.id) {
 	<app-movie-card [pageType]="pageType" [movie]="movie"> </app-movie-card>
 	}
 </div>

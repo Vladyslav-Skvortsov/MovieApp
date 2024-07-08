@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MoviesPageComponent } from '../../components/movies-page/movies-page.component';
 import { MovieService } from '@services/movie.service';
@@ -10,7 +10,7 @@ import { MovieService } from '@services/movie.service';
 	styleUrl: './watch-later-page.component.scss',
 	imports: [MovieListComponent, MoviesPageComponent],
 })
-export class WatchLaterPageComponent implements OnInit {
+export class WatchLaterPageComponent implements OnInit, DoCheck {
 	constructor(private movieService: MovieService) {}
 
 	public titlePage: string = 'Watch Later';
@@ -20,6 +20,10 @@ export class WatchLaterPageComponent implements OnInit {
 	public movies: any[] = [];
 
 	ngOnInit(): void {
+		this.movies = this.movieService.getWatchMoviesList();
+	}
+
+	ngDoCheck(): void {
 		this.movies = this.movieService.getWatchMoviesList();
 	}
 

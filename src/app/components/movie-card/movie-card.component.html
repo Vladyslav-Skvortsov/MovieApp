@@ -14,45 +14,45 @@
 		<div class="movie-card__flex">
 			@if (pageType === 'favorite') {
 			<p-button
-				[icon]="buttonWatchLater.icon"
-				[label]="buttonWatchLater.label"
-				[severity]="buttonWatchLater.severity"
-				[class]="buttonWatchLater.class"
+				[icon]="buttonWatchLaterConfig.icon"
+				[label]="buttonWatchLaterConfig.label"
+				[severity]="buttonWatchLaterConfig.severity"
+				[class]="buttonWatchLaterConfig.class"
 				(click)="addToWatchLater()"
 			></p-button>
 			<p-button
-				[icon]="buttonRemove.icon"
-				[label]="buttonRemove.label"
-				[severity]="buttonRemove.severity"
-				[class]="buttonRemove.class"
+				[icon]="buttonRemoveConfig.icon"
+				[label]="buttonRemoveConfig.label"
+				[severity]="buttonRemoveConfig.severity"
+				[class]="buttonRemoveConfig.class"
 				(click)="removeFromFavorites()"
 			></p-button>
 			} @else if (pageType === 'watchLater') {
 			<p-button
-				[icon]="buttonFavorites.icon"
-				[label]="buttonFavorites.label"
-				[class]="buttonFavorites.class"
+				[icon]="buttonFavoritesConfig.icon"
+				[label]="buttonFavoritesConfig.label"
+				[class]="buttonFavoritesConfig.class"
 				(click)="addToFavorites()"
 			></p-button>
 			<p-button
-				[icon]="buttonRemove.icon"
-				[label]="buttonRemove.label"
-				[severity]="buttonRemove.severity"
-				[class]="buttonRemove.class"
+				[icon]="buttonRemoveConfig.icon"
+				[label]="buttonRemoveConfig.label"
+				[severity]="buttonRemoveConfig.severity"
+				[class]="buttonRemoveConfig.class"
 				(click)="removeFromWatchLater()"
 			></p-button>
 			} @else {
 			<p-button
-				[icon]="buttonWatchLater.icon"
-				[label]="buttonWatchLater.label"
-				[severity]="buttonWatchLater.severity"
-				[class]="buttonWatchLater.class"
+				[icon]="buttonWatchLaterConfig.icon"
+				[label]="buttonWatchLaterConfig.label"
+				[severity]="buttonWatchLaterConfig.severity"
+				[class]="buttonWatchLaterConfig.class"
 				(click)="addToWatchLater()"
 			></p-button>
 			<p-button
-				[icon]="buttonFavorites.icon"
-				[label]="buttonFavorites.label"
-				[class]="buttonFavorites.class"
+				[icon]="buttonFavoritesConfig.icon"
+				[label]="buttonFavoritesConfig.label"
+				[class]="buttonFavoritesConfig.class"
 				(click)="addToFavorites()"
 			></p-button>
 			}
@@ -69,10 +69,10 @@
 				<p>Rating: {{ movie.vote_average | transformRating }}</p>
 			</div>
 			<p-button
-				[icon]="buttonShowMore.icon"
-				[label]="buttonShowMore.label"
-				[severity]="buttonShowMore.severity"
-				[class]="buttonShowMore.class"
+				[icon]="buttonShowMoreConfig.icon"
+				[label]="buttonShowMoreConfig.label"
+				[severity]="buttonShowMoreConfig.severity"
+				[class]="buttonShowMoreConfig.class"
 				[routerLink]="['/movie', movie.id]"
 				routerLinkActive="active-link"
 			></p-button>

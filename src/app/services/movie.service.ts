@@ -14,29 +14,24 @@ import { Movie } from '@interfaces/movie';
 export class MovieService {
 	constructor() {}
 
-	private playingMoviesList: Movie[] = nowPlayingMovies;
-	private popularMoviesList: Movie[] = popularMovies;
-	private topRatedMoviesList: Movie[] = topRatedMovies;
-	private upcomingMoviesList: Movie[] = upcomingMovies;
-
 	private favoriteMoviesList: Movie[] = [];
 	private watchLaterMoviesList: Movie[] = [];
 
 	private isMovieInList(movie: Movie, list: Movie[]): boolean {
-		return list.some((m) => m.id === movie.id);
+		return list.map((m) => m.id).includes(movie.id);
 	}
 
 	getPlayingMoviesList() {
-		return this.playingMoviesList;
+		return nowPlayingMovies;
 	}
 	getPopularMoviesList() {
-		return this.popularMoviesList;
+		return popularMovies;
 	}
 	getTopRatedMoviesList() {
-		return this.topRatedMoviesList;
+		return topRatedMovies;
 	}
 	getUpcomingMoviesList() {
-		return this.upcomingMoviesList;
+		return upcomingMovies;
 	}
 
 	getFavoriteMoviesList() {
@@ -47,28 +42,23 @@ export class MovieService {
 	}
 
 	addToFavorites(movie: Movie): void {
-		let isMovie = this.isMovieInList(movie, this.favoriteMoviesList);
-		if (!isMovie) {
-			this.favoriteMoviesList.push(movie);
-		}
+		const isMovie = this.isMovieInList(movie, this.favoriteMoviesList);
+		!isMovie && this.favoriteMoviesList.push(movie);
 	}
 	addToWatchLater(movie: Movie): void {
-		let isMovie = this.isMovieInList(movie, this.watchLaterMoviesList);
-		if (!isMovie) {
-			this.watchLaterMoviesList.push(movie);
-		}
+		const isMovie = this.isMovieInList(movie, this.watchLaterMoviesList);
+		!isMovie && this.watchLaterMoviesList.push(movie);
 	}
 
 	getMovieById(id: number) {
 		const allMovies = [
-			...this.playingMoviesList,
-			...this.popularMoviesList,
-			...this.topRatedMoviesList,
-			...this.upcomingMoviesList,
+			...nowPlayingMovies,
+			...popularMovies,
+			...topRatedMovies,
+			...upcomingMovies,
 		];
 		const movie = allMovies.find((movie) => movie.id === id);
-		return of(movie); // не знав як це зробити красиво тому знайшов таке рiшення :D --- Observable
-		// хоча не до кінця розумію як це взагалі працює
+		return of(movie);
 	}
 
 	removeFromFavorites(movieId: number) {

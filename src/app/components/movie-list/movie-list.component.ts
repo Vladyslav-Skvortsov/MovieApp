@@ -12,8 +12,4 @@ import { Movie } from '@interfaces/movie';
 export class MovieListComponent {
 	@Input() movies: Movie[] = [];
 	@Input() pageType: string | undefined;
-
-	trackById(index: number, item: Movie) {
-		return item.id;
-	}
 }
