@@ -30,13 +30,13 @@ import { ButtonConfig } from '@interfaces/button';
 export class MovieCardComponent {
 	constructor(private movieService: MovieService) {}
 
+	@Input() movie!: Movie;
+	@Input() pageType: string | undefined;
+
 	public buttonFavoritesConfig: ButtonConfig = buttonFavoritesConfig;
 	public buttonWatchLaterConfig: ButtonConfig = buttonWatchLaterConfig;
 	public buttonRemoveConfig: ButtonConfig = buttonRemoveConfig;
 	public buttonShowMoreConfig: ButtonConfig = buttonShowMoreConfig;
-
-	@Input() movie!: Movie;
-	@Input() pageType: string | undefined;
 
 	addToFavorites(): void {
 		this.movieService.addToFavorites(this.movie);
