@@ -1,10 +1,7 @@
 @if (movie) {
 <div class="movie-detail">
 	<div class="poster">
-		<img
-			[src]="getFullImagePath(movie.poster_path)"
-			alt="{{ movie.title }}"
-		/>
+		<img [src]="getPosterPath(movie.poster_path)" alt="{{ movie.title }}" />
 	</div>
 	<div class="details">
 		<h1>{{ movie.title }}</h1>

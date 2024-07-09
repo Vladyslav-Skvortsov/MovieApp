@@ -37,7 +37,7 @@ export class MovieDetailPageComponent implements OnInit {
 		});
 	}
 
-	getFullImagePath(path: string): string {
+	getPosterPath(path: string): string {
 		return this.imageService.getFullImagePath(path);
 	}
 }

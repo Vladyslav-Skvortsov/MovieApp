@@ -56,7 +56,7 @@ export class MovieCardComponent {
 		this.movieService.removeFromWatchLater(this.movie.id);
 	}
 
-	getFullImagePath(path: string): string {
+	getPosterPath(path: string): string {
 		return this.imageService.getFullImagePath(path);
 	}
 }
