@@ -11,7 +11,7 @@ import {
 	buttonWatchLaterConfig,
 	buttonRemoveConfig,
 	buttonShowMoreConfig,
-} from '@constant/card-button-config';
+} from '@constants/card-button-config';
 import { ButtonConfig } from '@interfaces/button';
 import { ImageService } from '@services/image-service/image.service';
 

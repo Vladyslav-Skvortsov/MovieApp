@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BASE_IMG_URL } from '@constant/constantAPI';
+import { BASE_IMG_URL } from '@constants/constantAPI';
 
 @Injectable({
 	providedIn: 'root',
