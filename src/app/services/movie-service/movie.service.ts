@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
-import { API_KEY, API_TOKEN, BASE_API_URL } from '@constant/constantAPI';
+import { API_KEY, BASE_API_URL } from '@constant/constantAPI';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
