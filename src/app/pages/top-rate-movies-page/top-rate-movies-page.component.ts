@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@components/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
-import { MovieService } from '@services/movie.service';
+import { MovieService } from '@services/movie-service/movie.service';
 
 @Component({
 	selector: 'app-top-rate-movies-page',
@@ -17,6 +17,8 @@ export class TopRateMoviesPageComponent implements OnInit {
 	public movies: Movie[] = [];
 
 	ngOnInit(): void {
-		this.movies = this.movieService.getTopRatedMoviesList();
+		this.movieService.getTopRatedMoviesList().subscribe((response) => {
+			this.movies = response.results;
+		});
 	}
 }

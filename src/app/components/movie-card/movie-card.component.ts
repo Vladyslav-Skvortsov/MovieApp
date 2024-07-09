@@ -4,7 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
 import { RouterModule } from '@angular/router';
-import { MovieService } from '@services/movie.service';
+import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
 import {
 	buttonFavoritesConfig,
@@ -13,6 +13,7 @@ import {
 	buttonShowMoreConfig,
 } from '@constant/card-button-config';
 import { ButtonConfig } from '@interfaces/button';
+import { ImageService } from '@services/image-service/image.service';
 
 @Component({
 	selector: 'app-movie-card',
@@ -28,7 +29,10 @@ import { ButtonConfig } from '@interfaces/button';
 	],
 })
 export class MovieCardComponent {
-	constructor(private movieService: MovieService) {}
+	constructor(
+		private movieService: MovieService,
+		private imageService: ImageService
+	) {}
 
 	@Input() movie!: Movie;
 	@Input() pageType: string | undefined;
@@ -50,5 +54,9 @@ export class MovieCardComponent {
 	}
 	removeFromWatchLater(): void {
 		this.movieService.removeFromWatchLater(this.movie.id);
+	}
+
+	getFullImagePath(path: string): string {
+		return this.imageService.getFullImagePath(path);
 	}
 }

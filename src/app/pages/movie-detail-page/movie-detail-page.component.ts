@@ -3,7 +3,8 @@ import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pi
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
 import { Movie } from '@interfaces/movie';
 import { ActivatedRoute } from '@angular/router';
-import { MovieService } from '@services/movie.service';
+import { MovieService } from '@services/movie-service/movie.service';
+import { ImageService } from '@services/image-service/image.service';
 
 @Component({
 	selector: 'app-movie-detail-page',
@@ -19,19 +20,24 @@ export class MovieDetailPageComponent implements OnInit {
 
 	constructor(
 		private route: ActivatedRoute,
-		private movieService: MovieService
+		private movieService: MovieService,
+		private imageService: ImageService
 	) {}
 
 	ngOnInit(): void {
 		const movieId = this.route.snapshot.paramMap.get('id');
-		this.loadMovieDetails(movieId);
+		if (movieId) {
+			this.loadMovieDetails(+movieId);
+		}
 	}
 
-	loadMovieDetails(id: string | null) {
-		if (id) {
-			this.movieService.getMovieById(+id).subscribe((movie) => {
-				this.movie = movie;
-			});
-		}
+	loadMovieDetails(id: number) {
+		this.movieService.getMovieDetails(id).subscribe((movie) => {
+			this.movie = movie;
+		});
+	}
+
+	getFullImagePath(path: string): string {
+		return this.imageService.getFullImagePath(path);
 	}
 }
