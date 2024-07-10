@@ -63,7 +63,7 @@ export class MovieService {
 	}
 
 	// Showing movie details
-	getMovieDetails(id: number): Observable<Movie> {
+	getMovieById(id: number): Observable<Movie> {
 		return this.httpClient.get<Movie>(
 			`${BASE_API_URL}${id}?api_key=${API_KEY}`
 		);

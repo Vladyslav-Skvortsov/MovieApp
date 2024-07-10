@@ -5,6 +5,8 @@ import { Movie } from '@interfaces/movie';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '@services/movie-service/movie.service';
 import { ImageService } from '@services/image-service/image.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-movie-detail-page',
@@ -15,6 +17,7 @@ import { ImageService } from '@services/image-service/image.service';
 })
 export class MovieDetailPageComponent implements OnInit {
 	movie: Movie | undefined;
+	private unsubscribe$ = new Subject<void>();
 
 	public textEmpty: string = 'Loading...';
 
@@ -26,15 +29,23 @@ export class MovieDetailPageComponent implements OnInit {
 
 	ngOnInit(): void {
 		const movieId = this.route.snapshot.paramMap.get('id');
-		if (movieId) {
-			this.loadMovieDetails(+movieId);
+		this.loadMovieDetails(movieId);
+	}
+
+	loadMovieDetails(id: string | null) {
+		if (id) {
+			this.movieService
+				.getMovieById(+id)
+				.pipe(takeUntil(this.unsubscribe$))
+				.subscribe((movie) => {
+					this.movie = movie;
+				});
 		}
 	}
 
-	loadMovieDetails(id: number) {
-		this.movieService.getMovieDetails(id).subscribe((movie) => {
-			this.movie = movie;
-		});
+	ngOnDestroy(): void {
+		this.unsubscribe$.next();
+		this.unsubscribe$.complete();
 	}
 
 	getPosterPath(path: string): string {
