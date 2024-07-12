@@ -4,9 +4,9 @@ import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-fo
 import { Movie } from '@interfaces/movie';
 import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '@services/movie-service/movie.service';
-import { ImageService } from '@services/image-service/image.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { BASE_IMG_URL } from '@constants/constant-api';
 
 @Component({
 	selector: 'app-movie-detail-page',
@@ -18,13 +18,12 @@ import { Subject } from 'rxjs';
 export class MovieDetailPageComponent implements OnInit {
 	movie: Movie | undefined;
 	private unsubscribe$ = new Subject<void>();
-
 	public textEmpty: string = 'Loading...';
+	public imagePath: string | undefined;
 
 	constructor(
 		private route: ActivatedRoute,
-		private movieService: MovieService,
-		private imageService: ImageService
+		private movieService: MovieService
 	) {}
 
 	ngOnInit(): void {
@@ -39,6 +38,9 @@ export class MovieDetailPageComponent implements OnInit {
 				.pipe(takeUntil(this.unsubscribe$))
 				.subscribe((movie) => {
 					this.movie = movie;
+					this.imagePath = this.movie
+						? `${BASE_IMG_URL}${this.movie.poster_path}`
+						: undefined;
 				});
 		}
 	}
@@ -49,6 +51,6 @@ export class MovieDetailPageComponent implements OnInit {
 	}
 
 	getPosterPath(path: string): string {
-		return this.imageService.getFullImagePath(path);
+		return this.movieService.getFullImagePath(path);
 	}
 }

@@ -57,11 +57,7 @@
 			></p-button>
 			}
 		</div>
-		<img
-			[src]="getPosterPath(movie.poster_path)"
-			[alt]="movie.title"
-			class="movie-card__poster"
-		/>
+		<img [src]="imagePath" [alt]="movie.title" class="movie-card__poster" />
 	</ng-template>
 	<ng-template pTemplate="footer">
 		<div class="movie-card__footer">

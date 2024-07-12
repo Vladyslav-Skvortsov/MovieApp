@@ -13,7 +13,7 @@ import {
 	buttonShowMoreConfig,
 } from '@constants/card-button-config';
 import { ButtonConfig } from '@interfaces/button';
-import { ImageService } from '@services/image-service/image.service';
+import { BASE_IMG_URL } from '@constants/constant-api';
 
 @Component({
 	selector: 'app-movie-card',
@@ -29,10 +29,7 @@ import { ImageService } from '@services/image-service/image.service';
 	],
 })
 export class MovieCardComponent {
-	constructor(
-		private movieService: MovieService,
-		private imageService: ImageService
-	) {}
+	constructor(private movieService: MovieService) {}
 
 	@Input() movie!: Movie;
 	@Input() pageType: string | undefined;
@@ -41,6 +38,8 @@ export class MovieCardComponent {
 	public buttonWatchLaterConfig: ButtonConfig = buttonWatchLaterConfig;
 	public buttonRemoveConfig: ButtonConfig = buttonRemoveConfig;
 	public buttonShowMoreConfig: ButtonConfig = buttonShowMoreConfig;
+
+	public imagePath: string = `${BASE_IMG_URL}${this.movie.poster_path}`;
 
 	addToFavorites(): void {
 		this.movieService.addToFavorites(this.movie);
@@ -57,6 +56,6 @@ export class MovieCardComponent {
 	}
 
 	getPosterPath(path: string): string {
-		return this.imageService.getFullImagePath(path);
+		return this.movieService.getFullImagePath(path);
 	}
 }
