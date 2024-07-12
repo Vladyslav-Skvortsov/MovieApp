@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
-import { API_KEY, BASE_API_URL, BASE_IMG_URL } from '@constants/constant-api';
-import { HttpClient } from '@angular/common/http';
+import { API_KEY, BASE_API_URL } from '@constants/constant-api';
 
 @Injectable({
 	providedIn: 'root',
@@ -38,11 +38,6 @@ export class MovieService {
 		return this.httpClient.get<MovieResponse>(
 			`${BASE_API_URL}upcoming?api_key=${API_KEY}`
 		);
-	}
-
-	// Get full path for images
-	getFullImagePath(path: string): string {
-		return `${BASE_IMG_URL}${path}`;
 	}
 
 	// Showing a list of saved movies

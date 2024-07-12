@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
 import { Movie } from '@interfaces/movie';
-import { ActivatedRoute } from '@angular/router';
 import { MovieService } from '@services/movie-service/movie.service';
-import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { BASE_IMG_URL } from '@constants/constant-api';
 
 @Component({
@@ -16,19 +16,24 @@ import { BASE_IMG_URL } from '@constants/constant-api';
 	styleUrl: './movie-detail-page.component.scss',
 })
 export class MovieDetailPageComponent implements OnInit {
-	movie: Movie | undefined;
-	private unsubscribe$ = new Subject<void>();
-	public textEmpty: string = 'Loading...';
-	public imagePath: string | undefined;
-
 	constructor(
 		private route: ActivatedRoute,
 		private movieService: MovieService
 	) {}
 
+	private unsubscribe$ = new Subject<void>();
+
+	public movie: Movie | undefined;
+	public textEmpty: string = 'Loading...';
+	public imagePath: string | undefined;
+
 	ngOnInit(): void {
 		const movieId = this.route.snapshot.paramMap.get('id');
 		this.loadMovieDetails(movieId);
+	}
+	ngOnDestroy(): void {
+		this.unsubscribe$.next();
+		this.unsubscribe$.complete();
 	}
 
 	loadMovieDetails(id: string | null) {
@@ -43,14 +48,5 @@ export class MovieDetailPageComponent implements OnInit {
 						: undefined;
 				});
 		}
-	}
-
-	ngOnDestroy(): void {
-		this.unsubscribe$.next();
-		this.unsubscribe$.complete();
-	}
-
-	getPosterPath(path: string): string {
-		return this.movieService.getFullImagePath(path);
 	}
 }

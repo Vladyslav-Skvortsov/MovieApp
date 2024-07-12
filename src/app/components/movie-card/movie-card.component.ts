@@ -1,18 +1,18 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
-import { RouterModule } from '@angular/router';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
+import { ButtonConfig } from '@interfaces/button';
 import {
 	buttonFavoritesConfig,
 	buttonWatchLaterConfig,
 	buttonRemoveConfig,
 	buttonShowMoreConfig,
 } from '@constants/card-button-config';
-import { ButtonConfig } from '@interfaces/button';
 import { BASE_IMG_URL } from '@constants/constant-api';
 
 @Component({
@@ -28,7 +28,7 @@ import { BASE_IMG_URL } from '@constants/constant-api';
 		RouterModule,
 	],
 })
-export class MovieCardComponent {
+export class MovieCardComponent implements OnChanges {
 	constructor(private movieService: MovieService) {}
 
 	@Input() movie!: Movie;
@@ -39,7 +39,13 @@ export class MovieCardComponent {
 	public buttonRemoveConfig: ButtonConfig = buttonRemoveConfig;
 	public buttonShowMoreConfig: ButtonConfig = buttonShowMoreConfig;
 
-	public imagePath: string = `${BASE_IMG_URL}${this.movie.poster_path}`;
+	public imagePath: string | undefined;
+
+	ngOnChanges(changes: SimpleChanges): void {
+		if (changes['movie'] && this.movie) {
+			this.imagePath = `${BASE_IMG_URL}${this.movie.poster_path}`;
+		}
+	}
 
 	addToFavorites(): void {
 		this.movieService.addToFavorites(this.movie);
@@ -53,9 +59,5 @@ export class MovieCardComponent {
 	}
 	removeFromWatchLater(): void {
 		this.movieService.removeFromWatchLater(this.movie.id);
-	}
-
-	getPosterPath(path: string): string {
-		return this.movieService.getFullImagePath(path);
 	}
 }
