@@ -21,22 +21,22 @@ export class MovieService {
 	// Showing a list of films by category
 	getPlayingMoviesList(): Observable<MovieResponse> {
 		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}now_playing?api_key=${API_KEY}`
+			`${BASE_API_URL}now_playing${API_KEY}`
 		);
 	}
 	getPopularMoviesList(): Observable<MovieResponse> {
 		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}popular?api_key=${API_KEY}`
+			`${BASE_API_URL}popular${API_KEY}`
 		);
 	}
 	getTopRatedMoviesList(): Observable<MovieResponse> {
 		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}top_rated?api_key=${API_KEY}`
+			`${BASE_API_URL}top_rated${API_KEY}`
 		);
 	}
 	getUpcomingMoviesList(): Observable<MovieResponse> {
 		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}upcoming?api_key=${API_KEY}`
+			`${BASE_API_URL}upcoming${API_KEY}`
 		);
 	}
 
@@ -64,9 +64,7 @@ export class MovieService {
 
 	// Showing movie details
 	getMovieById(id: number): Observable<Movie> {
-		return this.httpClient.get<Movie>(
-			`${BASE_API_URL}${id}?api_key=${API_KEY}`
-		);
+		return this.httpClient.get<Movie>(`${BASE_API_URL}${id}${API_KEY}`);
 	}
 
 	// Removing a movie from a specific list

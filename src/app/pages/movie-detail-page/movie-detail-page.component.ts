@@ -39,13 +39,13 @@ export class MovieDetailPageComponent implements OnInit {
 	loadMovieDetails(id: string | null) {
 		if (id) {
 			this.movieService
-				.getMovieById(+id)
+				.getMovieById(Number(id))
 				.pipe(takeUntil(this.unsubscribe$))
 				.subscribe((movie) => {
 					this.movie = movie;
 					this.imagePath = this.movie
 						? `${BASE_IMG_URL}${this.movie.poster_path}`
-						: undefined;
+						: '';
 				});
 		}
 	}
