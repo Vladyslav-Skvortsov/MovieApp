@@ -42,9 +42,9 @@ export class MovieCardComponent implements OnInit {
 	public imagePath: string | undefined;
 
 	ngOnInit(): void {
-		if (this.movie && this.movie) {
-			this.imagePath = `${BASE_IMG_URL}${this.movie.poster_path}`;
-		}
+		this.imagePath = this.movie
+			? `${BASE_IMG_URL}${this.movie.poster_path}`
+			: '';
 	}
 
 	addToFavorites(): void {
