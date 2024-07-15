@@ -1,7 +1,8 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
-import { MoviesPageComponent } from '@components/movies-page/movies-page.component';
-import { MovieService } from '@services/movie.service';
+import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
+import { MovieService } from '@services/movie-service/movie.service';
+import { Movie } from '@interfaces/movie';
 
 @Component({
 	selector: 'app-favorite-movies-page',
@@ -17,7 +18,7 @@ export class FavoriteMoviesPageComponent implements OnInit, DoCheck {
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
 	public pageType: string = 'favorite';
 
-	public movies: any[] = [];
+	public movies: Movie[] = [];
 
 	ngOnInit(): void {
 		this.movies = this.movieService.getFavoriteMoviesList();
