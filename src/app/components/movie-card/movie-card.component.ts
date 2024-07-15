@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -28,7 +28,7 @@ import { BASE_IMG_URL } from '@constants/constant-api';
 		RouterModule,
 	],
 })
-export class MovieCardComponent implements OnChanges {
+export class MovieCardComponent implements OnInit {
 	constructor(private movieService: MovieService) {}
 
 	@Input() movie!: Movie;
@@ -41,8 +41,8 @@ export class MovieCardComponent implements OnChanges {
 
 	public imagePath: string | undefined;
 
-	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['movie'] && this.movie) {
+	ngOnInit(): void {
+		if (this.movie && this.movie) {
 			this.imagePath = `${BASE_IMG_URL}${this.movie.poster_path}`;
 		}
 	}
