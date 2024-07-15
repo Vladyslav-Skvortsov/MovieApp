@@ -1,6 +1,6 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
-import { MoviesPageComponent } from '@components/movies-page/movies-page.component';
+import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
 

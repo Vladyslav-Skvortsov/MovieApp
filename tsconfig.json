@@ -6,7 +6,9 @@
 			"@assets/*": ["./src/assets/*"],
 			"@pipes/*": ["./src/app/pipes/*"],
 			"@components/*": ["./src/app/components/*"],
+			"@pages/*": ["./src/app/pages/*"],
 			"@interfaces/*": ["./src/app/interfaces/*"],
+			"@enums/*": ["./src/app/enums/*"],
 			"@services/*": ["./src/app/services/*"],
 			"@constants/*": ["./src/app/constants/*"]
 		},
