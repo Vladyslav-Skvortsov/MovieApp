@@ -1,16 +1,8 @@
+import { ButtonConfigSeverity } from '@enums/button-config-severity.enum';
+
 export interface ButtonConfig {
 	icon: string;
 	label: string;
-	severity:
-		| 'success'
-		| 'info'
-		| 'warning'
-		| 'danger'
-		| 'help'
-		| 'primary'
-		| 'secondary'
-		| 'contrast'
-		| null
-		| undefined;
+	severity: ButtonConfigSeverity | null | undefined;
 	class: string;
 }
