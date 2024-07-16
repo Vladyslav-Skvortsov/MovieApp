@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { MovieService } from '@services/movie-service/movie.service';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
 
 @Component({
 	selector: 'app-upcoming-movies-page',
@@ -11,10 +12,13 @@ import { Subject, takeUntil } from 'rxjs';
 	styleUrl: './upcoming-movies-page.component.scss',
 	imports: [MoviesPageComponent],
 })
-export class UpcomingMoviesPageComponent implements OnInit, OnDestroy {
-	constructor(private movieService: MovieService) {}
-
-	private unsubscribe$ = new Subject<void>();
+export class UpcomingMoviesPageComponent
+	extends ClearObservableDirective
+	implements OnInit
+{
+	constructor(private movieService: MovieService) {
+		super();
+	}
 
 	public titlePage: string = 'Upcoming Movies';
 	public movies: Movie[] = [];
@@ -26,10 +30,5 @@ export class UpcomingMoviesPageComponent implements OnInit, OnDestroy {
 			.subscribe((response) => {
 				this.movies = response.results;
 			});
-	}
-
-	ngOnDestroy(): void {
-		this.unsubscribe$.next();
-		this.unsubscribe$.complete();
 	}
 }

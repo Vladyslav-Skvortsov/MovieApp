@@ -10,7 +10,8 @@
 			"@interfaces/*": ["./src/app/interfaces/*"],
 			"@enums/*": ["./src/app/enums/*"],
 			"@services/*": ["./src/app/services/*"],
-			"@constants/*": ["./src/app/constants/*"]
+			"@constants/*": ["./src/app/constants/*"],
+			"@directives/*": ["./src/app/directives/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,

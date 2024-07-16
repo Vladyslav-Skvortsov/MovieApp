@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
 
 @Component({
 	selector: 'app-watch-later-page',
@@ -11,16 +12,18 @@ import { Subject, takeUntil } from 'rxjs';
 	styleUrl: './watch-later-page.component.scss',
 	imports: [MoviesPageComponent],
 })
-export class WatchLaterPageComponent implements OnInit, OnDestroy {
-	constructor(private movieService: MovieService) {}
+export class WatchLaterPageComponent
+	extends ClearObservableDirective
+	implements OnInit
+{
+	constructor(private movieService: MovieService) {
+		super();
+	}
 
 	public titlePage: string = 'Watch Later';
 	public titleEmptyPage: string = 'Watch Later Is Empty';
 	public pageType: string = 'watchLater';
-
 	public movies: Movie[] = [];
-
-	private unsubscribe$ = new Subject<void>();
 
 	ngOnInit(): void {
 		this.movieService
@@ -29,10 +32,6 @@ export class WatchLaterPageComponent implements OnInit, OnDestroy {
 			.subscribe((response) => {
 				this.movies = response;
 			});
-	}
-	ngOnDestroy(): void {
-		this.unsubscribe$.next();
-		this.unsubscribe$.complete();
 	}
 
 	public get isMovies(): boolean {

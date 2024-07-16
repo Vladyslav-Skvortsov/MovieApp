@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, takeUntil } from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
 import { API_KEY, BASE_API_URL } from '@constants/constant-api';
 
@@ -23,24 +23,24 @@ export class MovieService {
 
 	// Showing a list of films by category
 	getPlayingMoviesList(): Observable<MovieResponse> {
-		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}now_playing${API_KEY}`
-		);
+		const fullUrl: string = `${BASE_API_URL}now_playing${API_KEY}`;
+
+		return this.httpClient.get<MovieResponse>(fullUrl);
 	}
 	getPopularMoviesList(): Observable<MovieResponse> {
-		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}popular${API_KEY}`
-		);
+		const fullUrl: string = `${BASE_API_URL}popular${API_KEY}`;
+
+		return this.httpClient.get<MovieResponse>(fullUrl);
 	}
 	getTopRatedMoviesList(): Observable<MovieResponse> {
-		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}top_rated${API_KEY}`
-		);
+		const fullUrl: string = `${BASE_API_URL}top_rated${API_KEY}`;
+
+		return this.httpClient.get<MovieResponse>(fullUrl);
 	}
 	getUpcomingMoviesList(): Observable<MovieResponse> {
-		return this.httpClient.get<MovieResponse>(
-			`${BASE_API_URL}upcoming${API_KEY}`
-		);
+		const fullUrl: string = `${BASE_API_URL}upcoming${API_KEY}`;
+
+		return this.httpClient.get<MovieResponse>(fullUrl);
 	}
 
 	// Showing a list of saved movies

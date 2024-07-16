@@ -1,8 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
 
 @Component({
 	selector: 'app-favorite-movies-page',
@@ -11,16 +12,19 @@ import { Subject, takeUntil } from 'rxjs';
 	styleUrl: './favorite-movies-page.component.scss',
 	imports: [MoviesPageComponent],
 })
-export class FavoriteMoviesPageComponent implements OnInit, OnDestroy {
-	constructor(private movieService: MovieService) {}
+export class FavoriteMoviesPageComponent
+	extends ClearObservableDirective
+	implements OnInit
+{
+	constructor(private movieService: MovieService) {
+		super();
+	}
 
 	public titlePage: string = 'Favorite Movies';
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
 	public pageType: string = 'favorite';
 
 	public movies: Movie[] = [];
-
-	private unsubscribe$ = new Subject<void>();
 
 	ngOnInit(): void {
 		this.movieService
@@ -29,10 +33,6 @@ export class FavoriteMoviesPageComponent implements OnInit, OnDestroy {
 			.subscribe((response) => {
 				this.movies = response;
 			});
-	}
-	ngOnDestroy(): void {
-		this.unsubscribe$.next();
-		this.unsubscribe$.complete();
 	}
 
 	public get isMovies(): boolean {
