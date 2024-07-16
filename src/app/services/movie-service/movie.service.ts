@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
 import { API_KEY, BASE_API_URL } from '@constants/constant-api';
 
@@ -10,12 +10,18 @@ import { API_KEY, BASE_API_URL } from '@constants/constant-api';
 export class MovieService {
 	constructor(private httpClient: HttpClient) {}
 
-	private favoriteMoviesList: Movie[] = [];
-	private watchLaterMoviesList: Movie[] = [];
+	private favoriteMoviesSubject = new BehaviorSubject<Movie[]>([]);
+	private watchLaterMoviesSubject = new BehaviorSubject<Movie[]>([]);
 
 	// Checking for a movie in the list
-	private isMovieInList(movie: Movie, list: Movie[]): boolean {
-		return list.map((m) => m.id).includes(movie.id);
+	private isMovieInList(
+		movie: Movie,
+		list: BehaviorSubject<Movie[]>
+	): boolean {
+		return list
+			.getValue()
+			.map((m) => m.id)
+			.includes(movie.id);
 	}
 
 	// Showing a list of films by category
@@ -41,24 +47,30 @@ export class MovieService {
 	}
 
 	// Showing a list of saved movies
-	getFavoriteMoviesList(): Movie[] {
-		return this.favoriteMoviesList;
+	getFavoriteMoviesList(): Observable<Movie[]> {
+		return this.favoriteMoviesSubject.asObservable();
 	}
-	getWatchMoviesList(): Movie[] {
-		return this.watchLaterMoviesList;
+	getWatchMoviesList(): Observable<Movie[]> {
+		return this.watchLaterMoviesSubject.asObservable();
 	}
 
 	// Adding a movie to the corresponding list
 	addToFavorites(movie: Movie): void {
-		const isMovie = this.isMovieInList(movie, this.favoriteMoviesList);
-		if (!isMovie) {
-			this.favoriteMoviesList.push(movie);
+		if (!this.isMovieInList(movie, this.favoriteMoviesSubject)) {
+			const updatedFavorites = [
+				...this.favoriteMoviesSubject.getValue(),
+				movie,
+			];
+			this.favoriteMoviesSubject.next(updatedFavorites);
 		}
 	}
 	addToWatchLater(movie: Movie): void {
-		const isMovie = this.isMovieInList(movie, this.watchLaterMoviesList);
-		if (!isMovie) {
-			this.watchLaterMoviesList.push(movie);
+		if (!this.isMovieInList(movie, this.watchLaterMoviesSubject)) {
+			const updatedWatchLater = [
+				...this.watchLaterMoviesSubject.getValue(),
+				movie,
+			];
+			this.watchLaterMoviesSubject.next(updatedWatchLater);
 		}
 	}
 
@@ -69,13 +81,15 @@ export class MovieService {
 
 	// Removing a movie from a specific list
 	removeFromFavorites(movieId: number): void {
-		this.favoriteMoviesList = this.favoriteMoviesList.filter(
-			(movie) => movie.id !== movieId
-		);
+		const updatedFavorites = this.favoriteMoviesSubject
+			.getValue()
+			.filter((movie) => movie.id !== movieId);
+		this.favoriteMoviesSubject.next(updatedFavorites);
 	}
 	removeFromWatchLater(movieId: number): void {
-		this.watchLaterMoviesList = this.watchLaterMoviesList.filter(
-			(movie) => movie.id !== movieId
-		);
+		const updatedWatchLater = this.watchLaterMoviesSubject
+			.getValue()
+			.filter((movie) => movie.id !== movieId);
+		this.watchLaterMoviesSubject.next(updatedWatchLater);
 	}
 }

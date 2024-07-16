@@ -1,8 +1,9 @@
-import { Component, DoCheck, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-watch-later-page',
@@ -11,7 +12,7 @@ import { Movie } from '@interfaces/movie';
 	styleUrl: './watch-later-page.component.scss',
 	imports: [MovieListComponent, MoviesPageComponent],
 })
-export class WatchLaterPageComponent implements OnInit, DoCheck {
+export class WatchLaterPageComponent implements OnInit, OnDestroy {
 	constructor(private movieService: MovieService) {}
 
 	public titlePage: string = 'Watch Later';
@@ -20,12 +21,19 @@ export class WatchLaterPageComponent implements OnInit, DoCheck {
 
 	public movies: Movie[] = [];
 
-	ngOnInit(): void {
-		this.movies = this.movieService.getWatchMoviesList();
-	}
+	private unsubscribe$ = new Subject<void>();
 
-	ngDoCheck(): void {
-		this.movies = this.movieService.getWatchMoviesList();
+	ngOnInit(): void {
+		this.movieService
+			.getWatchMoviesList()
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe((response) => {
+				this.movies = response;
+			});
+	}
+	ngOnDestroy(): void {
+		this.unsubscribe$.next();
+		this.unsubscribe$.complete();
 	}
 
 	public get isMovies(): boolean {

@@ -1,8 +1,9 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-favorite-movies-page',
@@ -11,7 +12,7 @@ import { Movie } from '@interfaces/movie';
 	styleUrl: './favorite-movies-page.component.scss',
 	imports: [MovieListComponent, MoviesPageComponent],
 })
-export class FavoriteMoviesPageComponent implements OnInit, DoCheck {
+export class FavoriteMoviesPageComponent implements OnInit, OnDestroy {
 	constructor(private movieService: MovieService) {}
 
 	public titlePage: string = 'Favorite Movies';
@@ -20,12 +21,19 @@ export class FavoriteMoviesPageComponent implements OnInit, DoCheck {
 
 	public movies: Movie[] = [];
 
-	ngOnInit(): void {
-		this.movies = this.movieService.getFavoriteMoviesList();
-	}
+	private unsubscribe$ = new Subject<void>();
 
-	ngDoCheck(): void {
-		this.movies = this.movieService.getFavoriteMoviesList();
+	ngOnInit(): void {
+		this.movieService
+			.getFavoriteMoviesList()
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe((response) => {
+				this.movies = response;
+			});
+	}
+	ngOnDestroy(): void {
+		this.unsubscribe$.next();
+		this.unsubscribe$.complete();
 	}
 
 	public get isMovies(): boolean {
