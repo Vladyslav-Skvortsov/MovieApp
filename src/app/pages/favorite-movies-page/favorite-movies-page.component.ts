@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MovieListComponent } from '@components/movie-list/movie-list.component';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
@@ -10,7 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
 	standalone: true,
 	templateUrl: './favorite-movies-page.component.html',
 	styleUrl: './favorite-movies-page.component.scss',
-	imports: [MovieListComponent, MoviesPageComponent],
+	imports: [MoviesPageComponent],
 })
 export class FavoriteMoviesPageComponent implements OnInit, OnDestroy {
 	constructor(private movieService: MovieService) {}
