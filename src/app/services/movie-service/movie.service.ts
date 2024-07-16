@@ -18,10 +18,7 @@ export class MovieService {
 		movie: Movie,
 		list: BehaviorSubject<Movie[]>
 	): boolean {
-		return list
-			.getValue()
-			.map((m) => m.id)
-			.includes(movie.id);
+		return list.getValue().includes(movie);
 	}
 
 	// Showing a list of films by category
