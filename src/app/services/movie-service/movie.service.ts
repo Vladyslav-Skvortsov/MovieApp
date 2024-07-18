@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
-import { API_KEY, BASE_MOVIE_API_URL } from '@constants/constant-api';
+import {
+	API_KEY,
+	BASE_API_URL,
+	BASE_MOVIE_API_URL,
+} from '@constants/constant-api';
 
 @Injectable({
 	providedIn: 'root',
@@ -10,15 +14,14 @@ import { API_KEY, BASE_MOVIE_API_URL } from '@constants/constant-api';
 export class MovieService {
 	constructor(private httpClient: HttpClient) {}
 
-	private favoriteMoviesSubject = new BehaviorSubject<Movie[]>([]);
-	private watchLaterMoviesSubject = new BehaviorSubject<Movie[]>([]);
+	accountId: number | null = null;
+	sessionId: string | null = null;
 
-	// Checking for a movie in the list
-	private isMovieInList(
-		movie: Movie,
-		list: BehaviorSubject<Movie[]>
-	): boolean {
-		return list.getValue().includes(movie);
+	setAccountId(id: number) {
+		this.accountId = id;
+	}
+	setSessionId(id: string) {
+		this.sessionId = id;
 	}
 
 	// Showing a list of films by category
@@ -45,30 +48,58 @@ export class MovieService {
 
 	// Showing a list of saved movies
 	getFavoriteMoviesList(): Observable<Movie[]> {
-		return this.favoriteMoviesSubject.asObservable();
+		if (!this.accountId || !this.sessionId) {
+			return throwError('Not authenticated');
+		}
+
+		const url = `${BASE_API_URL}/account/${this.accountId}/favorite/movies${API_KEY}&session_id=${this.sessionId}`;
+		return this.httpClient.get<{ results: Movie[] }>(url).pipe(
+			map((response) => response.results),
+			catchError(this.handleError)
+		);
 	}
 	getWatchMoviesList(): Observable<Movie[]> {
-		return this.watchLaterMoviesSubject.asObservable();
+		if (!this.accountId || !this.sessionId) {
+			return throwError('Not authenticated');
+		}
+
+		const url = `${BASE_API_URL}/account/${this.accountId}/watchlist/movies${API_KEY}&session_id=${this.sessionId}`;
+		return this.httpClient.get<{ results: Movie[] }>(url).pipe(
+			map((response) => response.results),
+			catchError(this.handleError)
+		);
 	}
 
 	// Adding a movie to the corresponding list
-	addToFavorites(movie: Movie): void {
-		if (!this.isMovieInList(movie, this.favoriteMoviesSubject)) {
-			const updatedFavorites = [
-				...this.favoriteMoviesSubject.getValue(),
-				movie,
-			];
-			this.favoriteMoviesSubject.next(updatedFavorites);
+	addToFavorites(movie: Movie): Observable<void> {
+		if (!this.accountId || !this.sessionId) {
+			return throwError('Not authenticated');
 		}
+		const url = `${BASE_API_URL}/account/${this.accountId}/favorite${API_KEY}&session_id=${this.sessionId}`;
+		const body = {
+			media_type: 'movie',
+			media_id: movie.id,
+			favorite: true,
+		};
+
+		return this.httpClient
+			.post<void>(url, body)
+			.pipe(catchError(this.handleError));
 	}
-	addToWatchLater(movie: Movie): void {
-		if (!this.isMovieInList(movie, this.watchLaterMoviesSubject)) {
-			const updatedWatchLater = [
-				...this.watchLaterMoviesSubject.getValue(),
-				movie,
-			];
-			this.watchLaterMoviesSubject.next(updatedWatchLater);
+	addToWatchLater(movie: Movie): Observable<void> {
+		if (!this.accountId || !this.sessionId) {
+			return throwError('Not authenticated');
 		}
+		const url = `${BASE_API_URL}/account/${this.accountId}/watchlist${API_KEY}&session_id=${this.sessionId}`;
+		const body = {
+			media_type: 'movie',
+			media_id: movie.id,
+			watchlist: true,
+		};
+
+		return this.httpClient
+			.post<void>(url, body)
+			.pipe(catchError(this.handleError));
 	}
 
 	// Showing movie details
@@ -77,16 +108,40 @@ export class MovieService {
 	}
 
 	// Removing a movie from a specific list
-	removeFromFavorites(movieId: number): void {
-		const updatedFavorites = this.favoriteMoviesSubject
-			.getValue()
-			.filter((movie) => movie.id !== movieId);
-		this.favoriteMoviesSubject.next(updatedFavorites);
+	removeFromFavorites(movieId: number): Observable<void> {
+		if (!this.accountId || !this.sessionId) {
+			return throwError('Not authenticated');
+		}
+		const url = `${BASE_API_URL}/account/${this.accountId}/favorite${API_KEY}&session_id=${this.sessionId}`;
+		const body = {
+			media_type: 'movie',
+			media_id: movieId,
+			favorite: false,
+		};
+
+		return this.httpClient
+			.post<void>(url, body)
+			.pipe(catchError(this.handleError));
 	}
-	removeFromWatchLater(movieId: number): void {
-		const updatedWatchLater = this.watchLaterMoviesSubject
-			.getValue()
-			.filter((movie) => movie.id !== movieId);
-		this.watchLaterMoviesSubject.next(updatedWatchLater);
+	removeFromWatchLater(movieId: number): Observable<void> {
+		if (!this.accountId || !this.sessionId) {
+			return throwError('Not authenticated');
+		}
+		const url = `${BASE_API_URL}/account/${this.accountId}/watchlist${API_KEY}&session_id=${this.sessionId}`;
+		const body = {
+			media_type: 'movie',
+			media_id: movieId,
+			watchlist: false,
+		};
+
+		return this.httpClient
+			.post<void>(url, body)
+			.pipe(catchError(this.handleError));
+	}
+
+	// Error
+	private handleError(error: any) {
+		console.error('An error occurred:', error);
+		return throwError(error);
 	}
 }
