@@ -23,7 +23,6 @@ export class FavoriteMoviesPageComponent
 	public titlePage: string = 'Favorite Movies';
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
 	public pageType: string = 'favorite';
-
 	public movies: Movie[] = [];
 
 	ngOnInit(): void {
