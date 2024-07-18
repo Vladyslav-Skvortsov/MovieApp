@@ -14,8 +14,8 @@ import {
 export class MovieService {
 	constructor(private httpClient: HttpClient) {}
 
-	accountId: number | null = null;
-	sessionId: string | null = null;
+	private accountId: number | null = null;
+	private sessionId: string | null = null;
 
 	setAccountId(id: number) {
 		this.accountId = id;
