@@ -31,14 +31,14 @@ export class MovieDetailPageComponent
 	public imagePath: string | undefined;
 
 	ngOnInit(): void {
-		const movieId = this.route.snapshot.paramMap.get('id');
+		const movieId = Number(this.route.snapshot.paramMap.get('id'));
 		this.loadMovieDetails(movieId);
 	}
 
-	loadMovieDetails(id: string | null) {
+	loadMovieDetails(id: number | null) {
 		if (id) {
 			this.movieService
-				.getMovieById(Number(id))
+				.getMovieById(id)
 				.pipe(takeUntil(this.unsubscribe$))
 				.subscribe((movie) => {
 					this.movie = movie;

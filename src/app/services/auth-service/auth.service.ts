@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, switchMap, throwError } from 'rxjs';
 import {
 	USERNAME,
@@ -7,6 +7,12 @@ import {
 	API_KEY,
 	BASE_API_URL,
 } from '@constants/constant-api';
+import {
+	RequestTokenResponse,
+	ValidateRequestTokenResponse,
+	CreateSessionResponse,
+	AccountResponse,
+} from '@interfaces/auth-responses';
 
 @Injectable({
 	providedIn: 'root',
@@ -16,7 +22,7 @@ export class AuthService {
 
 	private getRequestToken(): Observable<string> {
 		const url = `${BASE_API_URL}/authentication/token/new${API_KEY}`;
-		return this.http.get<any>(url).pipe(
+		return this.http.get<RequestTokenResponse>(url).pipe(
 			map((response) => response.request_token),
 			catchError(this.handleError)
 		);
@@ -29,7 +35,7 @@ export class AuthService {
 			password: PASSWORD,
 			request_token: requestToken,
 		};
-		return this.http.post<any>(url, body).pipe(
+		return this.http.post<ValidateRequestTokenResponse>(url, body).pipe(
 			map(() => {}),
 			catchError(this.handleError)
 		);
@@ -38,7 +44,7 @@ export class AuthService {
 	private createSession(requestToken: string): Observable<string> {
 		const url = `${BASE_API_URL}/authentication/session/new${API_KEY}`;
 		const body = { request_token: requestToken };
-		return this.http.post<any>(url, body).pipe(
+		return this.http.post<CreateSessionResponse>(url, body).pipe(
 			map((response) => response.session_id),
 			catchError(this.handleError)
 		);
@@ -46,7 +52,7 @@ export class AuthService {
 
 	private fetchAccountId(sessionId: string): Observable<number> {
 		const url = `${BASE_API_URL}/account${API_KEY}&session_id=${sessionId}`;
-		return this.http.get<any>(url).pipe(
+		return this.http.get<AccountResponse>(url).pipe(
 			map((response) => response.id),
 			catchError(this.handleError)
 		);
@@ -70,7 +76,7 @@ export class AuthService {
 		);
 	}
 
-	private handleError(error: any) {
+	private handleError(error: HttpErrorResponse): Observable<never> {
 		console.error('An error occurred:', error);
 		return throwError(error);
 	}

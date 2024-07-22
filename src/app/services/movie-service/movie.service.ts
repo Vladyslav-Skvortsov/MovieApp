@@ -140,7 +140,7 @@ export class MovieService {
 	}
 
 	// Error
-	private handleError(error: any) {
+	private handleError(error: string) {
 		console.error('An error occurred:', error);
 		return throwError(error);
 	}
