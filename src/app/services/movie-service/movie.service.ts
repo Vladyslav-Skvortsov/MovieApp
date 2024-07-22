@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
 import {
@@ -27,23 +27,27 @@ export class MovieService {
 	// Showing a list of films by category
 	getPlayingMoviesList(): Observable<MovieResponse> {
 		const fullUrl: string = `${BASE_MOVIE_API_URL}now_playing${API_KEY}`;
-
-		return this.httpClient.get<MovieResponse>(fullUrl);
+		return this.httpClient
+			.get<MovieResponse>(fullUrl)
+			.pipe(catchError(this.handleError));
 	}
 	getPopularMoviesList(): Observable<MovieResponse> {
 		const fullUrl: string = `${BASE_MOVIE_API_URL}popular${API_KEY}`;
-
-		return this.httpClient.get<MovieResponse>(fullUrl);
+		return this.httpClient
+			.get<MovieResponse>(fullUrl)
+			.pipe(catchError(this.handleError));
 	}
 	getTopRatedMoviesList(): Observable<MovieResponse> {
 		const fullUrl: string = `${BASE_MOVIE_API_URL}top_rated${API_KEY}`;
-
-		return this.httpClient.get<MovieResponse>(fullUrl);
+		return this.httpClient
+			.get<MovieResponse>(fullUrl)
+			.pipe(catchError(this.handleError));
 	}
 	getUpcomingMoviesList(): Observable<MovieResponse> {
 		const fullUrl: string = `${BASE_MOVIE_API_URL}upcoming${API_KEY}`;
-
-		return this.httpClient.get<MovieResponse>(fullUrl);
+		return this.httpClient
+			.get<MovieResponse>(fullUrl)
+			.pipe(catchError(this.handleError));
 	}
 
 	// Showing a list of saved movies
@@ -104,7 +108,9 @@ export class MovieService {
 
 	// Showing movie details
 	getMovieById(id: number): Observable<Movie> {
-		return this.httpClient.get<Movie>(`${BASE_MOVIE_API_URL}${id}${API_KEY}`);
+		return this.httpClient
+			.get<Movie>(`${BASE_MOVIE_API_URL}${id}${API_KEY}`)
+			.pipe(catchError(this.handleError));
 	}
 
 	// Removing a movie from a specific list
@@ -140,8 +146,8 @@ export class MovieService {
 	}
 
 	// Error
-	private handleError(error: string) {
-		console.error('An error occurred:', error);
-		return throwError(error);
+	private handleError(error: HttpErrorResponse): Observable<never> {
+		console.error('An error occurred:', error.message);
+		return throwError(error.message || 'Server error');
 	}
 }
