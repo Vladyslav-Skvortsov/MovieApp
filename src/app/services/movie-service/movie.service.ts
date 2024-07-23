@@ -26,27 +26,27 @@ export class MovieService {
 
 	// Showing a list of films by category
 	getPlayingMoviesList(): Observable<MovieResponse> {
-		const fullUrl: string = `${BASE_MOVIE_API_URL}now_playing${API_KEY}`;
+		const url: string = `${BASE_MOVIE_API_URL}now_playing${API_KEY}`;
 		return this.httpClient
-			.get<MovieResponse>(fullUrl)
+			.get<MovieResponse>(url)
 			.pipe(catchError(this.handleError));
 	}
 	getPopularMoviesList(): Observable<MovieResponse> {
-		const fullUrl: string = `${BASE_MOVIE_API_URL}popular${API_KEY}`;
+		const url: string = `${BASE_MOVIE_API_URL}popular${API_KEY}`;
 		return this.httpClient
-			.get<MovieResponse>(fullUrl)
+			.get<MovieResponse>(url)
 			.pipe(catchError(this.handleError));
 	}
 	getTopRatedMoviesList(): Observable<MovieResponse> {
-		const fullUrl: string = `${BASE_MOVIE_API_URL}top_rated${API_KEY}`;
+		const url: string = `${BASE_MOVIE_API_URL}top_rated${API_KEY}`;
 		return this.httpClient
-			.get<MovieResponse>(fullUrl)
+			.get<MovieResponse>(url)
 			.pipe(catchError(this.handleError));
 	}
 	getUpcomingMoviesList(): Observable<MovieResponse> {
-		const fullUrl: string = `${BASE_MOVIE_API_URL}upcoming${API_KEY}`;
+		const url: string = `${BASE_MOVIE_API_URL}upcoming${API_KEY}`;
 		return this.httpClient
-			.get<MovieResponse>(fullUrl)
+			.get<MovieResponse>(url)
 			.pipe(catchError(this.handleError));
 	}
 
@@ -75,7 +75,7 @@ export class MovieService {
 	}
 
 	// Adding a movie to the corresponding list
-	addToFavorites(movie: Movie): Observable<void> {
+	addToFavorites(movie: Movie): Observable<Movie> {
 		if (!this.accountId || !this.sessionId) {
 			return throwError('Not authenticated');
 		}
@@ -87,10 +87,10 @@ export class MovieService {
 		};
 
 		return this.httpClient
-			.post<void>(url, body)
+			.post<Movie>(url, body)
 			.pipe(catchError(this.handleError));
 	}
-	addToWatchLater(movie: Movie): Observable<void> {
+	addToWatchLater(movie: Movie): Observable<Movie> {
 		if (!this.accountId || !this.sessionId) {
 			return throwError('Not authenticated');
 		}
@@ -102,7 +102,7 @@ export class MovieService {
 		};
 
 		return this.httpClient
-			.post<void>(url, body)
+			.post<Movie>(url, body)
 			.pipe(catchError(this.handleError));
 	}
 
@@ -114,7 +114,7 @@ export class MovieService {
 	}
 
 	// Removing a movie from a specific list
-	removeFromFavorites(movieId: number): Observable<void> {
+	removeFromFavorites(movieId: number): Observable<Movie> {
 		if (!this.accountId || !this.sessionId) {
 			return throwError('Not authenticated');
 		}
@@ -126,10 +126,10 @@ export class MovieService {
 		};
 
 		return this.httpClient
-			.post<void>(url, body)
+			.post<Movie>(url, body)
 			.pipe(catchError(this.handleError));
 	}
-	removeFromWatchLater(movieId: number): Observable<void> {
+	removeFromWatchLater(movieId: number): Observable<Movie> {
 		if (!this.accountId || !this.sessionId) {
 			return throwError('Not authenticated');
 		}
@@ -141,7 +141,7 @@ export class MovieService {
 		};
 
 		return this.httpClient
-			.post<void>(url, body)
+			.post<Movie>(url, body)
 			.pipe(catchError(this.handleError));
 	}
 
