@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, DoCheck } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
@@ -29,8 +29,13 @@ export class FavoriteMoviesPageComponent
 		this.movieService
 			.getFavoriteMoviesList()
 			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe((response) => {
-				this.movies = response;
+			.subscribe();
+
+		this.movieService
+			.getFavoriteMovies$()
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe((movies) => {
+				this.movies = movies;
 			});
 	}
 
