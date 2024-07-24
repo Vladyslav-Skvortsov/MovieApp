@@ -15,6 +15,7 @@ import { ClearObservableDirective } from '@directives/clear-observable/clear-obs
 	templateUrl: './movie-detail-page.component.html',
 	styleUrl: './movie-detail-page.component.scss',
 })
+// ! TODO fix readability
 export class MovieDetailPageComponent
 	extends ClearObservableDirective
 	implements OnInit

@@ -12,6 +12,7 @@ import { ClearObservableDirective } from '@directives/clear-observable/clear-obs
 	styleUrl: './top-rate-movies-page.component.scss',
 	imports: [MoviesPageComponent],
 })
+// ! TODO fix readability
 export class TopRateMoviesPageComponent
 	extends ClearObservableDirective
 	implements OnInit

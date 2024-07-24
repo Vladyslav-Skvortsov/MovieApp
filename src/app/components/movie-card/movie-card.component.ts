@@ -30,6 +30,7 @@ import { ClearObservableDirective } from '@directives/clear-observable/clear-obs
 		RouterModule,
 	],
 })
+// ! TODO fix readability
 export class MovieCardComponent
 	extends ClearObservableDirective
 	implements OnInit
