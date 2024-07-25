@@ -28,7 +28,7 @@ export class WatchLaterPageComponent
 
 	ngOnInit(): void {
 		this.movieService
-			.getWatchMoviesList()
+			.getWatchLaterMovies()
 			.pipe(takeUntil(this.unsubscribe$))
 			.subscribe((response) => {
 				this.movies = response;

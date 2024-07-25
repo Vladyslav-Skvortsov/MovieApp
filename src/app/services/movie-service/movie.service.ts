@@ -168,10 +168,10 @@ export class MovieService {
 	}
 
 	// Observable for external components
-	getFavoriteMovies$(): Observable<Movie[]> {
+	getFavoriteMovies(): Observable<Movie[]> {
 		return this.favoriteMoviesSubject$.asObservable();
 	}
-	getWatchLaterMovies$(): Observable<Movie[]> {
+	getWatchLaterMovies(): Observable<Movie[]> {
 		return this.watchLaterMoviesSubject$.asObservable();
 	}
 

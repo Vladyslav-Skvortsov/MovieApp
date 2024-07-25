@@ -28,12 +28,7 @@ export class FavoriteMoviesPageComponent
 
 	ngOnInit(): void {
 		this.movieService
-			.getFavoriteMoviesList()
-			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe();
-
-		this.movieService
-			.getFavoriteMovies$()
+			.getFavoriteMovies()
 			.pipe(takeUntil(this.unsubscribe$))
 			.subscribe((movies) => {
 				this.movies = movies;
