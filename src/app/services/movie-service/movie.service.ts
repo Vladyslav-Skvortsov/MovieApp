@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
+import {
+	BehaviorSubject,
+	catchError,
+	map,
+	Observable,
+	switchMap,
+	throwError,
+} from 'rxjs';
 import { Movie, MovieResponse } from '@interfaces/movie';
 import {
 	API_KEY,
@@ -94,12 +101,33 @@ export class MovieService {
 			media_id: movie.id,
 			favorite: true,
 		};
+		const isMovieInFavorites = (): Observable<boolean> => {
+			return this.httpClient
+				.get<{ results: Movie[] }>(
+					`${BASE_API_URL}/account/${this.accountId}/favorite/movies${API_KEY}&session_id=${this.sessionId}`
+				)
+				.pipe(
+					map((response) =>
+						response.results.some((favMovie) => favMovie.id === movie.id)
+					)
+				);
+		};
 
-		return this.httpClient.post<void>(url, body).pipe(
-			map(() => {
-				this.updateFavoriteMoviesList();
-			}),
-			catchError(this.handleError)
+		return isMovieInFavorites().pipe(
+			switchMap((isInFavorites) => {
+				if (isInFavorites) {
+					return throwError(
+						`Movie with id ${movie.id} is already in favorites`
+					);
+				} else {
+					return this.httpClient.post<void>(url, body).pipe(
+						map(() => {
+							this.updateFavoriteMoviesList();
+						}),
+						catchError(this.handleError)
+					);
+				}
+			})
 		);
 	}
 	addToWatchLater(movie: Movie): Observable<void> {
@@ -113,11 +141,33 @@ export class MovieService {
 			watchlist: true,
 		};
 
-		return this.httpClient.post<void>(url, body).pipe(
-			map(() => {
-				this.updateWatchLaterMoviesList();
-			}),
-			catchError(this.handleError)
+		const isMovieInWatchLater = (): Observable<boolean> => {
+			return this.httpClient
+				.get<{ results: Movie[] }>(
+					`${BASE_API_URL}/account/${this.accountId}/watchlist/movies${API_KEY}&session_id=${this.sessionId}`
+				)
+				.pipe(
+					map((response) =>
+						response.results.some((favMovie) => favMovie.id === movie.id)
+					)
+				);
+		};
+
+		return isMovieInWatchLater().pipe(
+			switchMap((isInWatchLater) => {
+				if (isInWatchLater) {
+					return throwError(
+						`Movie with id ${movie.id} is already in watch later`
+					);
+				} else {
+					return this.httpClient.post<void>(url, body).pipe(
+						map(() => {
+							this.updateWatchLaterMoviesList();
+						}),
+						catchError(this.handleError)
+					);
+				}
+			})
 		);
 	}
 
