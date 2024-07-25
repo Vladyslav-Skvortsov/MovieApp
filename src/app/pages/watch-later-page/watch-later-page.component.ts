@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
-import { takeUntil } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
 
 @Component({
@@ -29,15 +29,12 @@ export class WatchLaterPageComponent
 	ngOnInit(): void {
 		this.movieService
 			.getWatchMoviesList()
-			.pipe(takeUntil(this.unsubscribe$))
+			.pipe(
+				switchMap(() => this.movieService.getWatchLaterMovies()),
+				takeUntil(this.unsubscribe$)
+			)
 			.subscribe((movies) => {
 				this.movies = movies;
-			});
-		this.movieService
-			.getWatchLaterMovies()
-			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe((response) => {
-				this.movies = response;
 			});
 	}
 
