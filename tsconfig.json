@@ -11,7 +11,9 @@
 			"@enums/*": ["./src/app/enums/*"],
 			"@services/*": ["./src/app/services/*"],
 			"@constants/*": ["./src/app/constants/*"],
-			"@directives/*": ["./src/app/directives/*"]
+			"@directives/*": ["./src/app/directives/*"],
+			"@store/*": ["./src/app/store/*"],
+			"@general/*": ["./src/app/general/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,

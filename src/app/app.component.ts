@@ -11,6 +11,7 @@ import { MovieService } from '@services/movie-service/movie.service';
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
 	imports: [RouterOutlet, RouterModule, SidebarComponent, HeaderComponent],
+	providers: [MovieService, AuthService],
 })
 export class AppComponent implements OnInit {
 	constructor(

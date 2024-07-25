@@ -15,7 +15,7 @@ import {
 	buttonShowMoreConfig,
 } from '@constants/card-button-config';
 import { BASE_IMG_URL } from '@constants/constant-api';
-import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
+import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
 
 @Component({
 	selector: 'app-movie-card',

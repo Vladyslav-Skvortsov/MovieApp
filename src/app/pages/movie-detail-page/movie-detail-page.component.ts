@@ -6,7 +6,7 @@ import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-fo
 import { Movie } from '@interfaces/movie';
 import { MovieService } from '@services/movie-service/movie.service';
 import { BASE_IMG_URL } from '@constants/constant-api';
-import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
+import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
 
 @Component({
 	selector: 'app-movie-detail-page',

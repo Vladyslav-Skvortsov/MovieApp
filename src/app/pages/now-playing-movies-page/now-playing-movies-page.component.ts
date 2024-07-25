@@ -3,7 +3,7 @@ import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { MovieService } from '@services/movie-service/movie.service';
 import { takeUntil } from 'rxjs';
-import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
+import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
 
 @Component({
 	selector: 'app-now-playing-movies-page',

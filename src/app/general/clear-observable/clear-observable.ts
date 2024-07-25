@@ -1,11 +1,11 @@
-import { Directive, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
-@Directive({
-	selector: '[appClearObservable]',
+@Component({
+	template: '',
 	standalone: true,
 })
-export class ClearObservableDirective implements OnDestroy {
+export abstract class ClearObservableDirective implements OnDestroy {
 	constructor() {}
 
 	unsubscribe$: Subject<boolean> = new Subject();
