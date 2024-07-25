@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { takeUntil } from 'rxjs';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
@@ -14,6 +15,7 @@ import {
 	buttonShowMoreConfig,
 } from '@constants/card-button-config';
 import { BASE_IMG_URL } from '@constants/constant-api';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
 
 @Component({
 	selector: 'app-movie-card',
@@ -28,8 +30,14 @@ import { BASE_IMG_URL } from '@constants/constant-api';
 		RouterModule,
 	],
 })
-export class MovieCardComponent implements OnInit {
-	constructor(private movieService: MovieService) {}
+// ! TODO fix readability
+export class MovieCardComponent
+	extends ClearObservableDirective
+	implements OnInit
+{
+	constructor(private movieService: MovieService) {
+		super();
+	}
 
 	@Input() movie!: Movie;
 	@Input() pageType: string | undefined;
@@ -48,16 +56,27 @@ export class MovieCardComponent implements OnInit {
 	}
 
 	addToFavorites(): void {
-		this.movieService.addToFavorites(this.movie);
+		this.movieService
+			.addToFavorites(this.movie)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe();
 	}
 	addToWatchLater(): void {
-		this.movieService.addToWatchLater(this.movie);
+		this.movieService
+			.addToWatchLater(this.movie)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe();
 	}
-
 	removeFromFavorites(): void {
-		this.movieService.removeFromFavorites(this.movie.id);
+		this.movieService
+			.removeFromFavorites(this.movie.id)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe();
 	}
 	removeFromWatchLater(): void {
-		this.movieService.removeFromWatchLater(this.movie.id);
+		this.movieService
+			.removeFromWatchLater(this.movie.id)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe();
 	}
 }

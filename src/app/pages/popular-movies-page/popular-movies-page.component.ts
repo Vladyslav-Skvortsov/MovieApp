@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { MovieService } from '@services/movie-service/movie.service';
-import { Subject, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
 
 @Component({
 	selector: 'app-popular-movies-page',
@@ -11,10 +12,14 @@ import { Subject, takeUntil } from 'rxjs';
 	styleUrl: './popular-movies-page.component.scss',
 	imports: [MoviesPageComponent],
 })
-export class PopularMoviesPageComponent implements OnInit, OnDestroy {
-	constructor(private movieService: MovieService) {}
-
-	private unsubscribe$ = new Subject<void>();
+// ! TODO fix readability
+export class PopularMoviesPageComponent
+	extends ClearObservableDirective
+	implements OnInit
+{
+	constructor(private movieService: MovieService) {
+		super();
+	}
 
 	public titlePage: string = 'Popular Movies';
 	public movies: Movie[] = [];
@@ -26,10 +31,5 @@ export class PopularMoviesPageComponent implements OnInit, OnDestroy {
 			.subscribe((response) => {
 				this.movies = response.results;
 			});
-	}
-
-	ngOnDestroy(): void {
-		this.unsubscribe$.next();
-		this.unsubscribe$.complete();
 	}
 }

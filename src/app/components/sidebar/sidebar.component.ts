@@ -14,7 +14,6 @@ export class SidebarComponent {
 		titledTopRate: 'Top Rate',
 		titledNowPlaying: 'Now Playing',
 		titledUpcoming: 'Upcoming',
-		test: 'pi-star',
 	};
 
 	public iconClasses = {
