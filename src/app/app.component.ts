@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { SidebarComponent } from '@components/sidebar/sidebar.component';
-import { HeaderComponent } from './components/header/header.component';
+import { HeaderComponent } from '@components/header/header.component';
 import { AuthService } from '@services/auth-service/auth.service';
 import { MovieService } from '@services/movie-service/movie.service';
 
