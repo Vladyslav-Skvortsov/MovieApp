@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
-import { MovieService } from '@services/movie-service/movie.service';
 import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { Store } from '@ngrx/store';
+import { MovieState } from '@store/state';
+import { loadNowPlayingMovies } from '@store/actions';
+import { selectNowPlayingMovies } from '@store/selectors';
 
 @Component({
 	selector: 'app-now-playing-movies-page',
@@ -17,19 +20,22 @@ export class NowPlayingMoviesPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	constructor(private movieService: MovieService) {
-		super();
-	}
-
 	public titlePage: string = 'Now Playing Movies';
 	public movies: Movie[] = [];
 
+	constructor(private store: Store<{ movie: MovieState }>) {
+		super();
+	}
+
 	ngOnInit(): void {
-		this.movieService
-			.getPlayingMoviesList()
+		this.store.dispatch(loadNowPlayingMovies());
+		this.store
+			.select(selectNowPlayingMovies)
 			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe((response) => {
-				this.movies = response.results;
+			.subscribe((movies) => {
+				if (movies) {
+					this.movies = movies;
+				}
 			});
 	}
 }

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
-import { MovieService } from '@services/movie-service/movie.service';
+import { selectPopularMovies } from '@store/selectors';
+import { loadPopularMovies } from '@store/actions';
 import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { MovieState } from '@store/state';
 
 @Component({
 	selector: 'app-popular-movies-page',
@@ -17,19 +20,22 @@ export class PopularMoviesPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	constructor(private movieService: MovieService) {
-		super();
-	}
-
 	public titlePage: string = 'Popular Movies';
 	public movies: Movie[] = [];
 
+	constructor(private store: Store<{ movie: MovieState }>) {
+		super();
+	}
+
 	ngOnInit(): void {
-		this.movieService
-			.getPopularMoviesList()
+		this.store.dispatch(loadPopularMovies());
+		this.store
+			.select(selectPopularMovies)
 			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe((response) => {
-				this.movies = response.results;
+			.subscribe((movies) => {
+				if (movies) {
+					this.movies = movies;
+				}
 			});
 	}
 }

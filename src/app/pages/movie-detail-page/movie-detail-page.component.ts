@@ -4,9 +4,11 @@ import { takeUntil } from 'rxjs/operators';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
 import { Movie } from '@interfaces/movie';
-import { MovieService } from '@services/movie-service/movie.service';
 import { BASE_IMG_URL } from '@constants/constant-api';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { Store } from '@ngrx/store';
+import { loadMovieDetail } from '@store/actions';
+import { selectMovieDetail } from '@store/selectors';
 
 @Component({
 	selector: 'app-movie-detail-page',
@@ -20,31 +22,25 @@ export class MovieDetailPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	constructor(
-		private route: ActivatedRoute,
-		private movieService: MovieService
-	) {
-		super();
-	}
-
-	public movie: Movie | undefined;
+	public movie: Movie | null = null;
 	public textEmpty: string = 'Loading...';
 	public imagePath: string | undefined;
 
-	ngOnInit(): void {
-		const movieId = Number(this.route.snapshot.paramMap.get('id'));
-		this.loadMovieDetails(movieId);
+	constructor(private route: ActivatedRoute, private store: Store) {
+		super();
 	}
 
-	loadMovieDetails(id: number | null) {
-		if (id) {
-			this.movieService
-				.getMovieById(id)
+	ngOnInit(): void {
+		const movieId = Number(this.route.snapshot.paramMap.get('id'));
+		if (movieId) {
+			this.store.dispatch(loadMovieDetail({ id: movieId }));
+			this.store
+				.select(selectMovieDetail)
 				.pipe(takeUntil(this.unsubscribe$))
 				.subscribe((movie) => {
 					this.movie = movie;
-					this.imagePath = this.movie
-						? `${BASE_IMG_URL}${this.movie.poster_path}`
+					this.imagePath = movie
+						? `${BASE_IMG_URL}${movie.poster_path}`
 						: '';
 				});
 		}

@@ -4,6 +4,8 @@ import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { HeaderComponent } from '@components/header/header.component';
 import { AuthService } from '@services/auth-service/auth.service';
 import { MovieService } from '@services/movie-service/movie.service';
+import { Store } from '@ngrx/store';
+import { setAuthentication } from '@store/actions';
 
 @Component({
 	selector: 'app-root',
@@ -16,6 +18,7 @@ import { MovieService } from '@services/movie-service/movie.service';
 export class AppComponent implements OnInit {
 	constructor(
 		private authService: AuthService,
+		private store: Store,
 		private movieService: MovieService
 	) {}
 	ngOnInit(): void {
@@ -23,6 +26,7 @@ export class AppComponent implements OnInit {
 			({ accountId, sessionId }) => {
 				this.movieService.setAccountId(accountId);
 				this.movieService.setSessionId(sessionId);
+				this.store.dispatch(setAuthentication({ accountId, sessionId })); // Отправьте Action
 				console.log('Account ID:', accountId);
 				console.log('Session ID:', sessionId);
 			},

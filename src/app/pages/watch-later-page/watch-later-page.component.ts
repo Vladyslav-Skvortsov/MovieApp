@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
-import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
-import { switchMap, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { Store } from '@ngrx/store';
+import * as MovieActions from '@store/actions';
+import { selectWatchLaterMovies } from '@store/selectors';
 
 @Component({
 	selector: 'app-watch-later-page',
@@ -17,25 +19,24 @@ export class WatchLaterPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	constructor(private movieService: MovieService) {
-		super();
-	}
-
-	public titlePage: string = 'Watch Later';
+	public titlePage: string = 'Watch Later Movies';
 	public titleEmptyPage: string = 'Watch Later Is Empty';
 	public pageType: string = 'watchLater';
 	public movies: Movie[] = [];
 
+	constructor(private store: Store) {
+		super();
+	}
+
 	ngOnInit(): void {
-		this.movieService
-			.getWatchMoviesList()
-			.pipe(
-				switchMap(() => this.movieService.getWatchLaterMovies()),
-				takeUntil(this.unsubscribe$)
-			)
-			.subscribe((movies) => {
-				this.movies = movies;
-			});
+		this.store.dispatch(MovieActions.loadWatchLaterMovies());
+		this.store
+			.select(selectWatchLaterMovies)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe(
+				(movies) => (this.movies = movies),
+				(error) => console.error('Error loading watch later movies:', error)
+			);
 	}
 
 	public get isMovies(): boolean {

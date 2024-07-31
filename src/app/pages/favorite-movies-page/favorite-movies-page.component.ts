@@ -1,9 +1,11 @@
 import { Component, OnInit, DoCheck } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
-import { MovieService } from '@services/movie-service/movie.service';
 import { Movie } from '@interfaces/movie';
-import { switchMap, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { Store } from '@ngrx/store';
+import * as MovieActions from '@store/actions';
+import { selectFavoriteMovies } from '@store/selectors';
 
 @Component({
 	selector: 'app-favorite-movies-page',
@@ -17,25 +19,24 @@ export class FavoriteMoviesPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	constructor(private movieService: MovieService) {
-		super();
-	}
-
 	public titlePage: string = 'Favorite Movies';
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
 	public pageType: string = 'favorite';
 	public movies: Movie[] = [];
 
+	constructor(private store: Store) {
+		super();
+	}
+
 	ngOnInit(): void {
-		this.movieService
-			.getFavoriteMoviesList()
-			.pipe(
-				switchMap(() => this.movieService.getFavoriteMovies()),
-				takeUntil(this.unsubscribe$)
-			)
-			.subscribe((movies) => {
-				this.movies = movies;
-			});
+		this.store.dispatch(MovieActions.loadFavoriteMovies());
+		this.store
+			.select(selectFavoriteMovies)
+			.pipe(takeUntil(this.unsubscribe$))
+			.subscribe(
+				(movies) => (this.movies = movies),
+				(error) => console.error('Error loading favorite movies:', error)
+			);
 	}
 
 	public get isMovies(): boolean {

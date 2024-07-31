@@ -12,30 +12,37 @@ export const routes: Routes = [
 	{
 		path: 'popular',
 		component: PopularMoviesPageComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'top-rate',
 		component: TopRateMoviesPageComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'now-playing',
 		component: NowPlayingMoviesPageComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'upcoming',
 		component: UpcomingMoviesPageComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'favorite-movies',
 		component: FavoriteMoviesPageComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'watch-later',
 		component: WatchLaterPageComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'movie/:id',
 		component: MovieDetailPageComponent,
+		pathMatch: 'full',
 	},
 ];
 
