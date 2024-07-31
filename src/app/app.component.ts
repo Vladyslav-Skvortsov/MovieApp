@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
 			({ accountId, sessionId }) => {
 				this.movieService.setAccountId(accountId);
 				this.movieService.setSessionId(sessionId);
-				this.store.dispatch(setAuthentication({ accountId, sessionId })); // Отправьте Action
+				this.store.dispatch(setAuthentication({ accountId, sessionId }));
 				console.log('Account ID:', accountId);
 				console.log('Session ID:', sessionId);
 			},
