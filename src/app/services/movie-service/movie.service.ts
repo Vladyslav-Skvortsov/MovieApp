@@ -23,16 +23,6 @@ import { selectAccountId, selectSessionId } from '@store/selectors';
 export class MovieService {
 	constructor(private httpClient: HttpClient, private store: Store) {}
 
-	private accountId: number | null = null;
-	private sessionId: string | null = null;
-
-	setAccountId(id: number) {
-		this.accountId = id;
-	}
-	setSessionId(id: string) {
-		this.sessionId = id;
-	}
-
 	// Showing a list of films by category
 	getNowPlayingMoviesList(): Observable<MovieResponse> {
 		const url: string = `${BASE_MOVIE_API_URL}now_playing${API_KEY}`;
@@ -60,24 +50,21 @@ export class MovieService {
 	}
 
 	// Showing a list of saved movies
-	getFavoriteMoviesList(): Observable<Movie[]> {
-		if (!this.accountId || !this.sessionId) {
-			return throwError('Not authenticated');
-		}
-
-		const url = `${BASE_API_URL}/account/${this.accountId}/favorite/movies${API_KEY}&session_id=${this.sessionId}`;
+	getFavoriteMoviesList(
+		accountId: number,
+		sessionId: string
+	): Observable<Movie[]> {
+		const url = `${BASE_API_URL}/account/${accountId}/favorite/movies${API_KEY}&session_id=${sessionId}`;
 		return this.httpClient.get<{ results: Movie[] }>(url).pipe(
 			map((response) => response.results),
 			catchError(this.handleError)
 		);
 	}
-
-	getWatchMoviesList(): Observable<Movie[]> {
-		if (!this.accountId || !this.sessionId) {
-			return throwError('Not authenticated');
-		}
-
-		const url = `${BASE_API_URL}/account/${this.accountId}/watchlist/movies${API_KEY}&session_id=${this.sessionId}`;
+	getWatchMoviesList(
+		accountId: number,
+		sessionId: string
+	): Observable<Movie[]> {
+		const url = `${BASE_API_URL}/account/${accountId}/watchlist/movies${API_KEY}&session_id=${sessionId}`;
 		return this.httpClient.get<{ results: Movie[] }>(url).pipe(
 			map((response) => response.results),
 			catchError(this.handleError)

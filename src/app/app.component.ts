@@ -4,8 +4,10 @@ import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { HeaderComponent } from '@components/header/header.component';
 import { AuthService } from '@services/auth-service/auth.service';
 import { MovieService } from '@services/movie-service/movie.service';
-import { Store } from '@ngrx/store';
-import { setAuthentication } from '@store/actions';
+import { select, Store } from '@ngrx/store';
+import * as MovieActions from '@store/actions';
+import { selectAccountId, selectSessionId } from '@store/selectors';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-root',
@@ -20,13 +22,20 @@ export class AppComponent implements OnInit {
 		private authService: AuthService,
 		private store: Store,
 		private movieService: MovieService
-	) {}
+	) {
+		this.accountId$ = this.store.pipe(select(selectAccountId));
+		this.sessionId$ = this.store.pipe(select(selectSessionId));
+	}
+
+	accountId$: Observable<number | null>;
+	sessionId$: Observable<string | null>;
+
 	ngOnInit(): void {
 		this.authService.authenticateAndGetAccountId().subscribe(
 			({ accountId, sessionId }) => {
-				this.movieService.setAccountId(accountId);
-				this.movieService.setSessionId(sessionId);
-				this.store.dispatch(setAuthentication({ accountId, sessionId }));
+				this.store.dispatch(
+					MovieActions.setAuthentication({ accountId, sessionId })
+				);
 				console.log('Account ID:', accountId);
 				console.log('Session ID:', sessionId);
 			},
@@ -34,5 +43,12 @@ export class AppComponent implements OnInit {
 				console.error('Authentication failed:', error);
 			}
 		);
+		this.accountId$.subscribe((accountId) => {
+			console.log('Account ID from Store:', accountId);
+		});
+
+		this.sessionId$.subscribe((sessionId) => {
+			console.log('Session ID from Store:', sessionId);
+		});
 	}
 }

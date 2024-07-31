@@ -4,7 +4,6 @@ import { catchError, map, mergeMap, of, switchMap, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MovieActions from '@store/actions';
 import { select, Store } from '@ngrx/store';
-import { MovieState } from '@store/state';
 import { selectAccountId, selectSessionId } from '@store/selectors';
 
 @Injectable()
@@ -113,8 +112,8 @@ export class MovieEffects {
 	);
 
 	// Effect Favorite Movies & Watch Later Movies
-	// Load Favorite Movies & Watch Later Movies
 
+	// Load Favorite Movies & Watch Later Movies
 	loadFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadFavoriteMovies),
@@ -123,30 +122,32 @@ export class MovieEffects {
 					select(selectAccountId),
 					switchMap((accountId) => {
 						if (!accountId) {
+							console.error('Account ID is not available');
 							return throwError('Not authenticated');
 						}
 						return this.store.pipe(
 							select(selectSessionId),
 							switchMap((sessionId) => {
 								if (!sessionId) {
+									console.error('Session ID is not available');
 									return throwError('Not authenticated');
 								}
-								return this.movieService.getFavoriteMoviesList().pipe(
-									map((movies) =>
-										MovieActions.loadFavoriteMoviesSuccess({ movies })
-									),
-									catchError((error) => {
-										console.error(
-											'Failed to load favorite movies:',
-											error
-										);
-										return of(
-											MovieActions.loadFavoriteMoviesFailure({
-												error: error.message,
+								return this.movieService
+									.getFavoriteMoviesList(accountId, sessionId)
+									.pipe(
+										map((movies) =>
+											MovieActions.loadFavoriteMoviesSuccess({
+												movies,
 											})
-										);
-									})
-								);
+										),
+										catchError((error) =>
+											of(
+												MovieActions.loadFavoriteMoviesFailure({
+													error: error.message,
+												})
+											)
+										)
+									);
 							})
 						);
 					})
@@ -154,7 +155,6 @@ export class MovieEffects {
 			)
 		)
 	);
-
 	loadWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadWatchLaterMovies),
@@ -163,32 +163,32 @@ export class MovieEffects {
 					select(selectAccountId),
 					switchMap((accountId) => {
 						if (!accountId) {
+							console.error('Account ID is not available');
 							return throwError('Not authenticated');
 						}
 						return this.store.pipe(
 							select(selectSessionId),
 							switchMap((sessionId) => {
 								if (!sessionId) {
+									console.error('Session ID is not available');
 									return throwError('Not authenticated');
 								}
-								return this.movieService.getWatchMoviesList().pipe(
-									map((movies) =>
-										MovieActions.loadWatchLaterMoviesSuccess({
-											movies,
-										})
-									),
-									catchError((error) => {
-										console.error(
-											'Failed to load watch later movies:',
-											error
-										);
-										return of(
-											MovieActions.loadWatchLaterMoviesFailure({
-												error: error.message,
+								return this.movieService
+									.getWatchMoviesList(accountId, sessionId)
+									.pipe(
+										map((movies) =>
+											MovieActions.loadWatchLaterMoviesSuccess({
+												movies,
 											})
-										);
-									})
-								);
+										),
+										catchError((error) =>
+											of(
+												MovieActions.loadWatchLaterMoviesFailure({
+													error: error.message,
+												})
+											)
+										)
+									);
 							})
 						);
 					})
@@ -200,6 +200,6 @@ export class MovieEffects {
 	constructor(
 		private actions$: Actions,
 		private movieService: MovieService,
-		private store: Store<MovieState>
+		private store: Store
 	) {}
 }
