@@ -1,6 +1,14 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { MovieService } from '@services/movie-service/movie.service';
-import { catchError, map, mergeMap, of, switchMap, throwError } from 'rxjs';
+import {
+	catchError,
+	map,
+	mergeMap,
+	Observable,
+	of,
+	switchMap,
+	throwError,
+} from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MovieActions from '@store/actions';
 import { select, Store } from '@ngrx/store';
@@ -8,95 +16,58 @@ import { selectAccountId, selectSessionId } from '@store/selectors';
 
 @Injectable()
 export class MovieEffects {
-	// Effect a list of films by category
-	loadPopularMovies$ = createEffect(() =>
+	// Generalized effect for loading movies
+	loadMovies$ = createEffect(() =>
 		this.actions$.pipe(
-			ofType(MovieActions.loadPopularMovies),
-			mergeMap(() =>
-				this.movieService.getPopularMoviesList().pipe(
-					map((response) =>
-						MovieActions.loadPopularMoviesSuccess({
-							movies: response.results,
-						})
-					),
+			ofType(
+				MovieActions.loadPopularMovies,
+				MovieActions.loadNowPlayingMovies,
+				MovieActions.loadTopRateMovies,
+				MovieActions.loadUpcomingMovies
+			),
+			mergeMap((action) => {
+				let apiCall: Observable<any>;
+				let successAction: any;
+				let failureAction: any;
+
+				switch (action.type) {
+					case MovieActions.loadPopularMovies.type:
+						apiCall = this.movieService.getPopularMoviesList();
+						successAction = MovieActions.loadPopularMoviesSuccess;
+						failureAction = MovieActions.loadPopularMoviesFailure;
+						break;
+					case MovieActions.loadNowPlayingMovies.type:
+						apiCall = this.movieService.getNowPlayingMoviesList();
+						successAction = MovieActions.loadNowPlayingMoviesSuccess;
+						failureAction = MovieActions.loadNowPlayingMoviesFailure;
+						break;
+					case MovieActions.loadTopRateMovies.type:
+						apiCall = this.movieService.getTopRatedMoviesList();
+						successAction = MovieActions.loadTopRateMoviesSuccess;
+						failureAction = MovieActions.loadTopRateMoviesFailure;
+						break;
+					case MovieActions.loadUpcomingMovies.type:
+						apiCall = this.movieService.getUpcomingMoviesList();
+						successAction = MovieActions.loadUpcomingMoviesSuccess;
+						failureAction = MovieActions.loadUpcomingMoviesFailure;
+						break;
+				}
+
+				return apiCall.pipe(
+					map((response) => successAction({ movies: response.results })),
 					catchError((error) =>
-						of(
-							MovieActions.loadPopularMoviesFailure({
-								error: error.message,
-							})
-						)
+						of(failureAction({ error: error.message }))
 					)
-				)
-			)
+				);
+			})
 		)
 	);
-	loadNowPlayingMovies$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(MovieActions.loadNowPlayingMovies),
-			mergeMap(() =>
-				this.movieService.getNowPlayingMoviesList().pipe(
-					map((response) =>
-						MovieActions.loadNowPlayingMoviesSuccess({
-							movies: response.results,
-						})
-					),
-					catchError((error) =>
-						of(
-							MovieActions.loadNowPlayingMoviesFailure({
-								error: error.message,
-							})
-						)
-					)
-				)
-			)
-		)
-	);
-	loadTopRateMovies$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(MovieActions.loadTopRateMovies),
-			mergeMap(() =>
-				this.movieService.getTopRatedMoviesList().pipe(
-					map((response) =>
-						MovieActions.loadTopRateMoviesSuccess({
-							movies: response.results,
-						})
-					),
-					catchError((error) =>
-						of(
-							MovieActions.loadTopRateMoviesFailure({
-								error: error.message,
-							})
-						)
-					)
-				)
-			)
-		)
-	);
-	loadUpcomingMovies$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(MovieActions.loadUpcomingMovies),
-			mergeMap(() =>
-				this.movieService.getUpcomingMoviesList().pipe(
-					map((response) =>
-						MovieActions.loadUpcomingMoviesSuccess({
-							movies: response.results,
-						})
-					),
-					catchError((error) =>
-						of(
-							MovieActions.loadUpcomingMoviesFailure({
-								error: error.message,
-							})
-						)
-					)
-				)
-			)
-		)
-	);
+
+	// Effect for handling movie detail loading
 	loadMovieDetail$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadMovieDetail),
-			mergeMap((action) =>
+			switchMap((action) =>
 				this.movieService.getMovieById(action.id).pipe(
 					map((movie) => MovieActions.loadMovieDetailSuccess({ movie })),
 					catchError((error) =>
@@ -111,283 +82,129 @@ export class MovieEffects {
 		)
 	);
 
+	// Generalized effect for authenticated actions
+	private handleAuthenticatedRequest<T>(
+		actionType: string,
+		apiCall: (accountId: number, sessionId: string) => Observable<T>,
+		successAction: (result: T) => any,
+		failureAction: (error: string) => any
+	) {
+		return this.store.pipe(
+			select(selectAccountId),
+			switchMap((accountId) => {
+				if (!accountId) {
+					return of(failureAction('Not authenticated'));
+				}
+				return this.store.pipe(
+					select(selectSessionId),
+					switchMap((sessionId) => {
+						if (!sessionId) {
+							return of(failureAction('Not authenticated'));
+						}
+						return apiCall(accountId, sessionId).pipe(
+							map((result) => successAction(result)),
+							catchError((error) => of(failureAction(error.message)))
+						);
+					})
+				);
+			})
+		);
+	}
+
 	// Effect Favorite Movies & Watch Later Movies
-	// Load Favorite Movies
+	// Effect for loading favorite movies
 	loadFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadFavoriteMovies),
 			switchMap(() =>
-				this.store.pipe(
-					select(selectAccountId),
-					switchMap((accountId) => {
-						if (!accountId) {
-							console.error('Account ID is not available');
-							return throwError('Not authenticated');
-						}
-						return this.store.pipe(
-							select(selectSessionId),
-							switchMap((sessionId) => {
-								if (!sessionId) {
-									console.error('Session ID is not available');
-									return throwError('Not authenticated');
-								}
-								return this.movieService
-									.getFavoriteMoviesList(accountId, sessionId)
-									.pipe(
-										map((movies) =>
-											MovieActions.loadFavoriteMoviesSuccess({
-												movies,
-											})
-										),
-										catchError((error) =>
-											of(
-												MovieActions.loadFavoriteMoviesFailure({
-													error: error.message,
-												})
-											)
-										)
-									);
-							})
-						);
-					})
+				this.handleAuthenticatedRequest(
+					MovieActions.loadFavoriteMovies.type,
+					this.movieService.getFavoriteMoviesList.bind(this.movieService),
+					(movies) => MovieActions.loadFavoriteMoviesSuccess({ movies }),
+					(error) => MovieActions.loadFavoriteMoviesFailure({ error })
 				)
 			)
 		)
 	);
+	// Effect for adding to favorites
 	addToFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.addToFavoriteMovies),
 			switchMap((action) =>
-				this.store.pipe(
-					select(selectAccountId),
-					switchMap((accountId) => {
-						if (!accountId) {
-							return of(
-								MovieActions.addToFavoriteMoviesFailure({
-									error: 'Not authenticated',
-								})
-							);
-						}
-						return this.store.pipe(
-							select(selectSessionId),
-							switchMap((sessionId) => {
-								if (!sessionId) {
-									return of(
-										MovieActions.addToFavoriteMoviesFailure({
-											error: 'Not authenticated',
-										})
-									);
-								}
-								return this.movieService
-									.addMovieToFavorite(action.movieId)
-									.pipe(
-										map((movie) =>
-											MovieActions.addToFavoriteMoviesSuccess({
-												movie,
-											})
-										),
-										catchError((error) =>
-											of(
-												MovieActions.addToFavoriteMoviesFailure({
-													error: error.message,
-												})
-											)
-										)
-									);
-							})
-						);
-					})
+				this.handleAuthenticatedRequest(
+					MovieActions.addToFavoriteMovies.type,
+					(accountId, sessionId) =>
+						this.movieService.addMovieToFavorite(action.movieId),
+					(movie) => MovieActions.addToFavoriteMoviesSuccess({ movie }),
+					(error) => MovieActions.addToFavoriteMoviesFailure({ error })
 				)
 			)
 		)
 	);
+	// Effect for removing from favorites
 	removeFromFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.removeFromFavoriteMovies),
 			switchMap((action) =>
-				this.store.pipe(
-					select(selectAccountId),
-					switchMap((accountId) => {
-						if (!accountId) {
-							return of(
-								MovieActions.removeFromFavoriteMoviesFailure({
-									error: 'Not authenticated',
-								})
-							);
-						}
-						return this.store.pipe(
-							select(selectSessionId),
-							switchMap((sessionId) => {
-								if (!sessionId) {
-									return of(
-										MovieActions.removeFromFavoriteMoviesFailure({
-											error: 'Not authenticated',
-										})
-									);
-								}
-								return this.movieService
-									.removeMovieFromFavorite(action.movieId)
-									.pipe(
-										map(() =>
-											MovieActions.removeFromFavoriteMoviesSuccess({
-												movieId: action.movieId,
-											})
-										),
-										catchError((error) =>
-											of(
-												MovieActions.removeFromFavoriteMoviesFailure(
-													{
-														error: error.message,
-													}
-												)
-											)
-										)
-									);
-							})
-						);
-					})
+				this.handleAuthenticatedRequest(
+					MovieActions.removeFromFavoriteMovies.type,
+					(accountId, sessionId) =>
+						this.movieService.removeMovieFromFavorite(action.movieId),
+					() =>
+						MovieActions.removeFromFavoriteMoviesSuccess({
+							movieId: action.movieId,
+						}),
+					(error) =>
+						MovieActions.removeFromFavoriteMoviesFailure({ error })
 				)
 			)
 		)
 	);
 
-	// Load Watch Later Movies
+	// Effect for loading watch later movies
 	loadWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadWatchLaterMovies),
 			switchMap(() =>
-				this.store.pipe(
-					select(selectAccountId),
-					switchMap((accountId) => {
-						if (!accountId) {
-							console.error('Account ID is not available');
-							return throwError('Not authenticated');
-						}
-						return this.store.pipe(
-							select(selectSessionId),
-							switchMap((sessionId) => {
-								if (!sessionId) {
-									console.error('Session ID is not available');
-									return throwError('Not authenticated');
-								}
-								return this.movieService
-									.getWatchMoviesList(accountId, sessionId)
-									.pipe(
-										map((movies) =>
-											MovieActions.loadWatchLaterMoviesSuccess({
-												movies,
-											})
-										),
-										catchError((error) =>
-											of(
-												MovieActions.loadWatchLaterMoviesFailure({
-													error: error.message,
-												})
-											)
-										)
-									);
-							})
-						);
-					})
+				this.handleAuthenticatedRequest(
+					MovieActions.loadWatchLaterMovies.type,
+					this.movieService.getWatchMoviesList.bind(this.movieService),
+					(movies) => MovieActions.loadWatchLaterMoviesSuccess({ movies }),
+					(error) => MovieActions.loadWatchLaterMoviesFailure({ error })
 				)
 			)
 		)
 	);
+	// Effect for adding to watch later
 	addToWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.addToWatchLaterMovies),
 			switchMap((action) =>
-				this.store.pipe(
-					select(selectAccountId),
-					switchMap((accountId) => {
-						if (!accountId) {
-							return of(
-								MovieActions.addToWatchLaterMoviesFailure({
-									error: 'Not authenticated',
-								})
-							);
-						}
-						return this.store.pipe(
-							select(selectSessionId),
-							switchMap((sessionId) => {
-								if (!sessionId) {
-									return of(
-										MovieActions.addToWatchLaterMoviesFailure({
-											error: 'Not authenticated',
-										})
-									);
-								}
-								return this.movieService
-									.addMovieToWatchLater(action.movieId)
-									.pipe(
-										map((movie) =>
-											MovieActions.addToWatchLaterMoviesSuccess({
-												movie,
-											})
-										),
-										catchError((error) =>
-											of(
-												MovieActions.addToWatchLaterMoviesFailure({
-													error: error.message,
-												})
-											)
-										)
-									);
-							})
-						);
-					})
+				this.handleAuthenticatedRequest(
+					MovieActions.addToWatchLaterMovies.type,
+					(accountId, sessionId) =>
+						this.movieService.addMovieToWatchLater(action.movieId),
+					(movie) => MovieActions.addToWatchLaterMoviesSuccess({ movie }),
+					(error) => MovieActions.addToWatchLaterMoviesFailure({ error })
 				)
 			)
 		)
 	);
+	// Effect for removing from watch later
 	removeFromWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.removeFromWatchLaterMovies),
 			switchMap((action) =>
-				this.store.pipe(
-					select(selectAccountId),
-					switchMap((accountId) => {
-						if (!accountId) {
-							return of(
-								MovieActions.removeFromWatchLaterMoviesFailure({
-									error: 'Not authenticated',
-								})
-							);
-						}
-						return this.store.pipe(
-							select(selectSessionId),
-							switchMap((sessionId) => {
-								if (!sessionId) {
-									return of(
-										MovieActions.removeFromWatchLaterMoviesFailure({
-											error: 'Not authenticated',
-										})
-									);
-								}
-								console.log('Removing movie with ID:', action.movieId);
-								return this.movieService
-									.removeMovieFromWatchLater(action.movieId)
-									.pipe(
-										map(() =>
-											MovieActions.removeFromWatchLaterMoviesSuccess(
-												{
-													movieId: action.movieId,
-												}
-											)
-										),
-										catchError((error) =>
-											of(
-												MovieActions.removeFromWatchLaterMoviesFailure(
-													{
-														error: error.message,
-													}
-												)
-											)
-										)
-									);
-							})
-						);
-					})
+				this.handleAuthenticatedRequest(
+					MovieActions.removeFromWatchLaterMovies.type,
+					(accountId, sessionId) =>
+						this.movieService.removeMovieFromWatchLater(action.movieId),
+					() =>
+						MovieActions.removeFromWatchLaterMoviesSuccess({
+							movieId: action.movieId,
+						}),
+					(error) =>
+						MovieActions.removeFromWatchLaterMoviesFailure({ error })
 				)
 			)
 		)
