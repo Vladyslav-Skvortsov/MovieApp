@@ -30,7 +30,8 @@ export const movieReducer = createReducer(
 		selectedMovieDetail: movie,
 	})),
 
-	// load
+	// load Favorite Movies & Watch Later Movies
+	// load Favorite Movies
 	on(MovieActions.loadFavoriteMoviesSuccess, (state, { movies }) => ({
 		...state,
 		favoriteMoviesList: movies,
@@ -42,7 +43,30 @@ export const movieReducer = createReducer(
 			favoriteMoviesList: [],
 		};
 	}),
+	// Adding a movie to favorites
+	on(MovieActions.addToFavoriteMoviesSuccess, (state, { movie }) => ({
+		...state,
+		favoriteMoviesList: state.favoriteMoviesList
+			? [...state.favoriteMoviesList, movie]
+			: [movie],
+	})),
+	on(MovieActions.addToFavoriteMoviesFailure, (state, { error }) => {
+		console.error('Failed to add to favorite movies:', error);
+		return state;
+	}),
+	// Remove from favorites
+	on(MovieActions.removeFromFavoriteMoviesSuccess, (state, { movieId }) => ({
+		...state,
+		favoriteMoviesList: state.favoriteMoviesList
+			? state.favoriteMoviesList.filter((movie) => movie.id !== movieId)
+			: [],
+	})),
+	on(MovieActions.removeFromFavoriteMoviesFailure, (state, { error }) => {
+		console.error('Failed to remove from favorite movies:', error);
+		return state;
+	}),
 
+	// load Watch Later Movies
 	on(MovieActions.loadWatchLaterMoviesSuccess, (state, { movies }) => ({
 		...state,
 		watchLaterMoviesList: movies,
@@ -53,5 +77,30 @@ export const movieReducer = createReducer(
 			...state,
 			watchLaterMoviesList: [],
 		};
+	}),
+	// Adding a movie to the "Watch Later" list
+	on(MovieActions.addToWatchLaterMoviesSuccess, (state, { movie }) => ({
+		...state,
+		watchLaterMoviesList: state.watchLaterMoviesList
+			? [...state.watchLaterMoviesList, movie]
+			: [movie],
+	})),
+	on(MovieActions.addToWatchLaterMoviesFailure, (state, { error }) => {
+		console.error('Failed to add to watch later movies:', error);
+		return state;
+	}),
+	// Remove from watch later
+	on(MovieActions.removeFromWatchLaterMoviesSuccess, (state, { movieId }) => {
+		console.log('Removing movie from state with ID:', movieId);
+		return {
+			...state,
+			watchLaterMoviesList: state.watchLaterMoviesList
+				? state.watchLaterMoviesList.filter((movie) => movie.id !== movieId)
+				: [],
+		};
+	}),
+	on(MovieActions.removeFromWatchLaterMoviesFailure, (state, { error }) => {
+		console.error('Failed to remove from watch later movies:', error);
+		return state;
 	})
 );

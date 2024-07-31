@@ -112,8 +112,7 @@ export class MovieEffects {
 	);
 
 	// Effect Favorite Movies & Watch Later Movies
-
-	// Load Favorite Movies & Watch Later Movies
+	// Load Favorite Movies
 	loadFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadFavoriteMovies),
@@ -155,6 +154,104 @@ export class MovieEffects {
 			)
 		)
 	);
+	addToFavoriteMovies$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(MovieActions.addToFavoriteMovies),
+			switchMap((action) =>
+				this.store.pipe(
+					select(selectAccountId),
+					switchMap((accountId) => {
+						if (!accountId) {
+							return of(
+								MovieActions.addToFavoriteMoviesFailure({
+									error: 'Not authenticated',
+								})
+							);
+						}
+						return this.store.pipe(
+							select(selectSessionId),
+							switchMap((sessionId) => {
+								if (!sessionId) {
+									return of(
+										MovieActions.addToFavoriteMoviesFailure({
+											error: 'Not authenticated',
+										})
+									);
+								}
+								return this.movieService
+									.addMovieToFavorite(action.movieId)
+									.pipe(
+										map((movie) =>
+											MovieActions.addToFavoriteMoviesSuccess({
+												movie,
+											})
+										),
+										catchError((error) =>
+											of(
+												MovieActions.addToFavoriteMoviesFailure({
+													error: error.message,
+												})
+											)
+										)
+									);
+							})
+						);
+					})
+				)
+			)
+		)
+	);
+	removeFromFavoriteMovies$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(MovieActions.removeFromFavoriteMovies),
+			switchMap((action) =>
+				this.store.pipe(
+					select(selectAccountId),
+					switchMap((accountId) => {
+						if (!accountId) {
+							return of(
+								MovieActions.removeFromFavoriteMoviesFailure({
+									error: 'Not authenticated',
+								})
+							);
+						}
+						return this.store.pipe(
+							select(selectSessionId),
+							switchMap((sessionId) => {
+								if (!sessionId) {
+									return of(
+										MovieActions.removeFromFavoriteMoviesFailure({
+											error: 'Not authenticated',
+										})
+									);
+								}
+								return this.movieService
+									.removeMovieFromFavorite(action.movieId)
+									.pipe(
+										map(() =>
+											MovieActions.removeFromFavoriteMoviesSuccess({
+												movieId: action.movieId,
+											})
+										),
+										catchError((error) =>
+											of(
+												MovieActions.removeFromFavoriteMoviesFailure(
+													{
+														error: error.message,
+													}
+												)
+											)
+										)
+									);
+							})
+						);
+					})
+				)
+			)
+		)
+	);
+
+	// Load Watch Later Movies
 	loadWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadWatchLaterMovies),
@@ -186,6 +283,105 @@ export class MovieEffects {
 												MovieActions.loadWatchLaterMoviesFailure({
 													error: error.message,
 												})
+											)
+										)
+									);
+							})
+						);
+					})
+				)
+			)
+		)
+	);
+	addToWatchLaterMovies$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(MovieActions.addToWatchLaterMovies),
+			switchMap((action) =>
+				this.store.pipe(
+					select(selectAccountId),
+					switchMap((accountId) => {
+						if (!accountId) {
+							return of(
+								MovieActions.addToWatchLaterMoviesFailure({
+									error: 'Not authenticated',
+								})
+							);
+						}
+						return this.store.pipe(
+							select(selectSessionId),
+							switchMap((sessionId) => {
+								if (!sessionId) {
+									return of(
+										MovieActions.addToWatchLaterMoviesFailure({
+											error: 'Not authenticated',
+										})
+									);
+								}
+								return this.movieService
+									.addMovieToWatchLater(action.movieId)
+									.pipe(
+										map((movie) =>
+											MovieActions.addToWatchLaterMoviesSuccess({
+												movie,
+											})
+										),
+										catchError((error) =>
+											of(
+												MovieActions.addToWatchLaterMoviesFailure({
+													error: error.message,
+												})
+											)
+										)
+									);
+							})
+						);
+					})
+				)
+			)
+		)
+	);
+	removeFromWatchLaterMovies$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(MovieActions.removeFromWatchLaterMovies),
+			switchMap((action) =>
+				this.store.pipe(
+					select(selectAccountId),
+					switchMap((accountId) => {
+						if (!accountId) {
+							return of(
+								MovieActions.removeFromWatchLaterMoviesFailure({
+									error: 'Not authenticated',
+								})
+							);
+						}
+						return this.store.pipe(
+							select(selectSessionId),
+							switchMap((sessionId) => {
+								if (!sessionId) {
+									return of(
+										MovieActions.removeFromWatchLaterMoviesFailure({
+											error: 'Not authenticated',
+										})
+									);
+								}
+								console.log('Removing movie with ID:', action.movieId);
+								return this.movieService
+									.removeMovieFromWatchLater(action.movieId)
+									.pipe(
+										map(() =>
+											MovieActions.removeFromWatchLaterMoviesSuccess(
+												{
+													movieId: action.movieId,
+												}
+											)
+										),
+										catchError((error) =>
+											of(
+												MovieActions.removeFromWatchLaterMoviesFailure(
+													{
+														error: error.message,
+													}
+												)
 											)
 										)
 									);

@@ -83,6 +83,32 @@ export const loadFavoriteMoviesFailure = createAction(
 	'[Movies] Load Favorite Movies Failure',
 	props<{ error: string }>()
 );
+// Adding a movie to favorites
+export const addToFavoriteMovies = createAction(
+	'[Movies] Add To Favorite Movies',
+	props<{ movieId: number }>()
+);
+export const addToFavoriteMoviesSuccess = createAction(
+	'[Movies] Add To Favorite Movies Success',
+	props<{ movie: Movie }>()
+);
+export const addToFavoriteMoviesFailure = createAction(
+	'[Movies] Add To Favorite Movies Failure',
+	props<{ error: string }>()
+);
+// Removing a movie from favorites
+export const removeFromFavoriteMovies = createAction(
+	'[Movies] Remove From Favorite Movies',
+	props<{ movieId: number }>()
+);
+export const removeFromFavoriteMoviesSuccess = createAction(
+	'[Movies] Remove From Favorite Movies Success',
+	props<{ movieId: number }>()
+);
+export const removeFromFavoriteMoviesFailure = createAction(
+	'[Movies] Remove From Favorite Movies Failure',
+	props<{ error: string }>()
+);
 
 // Load Watch Later Movies
 export const loadWatchLaterMovies = createAction(
@@ -94,5 +120,31 @@ export const loadWatchLaterMoviesSuccess = createAction(
 );
 export const loadWatchLaterMoviesFailure = createAction(
 	'[Movies] Load Watch Later Movies Failure',
+	props<{ error: string }>()
+);
+// Adding a movie to the Watch Later list
+export const addToWatchLaterMovies = createAction(
+	'[Movies] Add To Watch Later Movies',
+	props<{ movieId: number }>()
+);
+export const addToWatchLaterMoviesSuccess = createAction(
+	'[Movies] Add To Watch Later Movies Success',
+	props<{ movie: Movie }>()
+);
+export const addToWatchLaterMoviesFailure = createAction(
+	'[Movies] Add To Watch Later Movies Failure',
+	props<{ error: string }>()
+);
+// Removing a movie from the Watch Later list
+export const removeFromWatchLaterMovies = createAction(
+	'[Movies] Remove From Watch Later Movies',
+	props<{ movieId: number }>()
+);
+export const removeFromWatchLaterMoviesSuccess = createAction(
+	'[Movies] Remove From Watch Later Movies Success',
+	props<{ movieId: number }>()
+);
+export const removeFromWatchLaterMoviesFailure = createAction(
+	'[Movies] Remove From Watch Later Movies Failure',
 	props<{ error: string }>()
 );

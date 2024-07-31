@@ -18,11 +18,7 @@ import { Observable } from 'rxjs';
 	providers: [MovieService, AuthService],
 })
 export class AppComponent implements OnInit {
-	constructor(
-		private authService: AuthService,
-		private store: Store,
-		private movieService: MovieService
-	) {
+	constructor(private authService: AuthService, private store: Store) {
 		this.accountId$ = this.store.pipe(select(selectAccountId));
 		this.sessionId$ = this.store.pipe(select(selectSessionId));
 	}

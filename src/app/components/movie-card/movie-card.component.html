@@ -25,7 +25,7 @@
 				[label]="buttonRemoveConfig.label"
 				[severity]="buttonRemoveConfig.severity"
 				[class]="buttonRemoveConfig.class"
-				(click)="removeFromFavorites()"
+				(click)="removeFromFavorites(this.movie.id)"
 			></p-button>
 			} @else if (pageType === 'watchLater') {
 			<p-button
@@ -39,7 +39,7 @@
 				[label]="buttonRemoveConfig.label"
 				[severity]="buttonRemoveConfig.severity"
 				[class]="buttonRemoveConfig.class"
-				(click)="removeFromWatchLater()"
+				(click)="removeFromWatchLater(this.movie.id)"
 			></p-button>
 			} @else {
 			<p-button

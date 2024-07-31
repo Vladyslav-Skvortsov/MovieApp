@@ -15,6 +15,7 @@ import {
 import { BASE_IMG_URL } from '@constants/constant-api';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
 import { Store } from '@ngrx/store';
+import * as MovieActions from '@store/actions';
 
 @Component({
 	selector: 'app-movie-card',
@@ -53,8 +54,39 @@ export class MovieCardComponent
 			: '';
 	}
 
-	addToFavorites(): void {}
-	addToWatchLater(): void {}
-	removeFromFavorites(): void {}
-	removeFromWatchLater(): void {}
+	addToFavorites(): void {
+		if (!this.movie || !this.movie.id) {
+			console.error('Invalid movie object:', this.movie);
+			return;
+		}
+		this.store.dispatch(
+			MovieActions.addToFavoriteMovies({ movieId: this.movie.id })
+		);
+	}
+	addToWatchLater(): void {
+		if (!this.movie || !this.movie.id) {
+			console.error('Invalid movie object:', this.movie);
+			return;
+		}
+		this.store.dispatch(
+			MovieActions.addToWatchLaterMovies({ movieId: this.movie.id })
+		);
+	}
+
+	removeFromFavorites(movieId: number): void {
+		console.log('Removing from favorites movie ID:', movieId);
+		if (!this.movie || !this.movie.id) {
+			console.error('Invalid movie object:', this.movie);
+			return;
+		}
+		this.store.dispatch(MovieActions.removeFromFavoriteMovies({ movieId }));
+	}
+	removeFromWatchLater(movieId: number): void {
+		console.log('Removing from watch later movie ID:', movieId);
+		if (!this.movie || !this.movie.id) {
+			console.error('Invalid movie object:', this.movie);
+			return;
+		}
+		this.store.dispatch(MovieActions.removeFromWatchLaterMovies({ movieId }));
+	}
 }
