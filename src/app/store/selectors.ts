@@ -15,6 +15,16 @@ export const selectSessionId = createSelector(
 	(state: MovieStateInterface) => state.sessionId
 );
 
+// Check for movies in lists
+export const isFavorite = (movieId: number) =>
+	createSelector(selectFavoriteMovies, (favoriteMovies: Movie[]) =>
+		favoriteMovies.map((movie) => movie.id).includes(movieId)
+	);
+export const isWatchLater = (movieId: number) =>
+	createSelector(selectWatchLaterMovies, (watchLaterMovies: Movie[]) =>
+		watchLaterMovies.map((movie) => movie.id).includes(movieId)
+	);
+
 export const selectPopularMovies = createSelector(
 	selectMovieState,
 	(state: MovieStateInterface) => state.popularMoviesList || []

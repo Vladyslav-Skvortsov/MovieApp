@@ -6,6 +6,7 @@ import * as MovieActions from '@store/actions';
 import { Action, select, Store } from '@ngrx/store';
 import { selectAccountId, selectSessionId } from '@store/selectors';
 import { Movie } from '@interfaces/movie';
+import { AuthService } from '@services/auth-service/auth.service';
 
 // Interfaces for success and error actions
 interface SuccessAction {
@@ -63,6 +64,22 @@ export class MovieEffects {
 					)
 				);
 			})
+		)
+	);
+
+	// Effect for preloading Favorites and Watch Later lists
+	loadInitialData$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(
+				MovieActions.loadPopularMovies,
+				MovieActions.loadNowPlayingMovies,
+				MovieActions.loadTopRateMovies,
+				MovieActions.loadUpcomingMovies
+			),
+			mergeMap(() => [
+				MovieActions.loadFavoriteMovies(),
+				MovieActions.loadWatchLaterMovies(),
+			])
 		)
 	);
 
@@ -213,9 +230,50 @@ export class MovieEffects {
 		)
 	);
 
+	//  AuthEffects
+	loadAccountInfo$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(MovieActions.loadAccountInfo),
+			mergeMap(() =>
+				this.authService.getAccountInfo().pipe(
+					map((account) =>
+						MovieActions.loadAccountInfoSuccess({ accountId: account.id })
+					),
+					catchError((error) =>
+						of(
+							MovieActions.loadAccountInfoFailure({
+								error: error.message,
+							})
+						)
+					)
+				)
+			)
+		)
+	);
+	loadSessionInfo$ = createEffect(() =>
+		this.actions$.pipe(
+			ofType(MovieActions.loadSessionInfo),
+			mergeMap(() =>
+				this.authService.getSessionInfo().pipe(
+					map((session) =>
+						MovieActions.loadSessionInfoSuccess({ sessionId: session.id })
+					),
+					catchError((error) =>
+						of(
+							MovieActions.loadSessionInfoFailure({
+								error: error.message,
+							})
+						)
+					)
+				)
+			)
+		)
+	);
+
 	constructor(
 		private actions$: Actions,
 		private movieService: MovieService,
+		private authService: AuthService,
 		private store: Store
 	) {}
 }

@@ -13,7 +13,9 @@
 			"@constants/*": ["./src/app/constants/*"],
 			"@directives/*": ["./src/app/directives/*"],
 			"@store/*": ["./src/app/store/*"],
-			"@general/*": ["./src/app/general/*"]
+			"@general/*": ["./src/app/general/*"],
+			"@resolvers/*": ["./src/app/resolvers/*"],
+			"@guards/*": ["./src/app/guards/*"]
 		},
 		"outDir": "./dist/out-tsc",
 		"strict": true,
