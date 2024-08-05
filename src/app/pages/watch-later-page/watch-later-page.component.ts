@@ -21,7 +21,6 @@ export class WatchLaterPageComponent
 {
 	public titlePage: string = 'Watch Later Movies';
 	public titleEmptyPage: string = 'Watch Later Is Empty';
-	public pageType: string = 'watchLater';
 	public movies: Movie[] = [];
 
 	constructor(private store: Store) {

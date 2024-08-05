@@ -1,4 +1,4 @@
-import { Component, OnInit, DoCheck } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { takeUntil } from 'rxjs';
@@ -21,7 +21,6 @@ export class FavoriteMoviesPageComponent
 {
 	public titlePage: string = 'Favorite Movies';
 	public titleEmptyPage: string = 'Favorite Movies Is Empty';
-	public pageType: string = 'favorite';
 	public movies: Movie[] = [];
 
 	constructor(private store: Store) {
