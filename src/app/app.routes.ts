@@ -30,7 +30,7 @@ export const routes: Routes = [
 		pathMatch: 'full',
 	},
 	{
-		path: 'favorite-movies',
+		path: 'favorite',
 		component: FavoriteMoviesPageComponent,
 		pathMatch: 'full',
 	},

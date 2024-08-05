@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pipe';
@@ -36,19 +36,24 @@ export class MovieCardComponent
 	implements OnInit
 {
 	@Input() movie!: Movie;
-	@Input() pageType: string | undefined;
+
+	public imagePath: string | undefined;
+	public pageType: string | undefined;
+	public currentUrl: string = '';
 
 	public buttonFavoritesConfig: ButtonConfig = buttonFavoritesConfig;
 	public buttonWatchLaterConfig: ButtonConfig = buttonWatchLaterConfig;
 	public buttonRemoveConfig: ButtonConfig = buttonRemoveConfig;
 	public buttonShowMoreConfig: ButtonConfig = buttonShowMoreConfig;
-	public imagePath: string | undefined;
 
-	constructor(private store: Store) {
+	constructor(private store: Store, private router: Router) {
 		super();
 	}
 
 	ngOnInit(): void {
+		this.currentUrl = this.router.url;
+		this.pageType = this.currentUrl.slice(1);
+
 		this.imagePath = this.movie
 			? `${BASE_IMG_URL}${this.movie.poster_path}`
 			: '';

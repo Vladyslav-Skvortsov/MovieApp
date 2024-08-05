@@ -25,9 +25,9 @@
 				[label]="buttonRemoveConfig.label"
 				[severity]="buttonRemoveConfig.severity"
 				[class]="buttonRemoveConfig.class"
-				(click)="removeFromFavorites(this.movie.id)"
+				(click)="removeFromFavorites(movie.id)"
 			></p-button>
-			} @else if (pageType === 'watchLater') {
+			} @else if (pageType === 'watch-later') {
 			<p-button
 				[icon]="buttonFavoritesConfig.icon"
 				[label]="buttonFavoritesConfig.label"
@@ -39,7 +39,7 @@
 				[label]="buttonRemoveConfig.label"
 				[severity]="buttonRemoveConfig.severity"
 				[class]="buttonRemoveConfig.class"
-				(click)="removeFromWatchLater(this.movie.id)"
+				(click)="removeFromWatchLater(movie.id)"
 			></p-button>
 			} @else {
 			<p-button
