@@ -1,18 +1,19 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { MovieService } from '@services/movie-service/movie.service';
-import {
-	catchError,
-	map,
-	mergeMap,
-	Observable,
-	of,
-	switchMap,
-	throwError,
-} from 'rxjs';
+import { catchError, map, mergeMap, Observable, of, switchMap } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MovieActions from '@store/actions';
-import { select, Store } from '@ngrx/store';
+import { Action, select, Store } from '@ngrx/store';
 import { selectAccountId, selectSessionId } from '@store/selectors';
+import { Movie } from '@interfaces/movie';
+
+// Interfaces for success and error actions
+interface SuccessAction {
+	(props: { movies: Movie[] }): Action;
+}
+interface FailureAction {
+	(props: { error: string }): Action;
+}
 
 @Injectable()
 export class MovieEffects {
@@ -25,10 +26,10 @@ export class MovieEffects {
 				MovieActions.loadTopRateMovies,
 				MovieActions.loadUpcomingMovies
 			),
-			mergeMap((action) => {
-				let apiCall: Observable<any>;
-				let successAction: any;
-				let failureAction: any;
+			mergeMap((action): Observable<Action> => {
+				let apiCall: Observable<{ results: Movie[] }>;
+				let successAction: SuccessAction;
+				let failureAction: FailureAction;
 
 				switch (action.type) {
 					case MovieActions.loadPopularMovies.type:
@@ -51,6 +52,8 @@ export class MovieEffects {
 						successAction = MovieActions.loadUpcomingMoviesSuccess;
 						failureAction = MovieActions.loadUpcomingMoviesFailure;
 						break;
+					default:
+						return of({ type: 'NO_ACTION' } as Action);
 				}
 
 				return apiCall.pipe(

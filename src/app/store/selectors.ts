@@ -1,43 +1,45 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { MovieState } from '@store/state';
+import { MovieStateInterface } from '@interfaces/state-interface';
+import { Movie } from '@interfaces/movie';
 
-export const selectMovieState = createFeatureSelector<MovieState>('movie');
+export const selectMovieState =
+	createFeatureSelector<MovieStateInterface>('movie');
 
 // Selector fot get AccountId & SessionId
 export const selectAccountId = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.accountId
+	(state: MovieStateInterface) => state.accountId
 );
 export const selectSessionId = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.sessionId
+	(state: MovieStateInterface) => state.sessionId
 );
 
 export const selectPopularMovies = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.popularMoviesList || []
+	(state: MovieStateInterface) => state.popularMoviesList || []
 );
 export const selectNowPlayingMovies = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.nowPlayingMoviesList || []
+	(state: MovieStateInterface) => state.nowPlayingMoviesList || []
 );
 export const selectTopRateMovies = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.topRatedMoviesList || []
+	(state: MovieStateInterface) => state.topRatedMoviesList || []
 );
 export const selectupcomingMovies = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.upcomingMoviesList || []
+	(state: MovieStateInterface) => state.upcomingMoviesList || []
 );
 export const selectMovieDetail = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.selectedMovieDetail
+	(state: MovieStateInterface) => state.selectedMovieDetail
 );
 export const selectFavoriteMovies = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.favoriteMoviesList ?? []
+	(state: MovieStateInterface) => state.favoriteMoviesList ?? []
 );
 export const selectWatchLaterMovies = createSelector(
 	selectMovieState,
-	(state: MovieState) => state.watchLaterMoviesList ?? []
+	(state: MovieStateInterface) => state.watchLaterMoviesList ?? []
 );

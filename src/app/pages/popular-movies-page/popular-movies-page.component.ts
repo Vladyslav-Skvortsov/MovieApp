@@ -6,7 +6,7 @@ import { selectPopularMovies } from '@store/selectors';
 import { loadPopularMovies } from '@store/actions';
 import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
-import { MovieState } from '@store/state';
+import { MovieStateInterface } from '@interfaces/state-interface';
 
 @Component({
 	selector: 'app-popular-movies-page',
@@ -23,7 +23,7 @@ export class PopularMoviesPageComponent
 	public titlePage: string = 'Popular Movies';
 	public movies: Movie[] = [];
 
-	constructor(private store: Store<{ movie: MovieState }>) {
+	constructor(private store: Store<{ movie: MovieStateInterface }>) {
 		super();
 	}
 

@@ -3,10 +3,10 @@ import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
-import { MovieState } from '@store/state';
 import { Store } from '@ngrx/store';
 import { loadUpcomingMovies } from '@store/actions';
 import { selectupcomingMovies } from '@store/selectors';
+import { MovieStateInterface } from '@interfaces/state-interface';
 
 @Component({
 	selector: 'app-upcoming-movies-page',
@@ -23,7 +23,7 @@ export class UpcomingMoviesPageComponent
 	public titlePage: string = 'Upcoming Movies';
 	public movies: Movie[] = [];
 
-	constructor(private store: Store<{ movie: MovieState }>) {
+	constructor(private store: Store<{ movie: MovieStateInterface }>) {
 		super();
 	}
 

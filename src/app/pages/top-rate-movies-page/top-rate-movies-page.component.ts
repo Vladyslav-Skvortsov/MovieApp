@@ -3,10 +3,10 @@ import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { takeUntil } from 'rxjs';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
-import { MovieState } from '@store/state';
 import { Store } from '@ngrx/store';
 import { loadTopRateMovies } from '@store/actions';
 import { selectTopRateMovies } from '@store/selectors';
+import { MovieStateInterface } from '@interfaces/state-interface';
 
 @Component({
 	selector: 'app-top-rate-movies-page',
@@ -23,7 +23,7 @@ export class TopRateMoviesPageComponent
 	public titlePage: string = 'Top Rate Movies';
 	public movies: Movie[] = [];
 
-	constructor(private store: Store<{ movie: MovieState }>) {
+	constructor(private store: Store<{ movie: MovieStateInterface }>) {
 		super();
 	}
 

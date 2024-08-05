@@ -1,18 +1,6 @@
-import { Movie } from '@interfaces/movie';
+import { MovieStateInterface } from '@interfaces/state-interface';
 
-export interface MovieState {
-	accountId: number | null;
-	sessionId: string | null;
-	popularMoviesList: Movie[] | null;
-	nowPlayingMoviesList: Movie[] | null;
-	topRatedMoviesList: Movie[] | null;
-	upcomingMoviesList: Movie[] | null;
-	favoriteMoviesList: Movie[] | null;
-	watchLaterMoviesList: Movie[] | null;
-	selectedMovieDetail: Movie | null;
-}
-
-export const initialState: MovieState = {
+export const initialState: MovieStateInterface = {
 	accountId: null,
 	sessionId: null,
 
