@@ -1,22 +1,37 @@
 import { inject } from '@angular/core';
-import { CanActivateFn } from '@angular/router';
+import {
+	ActivatedRouteSnapshot,
+	CanActivateFn,
+	Router,
+	RouterStateSnapshot,
+} from '@angular/router';
+import { combineLatest, Observable, of, map, catchError } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { map, take, switchMap } from 'rxjs/operators';
 import { selectAccountId, selectSessionId } from '@store/selectors';
-import * as MovieActions from '@store/actions';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (
+	route: ActivatedRouteSnapshot,
+	state: RouterStateSnapshot
+): Observable<boolean> => {
 	const store = inject(Store);
+	const router = inject(Router);
 
-	return store.select(selectAccountId).pipe(
-		switchMap((accountId) => {
-			if (!accountId) {
-				store.dispatch(MovieActions.loadAccountInfo());
+	return combineLatest([
+		store.select(selectAccountId),
+		store.select(selectSessionId),
+	]).pipe(
+		map(([accountId, sessionId]) => {
+			if (accountId && sessionId) {
+				return true;
+			} else {
+				router.navigate(['/home']);
+				return false;
 			}
-			return store
-				.select(selectSessionId)
-				.pipe(map((sessionId) => !!accountId && !!sessionId));
 		}),
-		take(1)
+		catchError((error) => {
+			console.error('Error fetching accountId or sessionId:', error);
+			router.navigate(['/home']);
+			return of(false);
+		})
 	);
 };

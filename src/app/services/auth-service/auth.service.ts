@@ -20,13 +20,6 @@ import {
 export class AuthService {
 	constructor(private http: HttpClient) {}
 
-	getAccountInfo(): Observable<{ id: number }> {
-		return this.http.get<{ id: number }>('/api/account-info');
-	}
-	getSessionInfo(): Observable<{ id: string }> {
-		return this.http.get<{ id: string }>('/api/session-info');
-	}
-
 	private getRequestToken(): Observable<string> {
 		const url = `${BASE_API_URL}/authentication/token/new${API_KEY}`;
 		return this.http.get<RequestTokenResponse>(url).pipe(

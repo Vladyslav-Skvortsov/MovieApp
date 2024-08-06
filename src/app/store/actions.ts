@@ -7,26 +7,6 @@ export const setAuthentication = createAction(
 	props<{ accountId: number; sessionId: string }>()
 );
 
-// Auth Actions
-export const loadAccountInfo = createAction('[Auth] Load Account Info');
-export const loadSessionInfo = createAction('[Auth] Load Session Info');
-export const loadAccountInfoSuccess = createAction(
-	'[Auth] Load Account Info Success',
-	props<{ accountId: number }>()
-);
-export const loadSessionInfoSuccess = createAction(
-	'[Auth] Load Session Info Success',
-	props<{ sessionId: string }>()
-);
-export const loadAccountInfoFailure = createAction(
-	'[Auth] Load Account Info Failure',
-	props<{ error: string }>()
-);
-export const loadSessionInfoFailure = createAction(
-	'[Auth] Load Session Info Failure',
-	props<{ error: string }>()
-);
-
 // Popular Movies Actions
 export const loadPopularMovies = createAction(
 	'[Movies Page] Load Popular Movies'

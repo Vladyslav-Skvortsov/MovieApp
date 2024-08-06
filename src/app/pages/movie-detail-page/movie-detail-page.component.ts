@@ -7,13 +7,14 @@ import { Movie } from '@interfaces/movie';
 import { BASE_IMG_URL } from '@constants/constant-api';
 import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
 import { Store } from '@ngrx/store';
-import { loadMovieDetail } from '@store/actions';
 import { selectMovieDetail } from '@store/selectors';
+import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-movie-detail-page',
 	standalone: true,
-	imports: [TransformRatingPipe, TransformDateFormatPipe],
+	imports: [TransformRatingPipe, TransformDateFormatPipe, CommonModule],
 	templateUrl: './movie-detail-page.component.html',
 	styleUrl: './movie-detail-page.component.scss',
 })
@@ -22,27 +23,20 @@ export class MovieDetailPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	public movie: Movie | null = null;
+	public movie$: Observable<Movie | null>;
 	public textEmpty: string = 'Loading...';
 	public imagePath: string | undefined;
 
 	constructor(private route: ActivatedRoute, private store: Store) {
 		super();
+		this.movie$ = this.store.select(selectMovieDetail);
 	}
 
 	ngOnInit(): void {
-		const movieId = Number(this.route.snapshot.paramMap.get('id'));
-		if (movieId) {
-			this.store.dispatch(loadMovieDetail({ id: movieId }));
-			this.store
-				.select(selectMovieDetail)
-				.pipe(takeUntil(this.unsubscribe$))
-				.subscribe((movie) => {
-					this.movie = movie;
-					this.imagePath = movie
-						? `${BASE_IMG_URL}${movie.poster_path}`
-						: '';
-				});
-		}
+		this.movie$.pipe(takeUntil(this.unsubscribe$)).subscribe((movie) => {
+			if (movie) {
+				this.imagePath = `${BASE_IMG_URL}${movie.poster_path}`;
+			}
+		});
 	}
 }

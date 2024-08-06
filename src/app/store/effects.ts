@@ -230,46 +230,6 @@ export class MovieEffects {
 		)
 	);
 
-	//  AuthEffects
-	loadAccountInfo$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(MovieActions.loadAccountInfo),
-			mergeMap(() =>
-				this.authService.getAccountInfo().pipe(
-					map((account) =>
-						MovieActions.loadAccountInfoSuccess({ accountId: account.id })
-					),
-					catchError((error) =>
-						of(
-							MovieActions.loadAccountInfoFailure({
-								error: error.message,
-							})
-						)
-					)
-				)
-			)
-		)
-	);
-	loadSessionInfo$ = createEffect(() =>
-		this.actions$.pipe(
-			ofType(MovieActions.loadSessionInfo),
-			mergeMap(() =>
-				this.authService.getSessionInfo().pipe(
-					map((session) =>
-						MovieActions.loadSessionInfoSuccess({ sessionId: session.id })
-					),
-					catchError((error) =>
-						of(
-							MovieActions.loadSessionInfoFailure({
-								error: error.message,
-							})
-						)
-					)
-				)
-			)
-		)
-	);
-
 	constructor(
 		private actions$: Actions,
 		private movieService: MovieService,
