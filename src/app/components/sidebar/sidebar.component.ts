@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent {
 	public titledSidebar = {
+		titledHome: 'Home',
 		titledPopular: 'Popular',
 		titledTopRate: 'Top Rate',
 		titledNowPlaying: 'Now Playing',
@@ -17,6 +18,7 @@ export class SidebarComponent {
 	};
 
 	public iconClasses = {
+		home: 'pi pi-home',
 		popular: 'pi pi-trophy',
 		topRate: 'pi pi-star',
 		nowPlaying: 'pi pi-forward',

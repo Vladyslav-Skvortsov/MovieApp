@@ -1,24 +1,25 @@
-@if (movie) {
-<div class="movie-detail">
-	<div class="poster">
-		<img [src]="imagePath" alt="{{ movie.title }}" />
-	</div>
-	<div class="details">
-		<h1>{{ movie.title }}</h1>
-		<p class="original-title">
-			{{ movie.original_title }} ({{
-				movie.original_language.toUpperCase()
-			}})
-		</p>
-		<p class="release-date">
-			Release Date: {{ movie.release_date | transformDateFormat }}
-		</p>
-		<p class="rating">
-			Rating: {{ movie.vote_average | transformRating }} / 10
-		</p>
-		<p class="overview">{{ movie.overview }}</p>
+<div *ngIf="movie$ | async as movie; else loading">
+	<div class="movie-detail">
+		<div class="poster">
+			<img [src]="imagePath" alt="{{ movie.title }}" />
+		</div>
+		<div class="details">
+			<h1>{{ movie.title }}</h1>
+			<p class="original-title">
+				{{ movie.original_title }} ({{
+					movie.original_language.toUpperCase()
+				}})
+			</p>
+			<p class="release-date">
+				Release Date: {{ movie.release_date | transformDateFormat }}
+			</p>
+			<p class="rating">
+				Rating: {{ movie.vote_average | transformRating }} / 10
+			</p>
+			<p class="overview">{{ movie.overview }}</p>
+		</div>
 	</div>
 </div>
-} @else {
-<p>{{ textEmpty }}</p>
-}
+<ng-template #loading>
+	<p>{{ textEmpty }}</p>
+</ng-template>

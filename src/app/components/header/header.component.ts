@@ -18,7 +18,7 @@ export class HeaderComponent implements OnInit {
 		this.items = [
 			{
 				label: 'Favourite',
-				route: 'favorite-movies',
+				route: 'favorite',
 				icon: 'pi pi-heart',
 			},
 			{

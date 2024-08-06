@@ -1,4 +1,8 @@
 <nav class="sidebar">
+	<a [routerLink]="['home']" routerLinkActive="active-link">
+		<i [class]="iconClasses.home"></i>
+		{{ titledSidebar.titledHome }}
+	</a>
 	<a [routerLink]="['popular']" routerLinkActive="active-link">
 		<i [class]="iconClasses.popular"></i> {{ titledSidebar.titledPopular }}
 	</a>

@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
-import { MovieService } from '@services/movie-service/movie.service';
 import { takeUntil } from 'rxjs';
-import { ClearObservableDirective } from '@directives/clear-observable/clear-observable.directive';
+import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { Store } from '@ngrx/store';
+import { loadTopRateMovies } from '@store/actions';
+import { selectTopRateMovies } from '@store/selectors';
+import { MovieStateInterface } from '@interfaces/state-interface';
 
 @Component({
 	selector: 'app-top-rate-movies-page',
@@ -17,19 +20,22 @@ export class TopRateMoviesPageComponent
 	extends ClearObservableDirective
 	implements OnInit
 {
-	constructor(private movieService: MovieService) {
-		super();
-	}
-
 	public titlePage: string = 'Top Rate Movies';
 	public movies: Movie[] = [];
 
+	constructor(private store: Store<{ movie: MovieStateInterface }>) {
+		super();
+	}
+
 	ngOnInit(): void {
-		this.movieService
-			.getTopRatedMoviesList()
+		this.store.dispatch(loadTopRateMovies());
+		this.store
+			.select(selectTopRateMovies)
 			.pipe(takeUntil(this.unsubscribe$))
-			.subscribe((response) => {
-				this.movies = response.results;
+			.subscribe((movies) => {
+				if (movies) {
+					this.movies = movies;
+				}
 			});
 	}
 }
