@@ -5,7 +5,7 @@ import { Movie } from '@interfaces/movie';
 import { selectPopularMovies } from '@store/selectors';
 import { loadPopularMovies } from '@store/actions';
 import { takeUntil } from 'rxjs';
-import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable';
 import { MovieStateInterface } from '@interfaces/state-interface';
 
 @Component({

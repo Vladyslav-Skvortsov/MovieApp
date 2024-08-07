@@ -5,7 +5,7 @@ import { TransformRatingPipe } from '@pipes/transform-rating/transform-rating.pi
 import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-format.pipe';
 import { Movie } from '@interfaces/movie';
 import { BASE_IMG_URL } from '@constants/constant-api';
-import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable';
 import { Store } from '@ngrx/store';
 import { selectMovieDetail } from '@store/selectors';
 import { CommonModule } from '@angular/common';

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { takeUntil } from 'rxjs';
-import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable';
 import { Store } from '@ngrx/store';
 import * as MovieActions from '@store/actions';
 import { selectFavoriteMovies } from '@store/selectors';

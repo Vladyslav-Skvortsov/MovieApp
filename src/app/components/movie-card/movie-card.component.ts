@@ -10,7 +10,7 @@ import { TransformDateFormatPipe } from '@pipes/transform-date/transform-date-fo
 import { Movie } from '@interfaces/movie';
 import * as buttonsConfig from '@constants/card-button-config';
 import { BASE_IMG_URL } from '@constants/constant-api';
-import { ClearObservableDirective } from '@general/clear-observable/clear-observable';
+import { ClearObservableDirective } from '@directives/clear-observable/clear-observable';
 import * as MovieActions from '@store/actions';
 import { isFavorite, isWatchLater } from '@store/selectors';
 
