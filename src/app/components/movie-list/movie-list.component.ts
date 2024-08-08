@@ -11,5 +11,4 @@ import { Movie } from '@interfaces/movie';
 })
 export class MovieListComponent {
 	@Input() movies: Movie[] = [];
-	@Input() pageType: string | undefined;
 }

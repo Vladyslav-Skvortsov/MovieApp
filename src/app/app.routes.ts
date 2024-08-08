@@ -80,6 +80,7 @@ export const routes: Routes = [
 		component: MovieDetailPageComponent,
 		pathMatch: 'full',
 		resolve: { movie: movieDetailResolver },
+		canActivate: [authGuard],
 	},
 ];
 
