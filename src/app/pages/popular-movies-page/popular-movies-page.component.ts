@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MoviesPageComponent } from '@pages/movies-page/movies-page.component';
+import { MoviesPageComponent } from '@general/movies-page/movies-page.component';
 import { Movie } from '@interfaces/movie';
 import { selectPopularMovies } from '@store/selectors';
 import { loadPopularMovies } from '@store/actions';
