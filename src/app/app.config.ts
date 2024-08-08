@@ -1,4 +1,8 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
+import {
+	ApplicationConfig,
+	importProvidersFrom,
+	isDevMode,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
@@ -7,9 +11,11 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { MovieEffects } from '@store/effects';
 import { movieReducer } from '@store/reducers';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
+		importProvidersFrom(BrowserAnimationsModule),
 		provideRouter(routes),
 		provideHttpClient(),
 		provideStore({ movie: movieReducer }),
