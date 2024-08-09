@@ -101,5 +101,15 @@ export const movieReducer = createReducer(
 	on(MovieActions.removeFromWatchLaterMoviesFailure, (state, { error }) => {
 		console.error('Failed to remove from watch later movies:', error);
 		return state;
-	})
+	}),
+
+	// subscribe & unsubscribe news
+	on(MovieActions.subscribe, (state, { subscription }) => ({
+		...state,
+		subscription,
+	})),
+	on(MovieActions.unsubscribe, (state) => ({
+		...state,
+		subscription: null,
+	}))
 );

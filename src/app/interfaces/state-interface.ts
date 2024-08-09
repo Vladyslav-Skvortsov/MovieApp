@@ -1,5 +1,13 @@
 import { Movie } from '@interfaces/movie';
 
+export interface Subscription {
+	name: string;
+	email: string;
+	birthdate: Date | null;
+	genres: string[];
+	agree: boolean;
+}
+
 export interface MovieStateInterface {
 	accountId: number | null;
 	sessionId: string | null;
@@ -10,4 +18,5 @@ export interface MovieStateInterface {
 	favoriteMoviesList: Movie[] | null;
 	watchLaterMoviesList: Movie[] | null;
 	selectedMovieDetail: Movie | null;
+	subscription: Subscription | null;
 }

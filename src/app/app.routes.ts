@@ -11,6 +11,7 @@ import { authResolver } from '@resolvers/auth.resolver';
 import { AuthGuard } from '@guards/auth.guard';
 import { movieDetailResolver } from '@resolvers/movie-detail.resolver';
 import { LoginComponent } from '@components/login/login.component';
+import { SubscriptionFormComponent } from '@components/subscription-form/subscription-form.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -18,9 +19,11 @@ export const routes: Routes = [
 		path: 'home',
 		component: HomePageComponent,
 		pathMatch: 'full',
-		resolve: {
-			auth: authResolver,
-		},
+	},
+	{
+		path: 'home/subscription-form',
+		component: SubscriptionFormComponent,
+		pathMatch: 'full',
 	},
 	{
 		path: 'login',

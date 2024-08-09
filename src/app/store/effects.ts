@@ -326,6 +326,36 @@ export class MovieEffects {
 		)
 	);
 
+	// subscribe & unsubscribe news
+	subscribe$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(MovieActions.subscribe),
+				tap(() => {
+					this.store.dispatch(
+						MovieActions.showSuccessMessage({
+							detail: 'Subscription successful!',
+						})
+					);
+				})
+			),
+		{ dispatch: false }
+	);
+	unsubscribe$ = createEffect(
+		() =>
+			this.actions$.pipe(
+				ofType(MovieActions.unsubscribe),
+				tap(() => {
+					this.store.dispatch(
+						MovieActions.showSuccessMessage({
+							detail: 'You have unsubscribed.',
+						})
+					);
+				})
+			),
+		{ dispatch: false }
+	);
+
 	constructor(
 		private actions$: Actions,
 		private movieService: MovieService,

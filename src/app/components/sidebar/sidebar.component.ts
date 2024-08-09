@@ -15,6 +15,7 @@ export class SidebarComponent {
 		titledTopRate: 'Top Rate',
 		titledNowPlaying: 'Now Playing',
 		titledUpcoming: 'Upcoming',
+		titledSubscription: 'Subscription',
 	};
 
 	public iconClasses = {
@@ -23,5 +24,6 @@ export class SidebarComponent {
 		topRate: 'pi pi-star',
 		nowPlaying: 'pi pi-forward',
 		upcoming: 'pi pi-hourglass',
+		subscription: 'pi pi-check-square',
 	};
 }

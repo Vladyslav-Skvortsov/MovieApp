@@ -13,4 +13,6 @@ export const initialState: MovieStateInterface = {
 	watchLaterMoviesList: null,
 
 	selectedMovieDetail: null,
+
+	subscription: null,
 };

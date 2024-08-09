@@ -1,4 +1,5 @@
 import { Movie } from '@interfaces/movie';
+import { Subscription } from '@interfaces/state-interface';
 import { createAction, props } from '@ngrx/store';
 
 // Set Authentication
@@ -160,3 +161,10 @@ export const removeFromWatchLaterMoviesFailure = createAction(
 	'[Movies] Remove From Watch Later Movies Failure',
 	props<{ error: string }>()
 );
+
+// subscribe Actions
+export const subscribe = createAction(
+	'[Subscription] Subscribe',
+	props<{ subscription: Subscription }>()
+);
+export const unsubscribe = createAction('[Subscription] Unsubscribe');
