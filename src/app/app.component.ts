@@ -4,47 +4,51 @@ import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { HeaderComponent } from '@components/header/header.component';
 import { AuthService } from '@services/auth-service/auth.service';
 import { MovieService } from '@services/movie-service/movie.service';
-import { select, Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { RippleModule } from 'primeng/ripple';
 import * as MovieActions from '@store/actions';
-import { selectAccountId, selectSessionId } from '@store/selectors';
-import { Observable } from 'rxjs';
+import { Actions, ofType } from '@ngrx/effects';
 
 @Component({
 	selector: 'app-root',
 	standalone: true,
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
-	imports: [RouterOutlet, RouterModule, SidebarComponent, HeaderComponent],
-	providers: [MovieService, AuthService],
+	imports: [
+		RouterOutlet,
+		RouterModule,
+		SidebarComponent,
+		HeaderComponent,
+		ToastModule,
+		RippleModule,
+	],
+	providers: [MovieService, AuthService, MessageService],
 })
 export class AppComponent implements OnInit {
-	constructor(private authService: AuthService, private store: Store) {
-		this.accountId$ = this.store.pipe(select(selectAccountId));
-		this.sessionId$ = this.store.pipe(select(selectSessionId));
-	}
-
-	accountId$: Observable<number | null>;
-	sessionId$: Observable<string | null>;
-
+	constructor(
+		private actions$: Actions,
+		private messageService: MessageService
+	) {}
 	ngOnInit(): void {
-		this.authService.authenticateAndGetAccountId().subscribe(
-			({ accountId, sessionId }) => {
-				this.store.dispatch(
-					MovieActions.setAuthentication({ accountId, sessionId })
-				);
-				console.log('Account ID:', accountId);
-				console.log('Session ID:', sessionId);
-			},
-			(error) => {
-				console.error('Authentication failed:', error);
-			}
-		);
-		this.accountId$.subscribe((accountId) => {
-			console.log('Account ID from Store:', accountId);
-		});
+		this.actions$
+			.pipe(ofType(MovieActions.showSuccessMessage))
+			.subscribe((action) => {
+				this.messageService.add({
+					severity: 'success',
+					summary: 'Success',
+					detail: action.detail,
+				});
+			});
 
-		this.sessionId$.subscribe((sessionId) => {
-			console.log('Session ID from Store:', sessionId);
-		});
+		this.actions$
+			.pipe(ofType(MovieActions.showErrorMessage))
+			.subscribe((action) => {
+				this.messageService.add({
+					severity: 'error',
+					summary: 'Error',
+					detail: action.detail,
+				});
+			});
 	}
 }

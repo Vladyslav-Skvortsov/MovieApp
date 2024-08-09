@@ -8,8 +8,9 @@ import { WatchLaterPageComponent } from './pages/watch-later-page/watch-later-pa
 import { MovieDetailPageComponent } from './pages/movie-detail-page/movie-detail-page.component';
 import { HomePageComponent } from '@pages/home-page/home-page.component';
 import { authResolver } from '@resolvers/auth.resolver';
-import { authGuard } from '@guards/auth.guard';
+import { AuthGuard } from '@guards/auth.guard';
 import { movieDetailResolver } from '@resolvers/movie-detail.resolver';
+import { LoginComponent } from '@components/login/login.component';
 
 export const routes: Routes = [
 	{ path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,13 +23,17 @@ export const routes: Routes = [
 		},
 	},
 	{
+		path: 'login',
+		component: LoginComponent,
+		pathMatch: 'full',
+	},
+	{
 		path: 'popular',
 		component: PopularMoviesPageComponent,
 		pathMatch: 'full',
 		resolve: {
 			auth: authResolver,
 		},
-		canActivate: [authGuard],
 	},
 	{
 		path: 'top-rate',
@@ -37,7 +42,6 @@ export const routes: Routes = [
 		resolve: {
 			auth: authResolver,
 		},
-		canActivate: [authGuard],
 	},
 	{
 		path: 'now-playing',
@@ -46,7 +50,6 @@ export const routes: Routes = [
 		resolve: {
 			auth: authResolver,
 		},
-		canActivate: [authGuard],
 	},
 	{
 		path: 'upcoming',
@@ -55,7 +58,6 @@ export const routes: Routes = [
 		resolve: {
 			auth: authResolver,
 		},
-		canActivate: [authGuard],
 	},
 	{
 		path: 'favorite',
@@ -64,7 +66,7 @@ export const routes: Routes = [
 		resolve: {
 			auth: authResolver,
 		},
-		canActivate: [authGuard],
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'watch-later',
@@ -73,14 +75,13 @@ export const routes: Routes = [
 		resolve: {
 			auth: authResolver,
 		},
-		canActivate: [authGuard],
+		canActivate: [AuthGuard],
 	},
 	{
 		path: 'movie/:id',
 		component: MovieDetailPageComponent,
 		pathMatch: 'full',
 		resolve: { movie: movieDetailResolver },
-		canActivate: [authGuard],
 	},
 ];
 

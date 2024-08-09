@@ -27,6 +27,7 @@ import { isFavorite, isWatchLater } from '@store/selectors';
 		RouterModule,
 		CommonModule,
 	],
+	providers: [],
 })
 // ! TODO fix readability
 export class MovieCardComponent

@@ -1,0 +1,39 @@
+<div class="login-container">
+	<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+		<div class="p-field">
+			<label for="username">Username: vladyslav_skortsov</label>
+			<input id="username" pInputText formControlName="username" />
+			<p-message
+				*ngIf="
+					loginForm.get('username')?.invalid &&
+					loginForm.get('username')?.touched
+				"
+				severity="help"
+				text="Username is required"
+			></p-message>
+		</div>
+		<div class="p-field">
+			<label for="password">Password: tpYWCGkB!.BC3FJ</label>
+			<input
+				id="password"
+				pInputText
+				type="password"
+				formControlName="password"
+			/>
+			<p-message
+				*ngIf="
+					loginForm.get('password')?.invalid &&
+					loginForm.get('password')?.touched
+				"
+				severity="help"
+				text="Password is required"
+			></p-message>
+		</div>
+		<p-button
+			type="submit"
+			label="Login"
+			[disabled]="loginForm.invalid"
+		></p-button>
+		<p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
+	</form>
+</div>

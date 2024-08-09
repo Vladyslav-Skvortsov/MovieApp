@@ -156,7 +156,6 @@ export class MovieService {
 					media_id: movieId,
 					watchlist: false,
 				};
-				console.log('Removing movieId:', movieId);
 				return this.httpClient
 					.post<void>(url, body)
 					.pipe(catchError(this.handleError));

@@ -91,7 +91,6 @@ export const movieReducer = createReducer(
 	}),
 	// Remove from watch later
 	on(MovieActions.removeFromWatchLaterMoviesSuccess, (state, { movieId }) => {
-		console.log('Removing movie from state with ID:', movieId);
 		return {
 			...state,
 			watchLaterMoviesList: state.watchLaterMoviesList

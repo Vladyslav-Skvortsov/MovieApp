@@ -12,10 +12,19 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { MovieEffects } from '@store/effects';
 import { movieReducer } from '@store/reducers';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { DynamicDialogModule, DialogService } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
 	providers: [
-		importProvidersFrom(BrowserAnimationsModule),
+		importProvidersFrom(
+			BrowserAnimationsModule,
+			DynamicDialogModule,
+			ToastModule
+		),
+		MessageService,
+		DialogService,
 		provideRouter(routes),
 		provideHttpClient(),
 		provideStore({ movie: movieReducer }),

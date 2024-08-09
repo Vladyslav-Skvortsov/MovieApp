@@ -1,37 +1,36 @@
-import { inject } from '@angular/core';
-import {
-	ActivatedRouteSnapshot,
-	CanActivateFn,
-	Router,
-	RouterStateSnapshot,
-} from '@angular/router';
-import { combineLatest, Observable, of, map, catchError } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { selectAccountId, selectSessionId } from '@store/selectors';
+import { Injectable } from '@angular/core';
+import { CanActivate, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { Store, select } from '@ngrx/store';
+import { AuthService } from '@services/auth-service/auth.service';
+import { selectAccountId } from '@store/selectors';
 
-export const authGuard: CanActivateFn = (
-	route: ActivatedRouteSnapshot,
-	state: RouterStateSnapshot
-): Observable<boolean> => {
-	const store = inject(Store);
-	const router = inject(Router);
+@Injectable({
+	providedIn: 'root',
+})
+export class AuthGuard implements CanActivate {
+	constructor(
+		private authService: AuthService,
+		private router: Router,
+		private store: Store
+	) {}
 
-	return combineLatest([
-		store.select(selectAccountId),
-		store.select(selectSessionId),
-	]).pipe(
-		map(([accountId, sessionId]) => {
-			if (accountId && sessionId) {
-				return true;
-			} else {
-				router.navigate(['/home']);
-				return false;
-			}
-		}),
-		catchError((error) => {
-			console.error('Error fetching accountId or sessionId:', error);
-			router.navigate(['/home']);
-			return of(false);
-		})
-	);
-};
+	canActivate(): Observable<boolean> {
+		return this.store.pipe(
+			select(selectAccountId),
+			switchMap((accountId) => {
+				if (accountId) {
+					return of(true);
+				} else {
+					this.router.navigate(['/login']);
+					return of(false);
+				}
+			}),
+			catchError(() => {
+				this.router.navigate(['/login']);
+				return of(false);
+			})
+		);
+	}
+}

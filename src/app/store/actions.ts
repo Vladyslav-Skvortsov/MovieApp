@@ -6,6 +6,18 @@ export const setAuthentication = createAction(
 	'[Auth] Set Authentication',
 	props<{ accountId: number; sessionId: string }>()
 );
+export const clearAuthentication = createAction('[Auth] Clear Authentication');
+
+// Actions for success messages
+export const showSuccessMessage = createAction(
+	'[Movie] Show Success Message',
+	props<{ detail: string }>()
+);
+// Actions for error messages
+export const showErrorMessage = createAction(
+	'[Movie] Show Error Message',
+	props<{ detail: string }>()
+);
 
 // Popular Movies Actions
 export const loadPopularMovies = createAction(

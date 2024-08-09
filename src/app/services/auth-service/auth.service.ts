@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, switchMap, throwError } from 'rxjs';
-import {
-	USERNAME,
-	PASSWORD,
-	API_KEY,
-	BASE_API_URL,
-} from '@constants/constant-api';
+import { API_KEY, BASE_API_URL } from '@constants/constant-api';
 import {
 	RequestTokenResponse,
 	ValidateRequestTokenResponse,
 	CreateSessionResponse,
 	AccountResponse,
 } from '@interfaces/auth-responses';
+import { setAuthentication } from '@store/actions';
+import { Store } from '@ngrx/store';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private http: HttpClient) {}
+	constructor(private http: HttpClient, private store: Store) {}
 
 	private getRequestToken(): Observable<string> {
 		const url = `${BASE_API_URL}/authentication/token/new${API_KEY}`;
@@ -28,11 +25,15 @@ export class AuthService {
 		);
 	}
 
-	private validateRequestToken(requestToken: string): Observable<void> {
+	private validateRequestToken(
+		requestToken: string,
+		username: string,
+		password: string
+	): Observable<void> {
 		const url = `${BASE_API_URL}/authentication/token/validate_with_login${API_KEY}`;
 		const body = {
-			username: USERNAME,
-			password: PASSWORD,
+			username,
+			password,
 			request_token: requestToken,
 		};
 		return this.http.post<ValidateRequestTokenResponse>(url, body).pipe(
@@ -58,17 +59,18 @@ export class AuthService {
 		);
 	}
 
-	public authenticateAndGetAccountId(): Observable<{
-		accountId: number;
-		sessionId: string;
-	}> {
+	public authenticate(username: string, password: string): Observable<void> {
 		return this.getRequestToken().pipe(
 			switchMap((requestToken) =>
-				this.validateRequestToken(requestToken).pipe(
+				this.validateRequestToken(requestToken, username, password).pipe(
 					switchMap(() => this.createSession(requestToken)),
 					switchMap((sessionId) =>
 						this.fetchAccountId(sessionId).pipe(
-							map((accountId) => ({ accountId, sessionId }))
+							map((accountId) => {
+								this.store.dispatch(
+									setAuthentication({ accountId, sessionId })
+								);
+							})
 						)
 					)
 				)

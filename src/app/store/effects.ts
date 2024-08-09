@@ -1,12 +1,19 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { MovieService } from '@services/movie-service/movie.service';
-import { catchError, map, mergeMap, Observable, of, switchMap } from 'rxjs';
+import {
+	catchError,
+	map,
+	mergeMap,
+	switchMap,
+	tap,
+	of,
+	Observable,
+} from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as MovieActions from '@store/actions';
-import { Action, select, Store } from '@ngrx/store';
+import { Action, Store, select } from '@ngrx/store';
 import { selectAccountId, selectSessionId } from '@store/selectors';
 import { Movie } from '@interfaces/movie';
-import { AuthService } from '@services/auth-service/auth.service';
 
 // Interfaces for success and error actions
 interface SuccessAction {
@@ -54,13 +61,18 @@ export class MovieEffects {
 						failureAction = MovieActions.loadUpcomingMoviesFailure;
 						break;
 					default:
-						return of({ type: 'NO_ACTION' } as Action);
+						return of({ type: 'NO_ACTION' });
 				}
 
 				return apiCall.pipe(
 					map((response) => successAction({ movies: response.results })),
 					catchError((error) =>
-						of(failureAction({ error: error.message }))
+						of(
+							failureAction({ error: error.message }),
+							MovieActions.showErrorMessage({
+								detail: 'Failed to load movies.',
+							})
+						)
 					)
 				);
 			})
@@ -94,6 +106,9 @@ export class MovieEffects {
 						of(
 							MovieActions.loadMovieDetailFailure({
 								error: error.message,
+							}),
+							MovieActions.showErrorMessage({
+								detail: 'Failed to load movie details.',
 							})
 						)
 					)
@@ -104,7 +119,6 @@ export class MovieEffects {
 
 	// Generalized effect for authenticated actions
 	private handleAuthenticatedRequest<T>(
-		actionType: string,
 		apiCall: (accountId: number, sessionId: string) => Observable<T>,
 		successAction: (result: T) => any,
 		failureAction: (error: string) => any
@@ -113,17 +127,26 @@ export class MovieEffects {
 			select(selectAccountId),
 			switchMap((accountId) => {
 				if (!accountId) {
+					console.error('Not authenticated.');
 					return of(failureAction('Not authenticated'));
 				}
 				return this.store.pipe(
 					select(selectSessionId),
 					switchMap((sessionId) => {
 						if (!sessionId) {
+							console.error('Not authenticated.');
 							return of(failureAction('Not authenticated'));
 						}
 						return apiCall(accountId, sessionId).pipe(
 							map((result) => successAction(result)),
-							catchError((error) => of(failureAction(error.message)))
+							catchError((error) =>
+								of(
+									failureAction(error.message),
+									MovieActions.showErrorMessage({
+										detail: 'Operation failed.',
+									})
+								)
+							)
 						);
 					})
 				);
@@ -131,14 +154,12 @@ export class MovieEffects {
 		);
 	}
 
-	// Effect Favorite Movies & Watch Later Movies
 	// Effect for loading favorite movies
 	loadFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.loadFavoriteMovies),
 			switchMap(() =>
 				this.handleAuthenticatedRequest(
-					MovieActions.loadFavoriteMovies.type,
 					this.movieService.getFavoriteMoviesList.bind(this.movieService),
 					(movies) => MovieActions.loadFavoriteMoviesSuccess({ movies }),
 					(error) => MovieActions.loadFavoriteMoviesFailure({ error })
@@ -146,28 +167,47 @@ export class MovieEffects {
 			)
 		)
 	);
+
 	// Effect for adding to favorites
 	addToFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.addToFavoriteMovies),
 			switchMap((action) =>
 				this.handleAuthenticatedRequest(
-					MovieActions.addToFavoriteMovies.type,
 					(accountId, sessionId) =>
 						this.movieService.addMovieToFavorite(action.movieId),
 					(movie) => MovieActions.addToFavoriteMoviesSuccess({ movie }),
 					(error) => MovieActions.addToFavoriteMoviesFailure({ error })
+				).pipe(
+					tap((resultAction) => {
+						if (
+							resultAction.type ===
+							MovieActions.addToFavoriteMoviesSuccess.type
+						) {
+							this.store.dispatch(
+								MovieActions.showSuccessMessage({
+									detail: 'Movie added to favorites.',
+								})
+							);
+						} else {
+							this.store.dispatch(
+								MovieActions.showErrorMessage({
+									detail: 'Failed to add movie to favorites.',
+								})
+							);
+						}
+					})
 				)
 			)
 		)
 	);
+
 	// Effect for removing from favorites
 	removeFromFavoriteMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.removeFromFavoriteMovies),
 			switchMap((action) =>
 				this.handleAuthenticatedRequest(
-					MovieActions.removeFromFavoriteMovies.type,
 					(accountId, sessionId) =>
 						this.movieService.removeMovieFromFavorite(action.movieId),
 					() =>
@@ -176,6 +216,25 @@ export class MovieEffects {
 						}),
 					(error) =>
 						MovieActions.removeFromFavoriteMoviesFailure({ error })
+				).pipe(
+					tap((resultAction) => {
+						if (
+							resultAction.type ===
+							MovieActions.removeFromFavoriteMoviesSuccess.type
+						) {
+							this.store.dispatch(
+								MovieActions.showSuccessMessage({
+									detail: 'Movie removed from favorites.',
+								})
+							);
+						} else {
+							this.store.dispatch(
+								MovieActions.showErrorMessage({
+									detail: 'Failed to remove movie from favorites.',
+								})
+							);
+						}
+					})
 				)
 			)
 		)
@@ -187,7 +246,6 @@ export class MovieEffects {
 			ofType(MovieActions.loadWatchLaterMovies),
 			switchMap(() =>
 				this.handleAuthenticatedRequest(
-					MovieActions.loadWatchLaterMovies.type,
 					this.movieService.getWatchMoviesList.bind(this.movieService),
 					(movies) => MovieActions.loadWatchLaterMoviesSuccess({ movies }),
 					(error) => MovieActions.loadWatchLaterMoviesFailure({ error })
@@ -195,28 +253,47 @@ export class MovieEffects {
 			)
 		)
 	);
+
 	// Effect for adding to watch later
 	addToWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.addToWatchLaterMovies),
 			switchMap((action) =>
 				this.handleAuthenticatedRequest(
-					MovieActions.addToWatchLaterMovies.type,
 					(accountId, sessionId) =>
 						this.movieService.addMovieToWatchLater(action.movieId),
 					(movie) => MovieActions.addToWatchLaterMoviesSuccess({ movie }),
 					(error) => MovieActions.addToWatchLaterMoviesFailure({ error })
+				).pipe(
+					tap((resultAction) => {
+						if (
+							resultAction.type ===
+							MovieActions.addToWatchLaterMoviesSuccess.type
+						) {
+							this.store.dispatch(
+								MovieActions.showSuccessMessage({
+									detail: 'Movie added to watch later.',
+								})
+							);
+						} else {
+							this.store.dispatch(
+								MovieActions.showErrorMessage({
+									detail: 'Failed to add movie to watch later.',
+								})
+							);
+						}
+					})
 				)
 			)
 		)
 	);
+
 	// Effect for removing from watch later
 	removeFromWatchLaterMovies$ = createEffect(() =>
 		this.actions$.pipe(
 			ofType(MovieActions.removeFromWatchLaterMovies),
 			switchMap((action) =>
 				this.handleAuthenticatedRequest(
-					MovieActions.removeFromWatchLaterMovies.type,
 					(accountId, sessionId) =>
 						this.movieService.removeMovieFromWatchLater(action.movieId),
 					() =>
@@ -225,6 +302,25 @@ export class MovieEffects {
 						}),
 					(error) =>
 						MovieActions.removeFromWatchLaterMoviesFailure({ error })
+				).pipe(
+					tap((resultAction) => {
+						if (
+							resultAction.type ===
+							MovieActions.removeFromWatchLaterMoviesSuccess.type
+						) {
+							this.store.dispatch(
+								MovieActions.showSuccessMessage({
+									detail: 'Movie removed from watch later.',
+								})
+							);
+						} else {
+							this.store.dispatch(
+								MovieActions.showErrorMessage({
+									detail: 'Failed to remove movie from watch later.',
+								})
+							);
+						}
+					})
 				)
 			)
 		)
@@ -233,7 +329,6 @@ export class MovieEffects {
 	constructor(
 		private actions$: Actions,
 		private movieService: MovieService,
-		private authService: AuthService,
 		private store: Store
 	) {}
 }
